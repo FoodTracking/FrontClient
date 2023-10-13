@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
 
 export default function CommandCard({
@@ -9,6 +9,7 @@ export default function CommandCard({
   description,
   price,
   style,
+  image,
 }: {
   title: string;
   foodPlaceName: string;
@@ -16,6 +17,7 @@ export default function CommandCard({
   nbCommandes: number;
   price: number;
   style?: any;
+  image?: any;
 }) {
   return (
     <Pressable
@@ -40,10 +42,28 @@ export default function CommandCard({
       >
         {title}
       </Text>
+      <Image
+        source={image}
+        style={{
+          height: 80,
+          width: 80,
+          position: "absolute",
+          right: 10,
+          top: 10,
+          borderRadius: 10,
+          backgroundColor: image ? "grey" : "white",
+        }}
+      />
       <BaseButton
         text="Repasser commande"
         onPress={() => {}}
-        style={{ height: 30, right: 10, position: "absolute", top: 35 }}
+        style={{
+          zIndex: 1,
+          height: 30,
+          right: 2,
+          position: "absolute",
+          top: 70,
+        }}
       />
       <View style={{ marginLeft: 10 }}>
         <Text style={{}}>
