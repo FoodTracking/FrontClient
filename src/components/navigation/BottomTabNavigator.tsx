@@ -4,6 +4,7 @@ import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import SettingsScreen from "./SettingsScreen";
 import CommandesScreen from "./CommandesScreen";
 import TrackerScreen from "./TrackerScreen";
+import LoginScreen from "../../../Screen/Auth/LoginScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ export default function MyTabs() {
         tabBarActiveTintColor: "#e91e63",
       }}
     >
+      <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
