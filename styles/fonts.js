@@ -16,18 +16,15 @@ const Fonts = {
   // semibold = 600
   semibold: (fontSize, color) => ({
     ...base(fontSize, color),
-    fontFamily: "DMSans-Medium",
     fontWeight: "600",
   }),
   // medium = 500
   medium: (fontSize, color) => ({
     ...base(fontSize, color),
-    fontFamily: "DMSans-Medium",
   }),
   // regular = 400
   regular: (fontSize, color) => ({
     ...base(fontSize, color),
-    fontFamily: "DMSans-Regular",
   }),
 };
 

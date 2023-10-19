@@ -2,11 +2,11 @@ import React from "react";
 import { Text, View, Pressable } from "react-native";
 
 export default function BaseButton({
-  text,
+  title,
   style,
   onPress,
 }: {
-  text: string;
+  title: string;
   style?: object;
   onPress: () => void;
 }) {
@@ -27,7 +27,7 @@ export default function BaseButton({
         }}
         onPress={onPress}
       >
-        <Text style={{ color: "white", fontSize: 12 }}>{text}</Text>
+        <Text style={{ color: "white", fontSize: 12 }}>{title}</Text>
       </Pressable>
     </View>
   );
