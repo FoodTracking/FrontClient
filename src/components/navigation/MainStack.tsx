@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../../Screen/Home";
+<<<<<<< HEAD
 import {
   AntDesign,
   Entypo,
@@ -8,10 +9,15 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import ProfileScreen from "../../../Screen/ProfileScreen";
+=======
+import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import SettingsScreen from "../../../Screen/SettingsScreen";
+>>>>>>> da50cb6 (update: AuthStack + MainStack + cleaning)
 import CommandesScreen from "../../../Screen/CommandesScreen";
 import TrackerScreen from "../../../Screen/TrackerScreen";
 import LoginScreen from "../../../Screen/Auth/Login";
 
+<<<<<<< HEAD
 export type RootStackParamList = {
   Restaurants: undefined;
   Tracker: undefined;
@@ -25,6 +31,11 @@ interface AuthStackProps {
 const Tab = createBottomTabNavigator();
 
 export default function MainStack({ updateAccess }: AuthStackProps) {
+=======
+const Tab = createBottomTabNavigator();
+
+export default function MainStack({ updateAccess }) {
+>>>>>>> da50cb6 (update: AuthStack + MainStack + cleaning)
   return (
     <Tab.Navigator
       initialRouteName="Restaurants"
@@ -67,6 +78,7 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
         }}
       />
       <Tab.Screen
+<<<<<<< HEAD
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -78,6 +90,15 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
 >>>>>>> 49e83ff (update: screen + bottomTab):src/components/navigation/BottomTabNavigator.tsx
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
+=======
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="setting" color={color} size={size} />
+>>>>>>> da50cb6 (update: AuthStack + MainStack + cleaning)
           ),
         }}
       />
