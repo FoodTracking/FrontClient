@@ -1,10 +1,13 @@
 import React from "react";
-import { Image, Pressable, Text, TextInput, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../../src/components/Button/BaseButton";
+import { useNavigation } from "@react-navigation/native";
+import BaseInput from "../../src/components/Input/BaseInput";
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "green" }}>
       <Image
         source={require("../../assets/followfood.png")}
         style={{
@@ -22,43 +25,28 @@ export default function LoginScreen() {
       >
         Connexion
       </Text>
-      <View
-        style={{
-          height: "5%",
-          borderWidth: 1,
-          borderColor: "black",
-          borderRadius: 10,
-          marginHorizontal: 30,
-        }}
-      >
-        <TextInput
+      <View style={{ marginHorizontal: 50 }}>
+        <BaseInput
           style={{
-            flex: 1,
-            fontSize: 15,
-            marginLeft: 10,
-            marginRight: 10,
-            marginBottom: 2,
+            height: "5%",
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
           }}
           placeholder="Adresse Mail"
         />
       </View>
-      <View
-        style={{
-          height: "5%",
-          borderWidth: 1,
-          borderColor: "black",
-          borderRadius: 10,
-          marginTop: 30,
-          marginHorizontal: 30,
-        }}
-      >
-        <TextInput
+      <View style={{ marginHorizontal: 50 }}>
+        <BaseInput
           style={{
-            flex: 1,
-            fontSize: 15,
-            marginLeft: 10,
-            marginRight: 10,
-            marginBottom: 2,
+            height: "5%",
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
           }}
           placeholder="Password"
         />
@@ -68,6 +56,7 @@ export default function LoginScreen() {
         text="Se connecter"
         onPress={() => {
           alert("Connexion");
+          navigation.navigate("Home");
         }}
       />
       <Pressable
@@ -78,7 +67,9 @@ export default function LoginScreen() {
         }}
       >
         <Text>Pas encore inscrit ?</Text>
-        <Text style={{ color: "blue" }}>Inscrivez-vous</Text>
+        <Text style={{ color: "blue", textAlign: "center" }}>
+          Inscrivez-vous
+        </Text>
       </Pressable>
     </View>
   );

@@ -13,7 +13,7 @@ export default function MyTabs() {
     <Tab.Navigator
       initialRouteName="feed"
       screenOptions={{
-        tabBarActiveTintColor: "#e91e63",
+        tabBarActiveTintColor: "black",
       }}
     >
       <Tab.Screen name="Login" component={LoginScreen}></Tab.Screen>
@@ -21,6 +21,7 @@ export default function MyTabs() {
         name="Home"
         component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" color={color} size={size} />
@@ -31,6 +32,7 @@ export default function MyTabs() {
         name="Tracker"
         component={TrackerScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Tracker",
           tabBarIcon: ({ color, size }) => (
             <Entypo name="bell" color={color} size={size} />
@@ -42,6 +44,7 @@ export default function MyTabs() {
         name="Commandes"
         component={CommandesScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Commandes",
           tabBarIcon: ({ color, size }) => (
             <Feather name="shopping-bag" color={color} size={size} />
@@ -52,6 +55,7 @@ export default function MyTabs() {
         name="Settings"
         component={SettingsScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Settings",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="setting" color={color} size={size} />

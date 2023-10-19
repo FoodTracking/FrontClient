@@ -1,8 +1,9 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { FlatList, ScrollView, Text, View } from "react-native";
 import BaseCard from "../Card/BaseCard";
 import CommandCard from "../Card/CommandCard";
 import SearchBar from "../Search/SearchBar";
+import FilterCard from "../Card/FilterCard";
 
 const RestaurantList = [
   {
@@ -27,6 +28,25 @@ const RestaurantList = [
   },
 ];
 
+const FilstersList = [
+  {
+    name: "Fast Food",
+    picture: require("../../../assets/resto1.jpg"),
+  },
+  {
+    name: "Sushi",
+    picture: require("../../../assets/resto1.jpg"),
+  },
+  {
+    name: "Indien",
+    picture: require("../../../assets/resto1.jpg"),
+  },
+  {
+    name: "Italien",
+    picture: require("../../../assets/resto1.jpg"),
+  },
+];
+
 export default function HomeScreen() {
   return (
     <ScrollView
@@ -34,14 +54,29 @@ export default function HomeScreen() {
         flex: 1,
         alignSelf: "center",
         marginTop: 10,
-        backgroundColor: "white",
+        backgroundColor: "green",
+        marginTop: 30,
       }}
       stickyHeaderIndices={[0]}
     >
-      <View style={{ backgroundColor: "white" }}>
+      <View style={{ backgroundColor: "green" }}>
         <SearchBar placeholder="Rechercher un restaurant" />
       </View>
-      <View style={{ borderWidth: 0.5, borderColor: "grey" }} />
+      <View style={{ borderWidth: 0.5, borderColor: "black" }} />
+      <FlatList
+        horizontal={true}
+        data={FilstersList}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <FilterCard
+            key={index}
+            title={item.name}
+            picture={item.picture}
+            style={{ marginTop: 5, backgroundColor: "white" }}
+          />
+        )}
+      />
+
       <View style={{ flexDirection: "row", marginTop: 10 }}>
         <CommandCard
           title="Votre derniere commande"
@@ -49,6 +84,7 @@ export default function HomeScreen() {
           foodPlaceName="KFC"
           description={[{ name: "Poulet", quantity: 1 }]}
           price={0}
+          style={{ margin: 5, backgroundColor: "white" }}
         />
       </View>
       {RestaurantList.map((restaurant, index) => {
@@ -58,6 +94,7 @@ export default function HomeScreen() {
             title={restaurant.name}
             subtitle={restaurant.subtitle}
             picture={restaurant.picture}
+            style={{ marginTop: 5, backgroundColor: "white" }}
           />
         );
       })}
