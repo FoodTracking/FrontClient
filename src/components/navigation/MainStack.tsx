@@ -71,7 +71,11 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
         component={ProfileScreen}
         options={{
           headerShown: false,
+<<<<<<< HEAD:src/components/navigation/MainStack.tsx
           tabBarLabel: "Profile",
+=======
+          tabBarLabel: "Settings",
+>>>>>>> 49e83ff (update: screen + bottomTab):src/components/navigation/BottomTabNavigator.tsx
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
