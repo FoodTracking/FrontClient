@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
-
+import { ImageSourcePropType } from "react-native";
 export default function BaseCard({
   title,
   subtitle,
@@ -11,7 +11,7 @@ export default function BaseCard({
   title: string;
   subtitle: string;
   style?: object;
-  picture?: unknown;
+  picture?: ImageSourcePropType;
 }) {
   return (
     <Pressable
@@ -27,7 +27,7 @@ export default function BaseCard({
       }}
     >
       <Image
-        source={picture}
+        source={picture as ImageSourcePropType}
         style={{
           flex: 1,
           width: undefined,

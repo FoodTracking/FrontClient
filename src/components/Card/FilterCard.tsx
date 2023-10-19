@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
+import { ImageSourcePropType } from "react-native";
 
 export default function FilterCard({
   title,
@@ -25,7 +26,7 @@ export default function FilterCard({
       }}
     >
       <Image
-        source={picture}
+        source={picture as ImageSourcePropType}
         style={{
           flex: 1,
           width: undefined,

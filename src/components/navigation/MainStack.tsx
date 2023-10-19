@@ -7,9 +7,19 @@ import CommandesScreen from "../../../Screen/CommandesScreen";
 import TrackerScreen from "../../../Screen/TrackerScreen";
 import LoginScreen from "../../../Screen/Auth/Login";
 
+export type RootStackParamList = {
+  Restaurants: undefined;
+  Tracker: undefined;
+  Commandes: undefined;
+  Settings: undefined;
+};
+interface AuthStackProps {
+  updateAccess: (access: string) => void;
+}
+
 const Tab = createBottomTabNavigator();
 
-export default function MainStack({ updateAccess }) {
+export default function MainStack({ updateAccess }: AuthStackProps) {
   return (
     <Tab.Navigator
       initialRouteName="Restaurants"

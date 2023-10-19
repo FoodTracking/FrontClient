@@ -15,7 +15,7 @@ export default function CommandCard({
   description,
   price,
   style,
-  image,
+  picture,
 }: {
   title: string;
   foodPlaceName: string;
@@ -23,7 +23,7 @@ export default function CommandCard({
   nbCommandes: number;
   price: number;
   style?: object;
-  image?: ImageSourcePropType;
+  picture?: unknown;
 }) {
   return (
     <Pressable
@@ -49,7 +49,7 @@ export default function CommandCard({
         {title}
       </Text>
       <Image
-        source={image ? image : undefined}
+        source={picture as ImageSourcePropType}
         style={{
           height: 80,
           width: 80,
@@ -57,7 +57,7 @@ export default function CommandCard({
           right: 10,
           top: 10,
           borderRadius: 10,
-          backgroundColor: image ? "grey" : "white",
+          backgroundColor: picture ? "grey" : "white",
         }}
       />
       <BaseButton

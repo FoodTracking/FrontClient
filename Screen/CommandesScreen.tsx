@@ -44,7 +44,6 @@ export default function CommandesScreen() {
       style={{
         flex: 1,
         alignSelf: "center",
-        marginTop: 10,
         marginTop: 30,
       }}
     >

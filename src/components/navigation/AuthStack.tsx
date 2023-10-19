@@ -16,10 +16,6 @@ interface AuthStackProps {
   updateAccess: (access: string) => void;
 }
 
-interface AuthComponentProps {
-  updateAccess: (access: boolean) => void;
-}
-
 export default function AuthStack({ updateAccess }: AuthStackProps) {
   return (
     <Stack.Navigator
