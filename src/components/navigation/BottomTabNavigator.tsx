@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home";
+import HomeScreen from "../../../Screen/Home";
 import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
-import SettingsScreen from "./SettingsScreen";
-import CommandesScreen from "./CommandesScreen";
-import TrackerScreen from "./TrackerScreen";
-import LoginScreen from "../../../Screen/Auth/LoginScreen";
+import SettingsScreen from "../../../Screen/SettingsScreen";
+import CommandesScreen from "../../../Screen/CommandesScreen";
+import TrackerScreen from "../../../Screen/TrackerScreen";
+import LoginScreen from "../../../Screen/Auth/Login";
 
 const Tab = createBottomTabNavigator();
 

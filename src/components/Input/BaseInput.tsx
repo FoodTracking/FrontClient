@@ -1,23 +1,22 @@
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { TextInput } from "react-native";
+
+interface BaseInputProps {
+  placeholder: string;
+  style?: object;
+  value: string;
+  onChange: (text: string) => void;
+}
 
 export default function BaseInput({
   placeholder,
   style,
   value,
-  onChangeText,
-}: {
-  placeholder: string;
-  style?: unknown;
-  value: string;
-  onChangeText: unknown;
-}) {
+  onChange,
+}: BaseInputProps) {
   return (
     <TextInput
       placeholder={placeholder}
-      style={style}
-      value={value}
-      onChangeText={onChangeText}
       style={{
         backgroundColor: "white",
         margin: 10,
@@ -26,7 +25,10 @@ export default function BaseInput({
         borderWidth: 0.5,
         borderColor: "black",
         borderRadius: 100,
+        ...style,
       }}
-    ></TextInput>
+      value={value}
+      onChangeText={onChange}
+    />
   );
 }

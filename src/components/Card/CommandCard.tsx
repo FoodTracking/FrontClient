@@ -61,7 +61,7 @@ export default function CommandCard({
         }}
       />
       <BaseButton
-        text="Repasser commande"
+        title="Repasser commande"
         onPress={() => {}}
         style={{
           zIndex: 1,
