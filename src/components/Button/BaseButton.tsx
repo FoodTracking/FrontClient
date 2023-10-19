@@ -7,7 +7,7 @@ export default function BaseButton({
   onPress,
 }: {
   text: string;
-  style?: any;
+  style?: object;
   onPress: () => void;
 }) {
   return (

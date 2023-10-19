@@ -2,14 +2,12 @@ import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
 
-export default function BaseCard({
+export default function FilterCard({
   title,
-  subtitle,
   style,
   picture,
 }: {
   title: string;
-  subtitle: string;
   style?: object;
   picture?: unknown;
 }) {
@@ -38,9 +36,9 @@ export default function BaseCard({
       />
       <View
         style={{
-          height: "30%",
-          width: "100%",
-          borderRadius: 10,
+          height: "15%",
+          width: "50%",
+          alignSelf: "center",
         }}
       >
         <Text
@@ -50,9 +48,10 @@ export default function BaseCard({
             marginLeft: 10,
             fontWeight: "bold",
             color: "black",
+            paddingBottom: 10,
           }}
         >
-          {title} - {subtitle}
+          {title}
         </Text>
         <Text
           style={{
@@ -62,9 +61,7 @@ export default function BaseCard({
             color: "grey",
             paddingBottom: 10,
           }}
-        >
-          Frais de service : 2€ - Pret dans 15min
-        </Text>
+        ></Text>
       </View>
     </Pressable>
   );

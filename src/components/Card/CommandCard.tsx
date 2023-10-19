@@ -1,5 +1,11 @@
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import BaseButton from "../Button/BaseButton";
 
 export default function CommandCard({
@@ -16,8 +22,8 @@ export default function CommandCard({
   description: [{ name: string; quantity: number }];
   nbCommandes: number;
   price: number;
-  style?: any;
-  image?: any;
+  style?: object;
+  image?: ImageSourcePropType;
 }) {
   return (
     <Pressable
@@ -43,7 +49,7 @@ export default function CommandCard({
         {title}
       </Text>
       <Image
-        source={image}
+        source={image ? image : undefined}
         style={{
           height: 80,
           width: 80,
@@ -60,16 +66,17 @@ export default function CommandCard({
         style={{
           zIndex: 1,
           height: 30,
+          width: 150,
           right: 2,
           position: "absolute",
           top: 70,
         }}
       />
       <View style={{ marginLeft: 10 }}>
-        <Text style={{}}>
+        {/* <Text style={{}}>
           N° commande :{"  "}
           <Text style={{ fontWeight: "bold" }}>{nbCommandes}</Text>
-        </Text>
+        </Text> */}
         <Text style={{}}>
           Restaurant :{"  "}
           <Text style={{ fontWeight: "bold" }}>{foodPlaceName}</Text>
@@ -82,10 +89,8 @@ export default function CommandCard({
             - {item.quantity}x {item.name}
           </Text>
         ))}
-        <Text style={{}}>
-          Total de la comamnde :{" "}
-          <Text style={{ fontWeight: "bold" }}>{price} €</Text>
-        </Text>
+        <Text style={{}}>Total de la commande : </Text>
+        <Text style={{ fontWeight: "bold" }}>{price} €</Text>
       </View>
     </Pressable>
   );

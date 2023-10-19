@@ -1,21 +1,22 @@
 import React from "react";
-import { Pressable, TextInput, View } from "react-native";
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import { Pressable, TextInput } from "react-native";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 export default function SearchBar({
   placeholder,
   style,
 }: {
   placeholder: string;
-  style?: any;
+  style?: object;
 }) {
   return (
     <Pressable
       style={{
+        backgroundColor: "white",
         margin: 15,
         height: 25,
         borderWidth: 0.5,
-        borderColor: "grey",
+        borderColor: "black",
         borderRadius: 100,
         flexDirection: "row",
         ...style,
