@@ -1,11 +1,20 @@
-import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Image,
+  NativeSyntheticEvent,
+  Pressable,
+  Text,
+  TextInputChangeEventData,
+  View,
+} from "react-native";
 import BaseButton from "../../src/components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
 import BaseInput from "../../src/components/Input/BaseInput";
 import { Palette } from "../../styles/colors";
 import { RootStackParamList } from "../../src/components/navigation/AuthStack";
 import { StackNavigationProp } from "@react-navigation/stack";
+import axios from "axios";
+import Switch from "../../src/components/Button/Switch";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -20,7 +29,33 @@ export default function RegisterScreen({
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
   const onPressLogin = async () => {
-    navigation.navigate("Login", { email: "", password: "" });
+    navigation.navigate("Login", { email: email, password: password });
+  };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(
+        "https://api.follow-food.alexandre-pezat.fr/auth/register",
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        }
+      );
+
+      updateAccess(true);
+      // Update the access after successful registration
+      console.log("LOG FROM REGISTER ", JSON.stringify(response.data)); // Log the response data for debugging
+    } catch (error) {
+      console.error("An error occurred during registration:", error);
+    }
   };
 
   return (
@@ -29,24 +64,69 @@ export default function RegisterScreen({
         source={require("../../assets/logo.png")}
         style={{
           alignSelf: "center",
-          marginTop: 50,
-          width: 200,
-          height: 200,
+          marginTop: 10,
+          width: 100,
+          height: 100,
         }}
       />
       <Text
         style={{
           alignSelf: "center",
           fontSize: 30,
-          marginBottom: 50,
         }}
       >
         Inscription
       </Text>
+      <Text
+        style={{
+          alignSelf: "center",
+          marginTop: 10,
+          fontSize: 14,
+        }}
+      >
+        Vous êtes un : {isSelected ? "Restaurateur" : "Particulier"}
+      </Text>
+      <Switch
+        setSelected={() => {
+          setIsSelected(!isSelected);
+        }}
+        selected={isSelected}
+        containerStyle={{
+          alignSelf: "center",
+          marginTop: 10,
+        }}
+      />
       <View style={{ marginHorizontal: 50 }}>
         <BaseInput
           style={{
-            height: "5%",
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
+          }}
+          placeholder="Prénom"
+          value={firstName}
+          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+            setFirstName(event.nativeEvent.text)
+          }
+        />
+        <BaseInput
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
+          }}
+          placeholder="Nom"
+          value={lastName}
+          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+            setLastName(event.nativeEvent.text)
+          }
+        />
+        <BaseInput
+          style={{
             borderWidth: 1,
             borderColor: "black",
             borderRadius: 10,
@@ -54,31 +134,63 @@ export default function RegisterScreen({
             marginHorizontal: 30,
           }}
           placeholder="Adresse Mail"
-          value=""
-          onChange={() => {}}
+          value={email}
+          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+            setEmail(event.nativeEvent.text)
+          }
         />
-      </View>
-      <View style={{ marginHorizontal: 50 }}>
-        <BaseInput
+
+        {/* <BaseInput
           style={{
-            height: "5%",
             borderWidth: 1,
             borderColor: "black",
             borderRadius: 10,
             marginTop: 30,
             marginHorizontal: 30,
           }}
-          placeholder="Password"
+          placeholder="Code postal"
+          value=""
+          onChange={() => {}}
+        /> */}
+      </View>
+      <View style={{ marginHorizontal: 50 }}>
+        <BaseInput
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
+          }}
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+            setPassword(event.nativeEvent.text)
+          }
+        />
+      </View>
+      {/* <View style={{ marginHorizontal: 50 }}>
+        <BaseInput
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 30,
+            marginHorizontal: 30,
+          }}
+          placeholder="Confirmer mot de passe"
           value=""
           onChange={() => {}}
         />
-      </View>
+      </View> */}
       <BaseButton
         style={{ alignSelf: "center", marginTop: 20 }}
         title="S'inscrire"
         onPress={() => {
           alert("Inscription");
-          updateAccess(true);
+          handleRegister();
+
+          // updateAccess(true);
         }}
       />
       <Pressable
@@ -88,7 +200,7 @@ export default function RegisterScreen({
           marginBottom: 30,
         }}
         onPress={() => {
-          onPressLogin();
+          // onPressLogin();
         }}
       >
         <Text>Vous avez déjà un compte ?</Text>
