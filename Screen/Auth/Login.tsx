@@ -19,15 +19,21 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
 
 export default function LoginScreen({
   updateAccess,
-  jwt,
 }: {
   updateAccess: (access: boolean) => void;
-  jwt: string;
 }) {
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSelected, setIsSelected] = useState(false);
+
+  function handlePassword(text: string) {
+    setPassword(text);
+  }
+
+  function handleMail(text: string) {
+    setEmail(text);
+  }
 
   const storeData = async (accessToken: string, refreshToken: string) => {
     try {
@@ -111,9 +117,7 @@ export default function LoginScreen({
           }}
           placeholder="Adresse Mail"
           value={email}
-          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-            setEmail(event.nativeEvent.text)
-          }
+          onChange={handleMail}
         />
         <View style={{ marginHorizontal: 50 }}>
           <BaseInput
@@ -126,9 +130,8 @@ export default function LoginScreen({
             }}
             placeholder="Password"
             value={password}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setPassword(event.nativeEvent.text)
-            }
+            onChange={handlePassword}
+            secureTextEntry={true}
           />
         </View>
         <BaseButton
