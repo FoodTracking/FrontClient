@@ -36,6 +36,8 @@ export default function RegisterScreen({
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [namePro, setNamePro] = useState("");
+  const [description, setDescription] = useState("");
   const [isSelected, setIsSelected] = useState(false);
 
   const handleRegister = async () => {
@@ -96,6 +98,7 @@ export default function RegisterScreen({
           marginTop: 10,
         }}
       />
+      {/* {isSelected ? ( */}
       <View style={{ marginHorizontal: 50 }}>
         <BaseInput
           style={{
@@ -125,22 +128,51 @@ export default function RegisterScreen({
             setLastName(event.nativeEvent.text)
           }
         />
-        <BaseInput
-          style={{
-            borderWidth: 1,
-            borderColor: "black",
-            borderRadius: 10,
-            marginTop: 30,
-            marginHorizontal: 30,
-          }}
-          placeholder="Adresse Mail"
-          value={email}
-          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-            setEmail(event.nativeEvent.text)
-          }
-        />
+        <View style={{ marginHorizontal: 50 }}>
+          <BaseInput
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              borderRadius: 10,
+              marginTop: 30,
+              marginHorizontal: 30,
+            }}
+            placeholder="Nom"
+            value={namePro}
+            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+              setFirstName(event.nativeEvent.text)
+            }
+          />
+          <BaseInput
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              borderRadius: 10,
+              marginTop: 30,
+              marginHorizontal: 30,
+            }}
+            placeholder="Description"
+            value={description}
+            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+              setLastName(event.nativeEvent.text)
+            }
+          />
+          <BaseInput
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              borderRadius: 10,
+              marginTop: 30,
+              marginHorizontal: 30,
+            }}
+            placeholder="Adresse Mail"
+            value={email}
+            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+              setEmail(event.nativeEvent.text)
+            }
+          />
 
-        {/* <BaseInput
+          {/* <BaseInput
           style={{
             borderWidth: 1,
             borderColor: "black",
@@ -152,24 +184,24 @@ export default function RegisterScreen({
           value=""
           onChange={() => {}}
         /> */}
-      </View>
-      <View style={{ marginHorizontal: 50 }}>
-        <BaseInput
-          style={{
-            borderWidth: 1,
-            borderColor: "black",
-            borderRadius: 10,
-            marginTop: 30,
-            marginHorizontal: 30,
-          }}
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-            setPassword(event.nativeEvent.text)
-          }
-        />
-      </View>
-      {/* <View style={{ marginHorizontal: 50 }}>
+        </View>
+        <View style={{ marginHorizontal: 50 }}>
+          <BaseInput
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              borderRadius: 10,
+              marginTop: 30,
+              marginHorizontal: 30,
+            }}
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
+              setPassword(event.nativeEvent.text)
+            }
+          />
+        </View>
+        {/* <View style={{ marginHorizontal: 50 }}>
         <BaseInput
           style={{
             borderWidth: 1,
@@ -183,31 +215,32 @@ export default function RegisterScreen({
           onChange={() => {}}
         />
       </View> */}
-      <BaseButton
-        style={{ alignSelf: "center", marginTop: 20 }}
-        title="S'inscrire"
-        onPress={() => {
-          alert("Inscription");
-          handleRegister();
+        <BaseButton
+          style={{ alignSelf: "center", marginTop: 20 }}
+          title="S'inscrire"
+          onPress={() => {
+            alert("Inscription");
+            handleRegister();
 
-          // updateAccess(true);
-        }}
-      />
-      <Pressable
-        style={{
-          alignSelf: "center",
-          marginTop: 20,
-          marginBottom: 30,
-        }}
-        onPress={() => {
-          // onPressLogin();
-        }}
-      >
-        <Text>Vous avez déjà un compte ?</Text>
-        <Text style={{ color: "blue", textAlign: "center" }}>
-          Connectez-vous
-        </Text>
-      </Pressable>
+            // updateAccess(true);
+          }}
+        />
+        <Pressable
+          style={{
+            alignSelf: "center",
+            marginTop: 20,
+            marginBottom: 30,
+          }}
+          onPress={() => {
+            // onPressLogin();
+          }}
+        >
+          <Text>Vous avez déjà un compte ?</Text>
+          <Text style={{ color: "blue", textAlign: "center" }}>
+            Connectez-vous
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }

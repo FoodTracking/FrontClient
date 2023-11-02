@@ -9,6 +9,7 @@ export default function BaseCard({
   longitude,
   latitude,
   picture,
+<<<<<<< HEAD
   coordinates,
   radius,
 }: {
@@ -16,6 +17,13 @@ export default function BaseCard({
   longitude?: number;
   latitude?: number;
   category: string;
+=======
+  key,
+}: {
+  key: string;
+  title: string;
+  subtitle: string;
+>>>>>>> f521816 (update : Register base)
   style?: object;
   picture?: ImageSourcePropType;
   radius?: number;
@@ -42,6 +50,7 @@ export default function BaseCard({
           height: undefined,
           resizeMode: "cover",
           borderRadius: 10,
+          backgroundColor: "grey",
         }}
       />
       <View

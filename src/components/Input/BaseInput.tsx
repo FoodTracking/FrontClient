@@ -1,12 +1,20 @@
 import React from "react";
-import { TextInput } from "react-native";
+import {
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from "react-native";
 
 interface BaseInputProps {
   placeholder: string;
-  style?: object;
+  style?: undefined | object;
   value: string;
+<<<<<<< HEAD
   secureTextEntry?: boolean;
   onChange: (text: string) => void;
+=======
+  onChange: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void;
+>>>>>>> f521816 (update : Register base)
 }
 
 export default function BaseInput({
@@ -30,8 +38,12 @@ export default function BaseInput({
         ...style,
       }}
       value={value}
+<<<<<<< HEAD
       onChangeText={onChange}
       secureTextEntry={secureTextEntry}
+=======
+      onChange={onChange}
+>>>>>>> f521816 (update : Register base)
     />
   );
 }
