@@ -16,13 +16,6 @@ interface AuthStackProps {
   updateAccess: (access: string) => void;
 }
 
-<<<<<<< HEAD
-=======
-interface AuthComponentProps {
-  updateAccess: (access: boolean) => void;
-}
-
->>>>>>> da50cb6 (update: AuthStack + MainStack + cleaning)
 export default function AuthStack({ updateAccess }: AuthStackProps) {
   return (
     <Stack.Navigator

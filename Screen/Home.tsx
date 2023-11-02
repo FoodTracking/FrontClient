@@ -125,15 +125,9 @@ export default function HomeScreen() {
         return (
           <BaseCard
             key={index}
-<<<<<<< HEAD
             name={restaurant.name}
             category={restaurant.category}
             picture={restaurant.picture}
-=======
-            title={restaurant.name}
-            subtitle={restaurant.subtitle}
-            picture={restaurant.picture} // You may need to modify this to use the appropriate image
->>>>>>> f521816 (update : Register base)
             style={{ marginTop: 5, backgroundColor: "white" }}
           />
         );
