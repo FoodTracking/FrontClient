@@ -5,6 +5,7 @@ interface BaseInputProps {
   placeholder: string;
   style?: object;
   value: string;
+  secureTextEntry?: boolean;
   onChange: (text: string) => void;
 }
 
@@ -13,6 +14,7 @@ export default function BaseInput({
   style,
   value,
   onChange,
+  secureTextEntry,
 }: BaseInputProps) {
   return (
     <TextInput
@@ -29,6 +31,7 @@ export default function BaseInput({
       }}
       value={value}
       onChangeText={onChange}
+      secureTextEntry={secureTextEntry}
     />
   );
 }

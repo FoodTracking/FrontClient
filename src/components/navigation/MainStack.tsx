@@ -1,8 +1,13 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../../Screen/Home";
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
-import SettingsScreen from "../../../Screen/SettingsScreen";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import ProfileScreen from "../../../Screen/ProfileScreen";
 import CommandesScreen from "../../../Screen/CommandesScreen";
 import TrackerScreen from "../../../Screen/TrackerScreen";
 import LoginScreen from "../../../Screen/Auth/Login";
@@ -11,7 +16,7 @@ export type RootStackParamList = {
   Restaurants: undefined;
   Tracker: undefined;
   Commandes: undefined;
-  Settings: undefined;
+  Profile: undefined;
 };
 interface AuthStackProps {
   updateAccess: (access: string) => void;
@@ -62,13 +67,13 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "Settings",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="setting" color={color} size={size} />
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />

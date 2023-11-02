@@ -9,22 +9,22 @@ import { Palette } from "../styles/colors";
 const RestaurantList = [
   {
     name: "KFC",
-    subtitle: "Fast Food",
+    category: "Fast Food",
     picture: require("../assets/kfc.jpg"),
   },
   {
     name: "McDonalds",
-    subtitle: "Fast Food",
+    category: "Fast Food",
     picture: require("../assets/mcdo.jpg"),
   },
   {
     name: "TacosNaan",
-    subtitle: "Fast Food",
+    category: "Fast Food",
     picture: require("../assets/resto1.jpg"),
   },
   {
     name: "KFC",
-    subtitle: "Fast Food",
+    category: "Fast Food",
     picture: require("../assets/resto1.jpg"),
   },
 ];
@@ -91,8 +91,8 @@ export default function HomeScreen() {
         return (
           <BaseCard
             key={index}
-            title={restaurant.name}
-            subtitle={restaurant.subtitle}
+            name={restaurant.name}
+            category={restaurant.category}
             picture={restaurant.picture}
             style={{ marginTop: 5, backgroundColor: "white" }}
           />

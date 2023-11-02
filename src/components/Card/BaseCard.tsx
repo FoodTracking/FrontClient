@@ -3,15 +3,23 @@ import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
 import { ImageSourcePropType } from "react-native";
 export default function BaseCard({
-  title,
-  subtitle,
+  name,
+  category,
   style,
+  longitude,
+  latitude,
   picture,
+  coordinates,
+  radius,
 }: {
-  title: string;
-  subtitle: string;
+  name: string;
+  longitude?: number;
+  latitude?: number;
+  category: string;
   style?: object;
   picture?: ImageSourcePropType;
+  radius?: number;
+  coordinates?: { longitude: number; latitude: number };
 }) {
   return (
     <Pressable
@@ -52,7 +60,7 @@ export default function BaseCard({
             color: "black",
           }}
         >
-          {title} - {subtitle}
+          {name} - {category}
         </Text>
         <Text
           style={{
