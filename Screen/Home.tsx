@@ -8,6 +8,12 @@ import { Palette } from "../styles/colors";
 import axios, { AxiosHeaders } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+interface Restaurant {
+  name: string;
+  subtitle: string;
+  picture: PictureInPictureEvent;
+}
+
 const RestaurantList = [
   {
     name: "KFC",
@@ -55,7 +61,7 @@ export default function HomeScreen() {
 
   const fetchRestaurants = async () => {
     try {
-      const headers: AxiosHeaders = {
+      const headers = {
         Authorization: "Bearer " + (await AsyncStorage.getItem("accessToken")),
       };
 
@@ -68,12 +74,15 @@ export default function HomeScreen() {
 
       setRestaurantList(data);
       console.log("LOG FROM HOME ", JSON.stringify(restaurantList));
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+    } catch (error: any) {
+      console.error(
+        "An error occurred during USER registration:",
+        error?.response?.data || error
+      );
     }
   };
 
-  fetchRestaurants();
+  // fetchRestaurants();
   return (
     <ScrollView
       style={{
