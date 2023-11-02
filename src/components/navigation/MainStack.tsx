@@ -1,24 +1,42 @@
+import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./Home";
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
-import SettingsScreen from "./SettingsScreen";
-import CommandesScreen from "./CommandesScreen";
-import TrackerScreen from "./TrackerScreen";
+import HomeScreen from "../../../Screen/Home";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import ProfileScreen from "../../../Screen/ProfileScreen";
+import CommandesScreen from "../../../Screen/CommandesScreen";
+import TrackerScreen from "../../../Screen/TrackerScreen";
+import LoginScreen from "../../../Screen/Auth/Login";
+
+export type RootStackParamList = {
+  Restaurants: undefined;
+  Tracker: undefined;
+  Commandes: undefined;
+  Profile: undefined;
+};
+interface AuthStackProps {
+  updateAccess: (access: string) => void;
+}
 
 const Tab = createBottomTabNavigator();
 
-export default function MyTabs() {
+export default function MainStack({ updateAccess }: AuthStackProps) {
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Restaurants"
       screenOptions={{
-        tabBarActiveTintColor: "#e91e63",
+        tabBarActiveTintColor: "black",
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="Restaurants"
         component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" color={color} size={size} />
@@ -29,6 +47,7 @@ export default function MyTabs() {
         name="Tracker"
         component={TrackerScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Tracker",
           tabBarIcon: ({ color, size }) => (
             <Entypo name="bell" color={color} size={size} />
@@ -40,6 +59,7 @@ export default function MyTabs() {
         name="Commandes"
         component={CommandesScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Commandes",
           tabBarIcon: ({ color, size }) => (
             <Feather name="shopping-bag" color={color} size={size} />
@@ -47,12 +67,13 @@ export default function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
-          tabBarLabel: "Settings",
+          headerShown: false,
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="setting" color={color} size={size} />
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />

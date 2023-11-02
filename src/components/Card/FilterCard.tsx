@@ -2,24 +2,15 @@ import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../Button/BaseButton";
 import { ImageSourcePropType } from "react-native";
-export default function BaseCard({
-  name,
-  category,
+
+export default function FilterCard({
+  title,
   style,
-  longitude,
-  latitude,
   picture,
-  coordinates,
-  radius,
 }: {
-  name: string;
-  longitude?: number;
-  latitude?: number;
-  category: string;
+  title: string;
   style?: object;
-  picture?: ImageSourcePropType;
-  radius?: number;
-  coordinates?: { longitude: number; latitude: number };
+  picture?: unknown;
 }) {
   return (
     <Pressable
@@ -46,9 +37,9 @@ export default function BaseCard({
       />
       <View
         style={{
-          height: "30%",
-          width: "100%",
-          borderRadius: 10,
+          height: "15%",
+          width: "50%",
+          alignSelf: "center",
         }}
       >
         <Text
@@ -58,9 +49,10 @@ export default function BaseCard({
             marginLeft: 10,
             fontWeight: "bold",
             color: "black",
+            paddingBottom: 10,
           }}
         >
-          {name} - {category}
+          {title}
         </Text>
         <Text
           style={{
@@ -70,9 +62,7 @@ export default function BaseCard({
             color: "grey",
             paddingBottom: 10,
           }}
-        >
-          Frais de service : 2€ - Pret dans 15min
-        </Text>
+        ></Text>
       </View>
     </Pressable>
   );
