@@ -1,9 +1,13 @@
 import React from "react";
-import { TextInput } from "react-native";
+import {
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from "react-native";
 
 interface BaseInputProps {
   placeholder: string;
-  style?: object;
+  style?: undefined | object;
   value: string;
   secureTextEntry?: boolean;
   onChange: (text: string) => void;

@@ -71,7 +71,7 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "Profile",
+          tabBarLabel: "Settings",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),

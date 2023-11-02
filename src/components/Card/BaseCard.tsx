@@ -42,6 +42,7 @@ export default function BaseCard({
           height: undefined,
           resizeMode: "cover",
           borderRadius: 10,
+          backgroundColor: "grey",
         }}
       />
       <View

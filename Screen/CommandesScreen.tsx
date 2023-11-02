@@ -51,7 +51,7 @@ export default function CommandesScreen() {
         <CommandCard
           title="Votre derniere commande"
           nbCommandes={1}
-          image={require("../assets/kfc.jpg")}
+          picture={require("../assets/kfc.jpg")}
           foodPlaceName="KFC"
           description={[{ name: "Poulet", quantity: 1 }]}
           price={24}

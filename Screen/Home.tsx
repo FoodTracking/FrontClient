@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, ScrollView, Text, View } from "react-native";
 import BaseCard from "../src/components/Card/BaseCard";
 import CommandCard from "../src/components/Card/CommandCard";
 import SearchBar from "../src/components/Search/SearchBar";
 import FilterCard from "../src/components/Card/FilterCard";
 import { Palette } from "../styles/colors";
+import axios, { AxiosHeaders } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface Restaurant {
+  name: string;
+  subtitle: string;
+  picture: PictureInPictureEvent;
+}
 
 const RestaurantList = [
   {
@@ -49,6 +57,32 @@ const FilstersList = [
 ];
 
 export default function HomeScreen() {
+  const [restaurantList, setRestaurantList] = useState([]);
+
+  const fetchRestaurants = async () => {
+    try {
+      const headers = {
+        Authorization: "Bearer " + (await AsyncStorage.getItem("accessToken")),
+      };
+
+      const response = await axios.get(
+        "https://api.follow-food.alexandre-pezat.fr/restaurants",
+        { headers }
+      );
+      const data = await response.data;
+      console.log("LOG FROM HOME ", JSON.stringify(data));
+
+      setRestaurantList(data);
+      console.log("LOG FROM HOME ", JSON.stringify(restaurantList));
+    } catch (error: any) {
+      console.error(
+        "An error occurred during USER registration:",
+        error?.response?.data || error
+      );
+    }
+  };
+
+  // fetchRestaurants();
   return (
     <ScrollView
       style={{
@@ -87,7 +121,7 @@ export default function HomeScreen() {
           style={{ margin: 5, backgroundColor: "white" }}
         />
       </View>
-      {RestaurantList.map((restaurant, index) => {
+      {restaurantList.map(({ restaurant, index }) => {
         return (
           <BaseCard
             key={index}
