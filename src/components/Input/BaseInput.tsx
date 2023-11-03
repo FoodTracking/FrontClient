@@ -1,23 +1,19 @@
 import React from "react";
-import {
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-} from "react-native";
+import { TextInput } from "react-native";
 
 interface BaseInputProps {
   placeholder: string;
   style?: undefined | object;
   value: string;
   secureTextEntry?: boolean;
-  onChange: (text: string) => void;
+  onChangeText: (text: string) => void;
 }
 
 export default function BaseInput({
   placeholder,
   style,
   value,
-  onChange,
+  onChangeText: onChange,
   secureTextEntry,
 }: BaseInputProps) {
   return (
