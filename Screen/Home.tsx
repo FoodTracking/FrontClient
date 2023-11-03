@@ -10,8 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Restaurant {
   name: string;
-  subtitle: string;
-  picture: PictureInPictureEvent;
+  category: string;
+  picture: any;
 }
 
 const RestaurantList = [
@@ -57,7 +57,7 @@ const FilstersList = [
 ];
 
 export default function HomeScreen() {
-  const [restaurantList, setRestaurantList] = useState([]);
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
 
   const fetchRestaurants = async () => {
     try {
@@ -121,7 +121,7 @@ export default function HomeScreen() {
           style={{ margin: 5, backgroundColor: "white" }}
         />
       </View>
-      {restaurantList.map(({ restaurant, index }) => {
+      {restaurantList.map((restaurant, index) => {
         return (
           <BaseCard
             key={index}

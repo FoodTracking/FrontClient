@@ -4,13 +4,13 @@ import Onboarding from "../../../Screen/Auth/Onboarding";
 import LoginScreen from "../../../Screen/Auth/Login";
 import RegisterScreen from "../../../Screen/Auth/Register";
 
-export type RootStackParamList = {
+export type AuthStackParamList = {
   Onboarding: undefined;
   Login: { email: string; password: string };
   Register: { email: string; password: string };
   onBoarding: { userId: number };
 };
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<AuthStackParamList>();
 
 interface AuthStackProps {
   updateAccess: (access: string) => void;

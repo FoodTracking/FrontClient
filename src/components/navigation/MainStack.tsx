@@ -12,7 +12,7 @@ import CommandesScreen from "../../../Screen/CommandesScreen";
 import TrackerScreen from "../../../Screen/TrackerScreen";
 import LoginScreen from "../../../Screen/Auth/Login";
 
-export type RootStackParamList = {
+export type MainStackParamList = {
   Restaurants: undefined;
   Tracker: undefined;
   Commandes: undefined;
@@ -68,7 +68,12 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={(props: any) => (
+          <ProfileScreen
+            updateAccess={(access: boolean) => updateAccess(access.toString())}
+            navigation={props.navigation} // Pass the navigation prop
+          />
+        )}
         options={{
           headerShown: false,
           tabBarLabel: "Settings",

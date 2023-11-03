@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Button,
   Text,
@@ -7,31 +7,23 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import BaseButton from "../src/components/Button/BaseButton";
-import { useNavigation } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
 import BaseInput from "../src/components/Input/BaseInput";
 import { MaterialIcons } from "@expo/vector-icons";
-import { forSlideRight } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/HeaderStyleInterpolators";
 import { StackNavigationProp } from "@react-navigation/stack";
-
-export type YourStackParamList = {
-  UserProfileEdit: undefined;
-};
-
-interface Options {
-  title: string;
-}
+import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthStackParamList } from "../src/components/navigation/AuthStack";
+import { StackActions } from "@react-navigation/native";
 
 type UserProfileEditNavigationProp = StackNavigationProp<
-  YourStackParamList,
-  "UserProfileEdit"
+  AuthStackParamList,
+  "Onboarding"
 >;
 
 interface UserProfileEditProps {
   navigation: UserProfileEditNavigationProp;
+  updateAccess: (access: boolean) => void;
 }
 
 interface State {
@@ -48,6 +40,7 @@ export function isValidEmail(email: string): boolean {
 
 export default function UserProfileEdit({
   navigation,
+  updateAccess,
 }: UserProfileEditProps): React.JSX.Element {
   const [firstname, setFirstname] = React.useState("");
   const [lastname, setLastname] = React.useState("");
@@ -84,6 +77,15 @@ export default function UserProfileEdit({
     // Handle profile update logic here
   };
 
+  const handleLogout = async () => {
+    // Supprimer le jeton d'authentification du stockage
+    await AsyncStorage.removeItem("accessToken");
+    await AsyncStorage.removeItem("refreshToken");
+
+    // Rediriger vers l'écran de connexion
+    updateAccess(false);
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -97,6 +99,7 @@ export default function UserProfileEdit({
           marginHorizontal: 12,
           flexDirection: "row",
           justifyContent: "center",
+          marginTop: 10,
         }}
       >
         <TouchableOpacity
@@ -104,15 +107,18 @@ export default function UserProfileEdit({
           style={{
             position: "absolute",
             left: 0,
-            marginTop: 10,
           }}
         >
           <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18, paddingBottom: 20, marginTop: 10 }}>
-          Edit Profile
-        </Text>
+        <Text style={{ fontSize: 18, paddingBottom: 20 }}>Edit Profile</Text>
+        <TouchableOpacity
+          onPress={() => handleLogout()}
+          style={{ position: "absolute", right: 0 }}
+        >
+          <FontAwesome name="power-off" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView>

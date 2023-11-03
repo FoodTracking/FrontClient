@@ -4,7 +4,7 @@ import BaseButton from "../../src/components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
 import BaseInput from "../../src/components/Input/BaseInput";
 import { Palette } from "../../styles/colors";
-import { RootStackParamList } from "../../src/components/navigation/AuthStack";
+import { AuthStackParamList } from "../../src/components/navigation/AuthStack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import axios from "axios";
@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import Switch from "../../src/components/Button/Switch";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  AuthStackParamList,
   "Login"
 >;
 
@@ -43,7 +43,7 @@ export default function LoginScreen({
       axios.defaults.headers.common["Authorization"] = accessToken;
 
       AsyncStorage.getItem("accessToken").then((value) => {
-        console.log("LOG FROM LOGIN: REFRESHTOKEN STORED", value);
+        console.log("LOG FROM LOGIN: ACCESSTOKEN STORED", value);
       });
 
       AsyncStorage.getItem("refreshToken").then((value) => {
@@ -63,6 +63,7 @@ export default function LoginScreen({
           password: password,
         }
       );
+
       updateAccess(true);
       //
       // // console.log("LOG FROM LOGIN ", JSON.stringify(response.data));
