@@ -7,10 +7,9 @@ import {
   Feather,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import ProfileScreen from "../../../Screen/ProfileScreen";
 import CommandesScreen from "../../../Screen/CommandesScreen";
 import TrackerScreen from "../../../Screen/TrackerScreen";
-import LoginScreen from "../../../Screen/Auth/Login";
+import UserProfileEdit from "../../../Screen/ProfileScreen";
 
 export type RootStackParamList = {
   Restaurants: undefined;
@@ -68,7 +67,11 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={() => (
+          <UserProfileEdit
+            updateAccess={(access: boolean) => updateAccess(access.toString())}
+          />
+        )}
         options={{
           headerShown: false,
           tabBarLabel: "Settings",

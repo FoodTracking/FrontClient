@@ -13,7 +13,7 @@ import BaseButton from "../src/components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import BaseInput from "../src/components/Input/BaseInput";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { forSlideRight } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/HeaderStyleInterpolators";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -47,8 +47,11 @@ export function isValidEmail(email: string): boolean {
 }
 
 export default function UserProfileEdit({
-  navigation,
-}: UserProfileEditProps): React.JSX.Element {
+  updateAccess,
+}: {
+  updateAccess: (access: boolean) => void;
+}) {
+  const navigation = useNavigation();
   const [firstname, setFirstname] = React.useState("");
   const [lastname, setLastname] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -84,6 +87,13 @@ export default function UserProfileEdit({
     // Handle profile update logic here
   };
 
+  const handleLogout = async () => {
+    // Supprimer le jeton d'authentification du stockage
+    // await AsyncStorage.removeItem("accessToken");
+
+    // Rediriger vers l'écran de connexion
+    updateAccess(false);
+  };
   return (
     <SafeAreaView
       style={{
@@ -113,6 +123,12 @@ export default function UserProfileEdit({
         <Text style={{ fontSize: 18, paddingBottom: 20, marginTop: 10 }}>
           Edit Profile
         </Text>
+        <TouchableOpacity
+          onPress={() => handleLogout()}
+          style={{ position: "absolute", right: 0 }}
+        >
+          <FontAwesome name="power-off" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView>

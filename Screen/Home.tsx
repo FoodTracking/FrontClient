@@ -1,43 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { FlatList, ScrollView, View } from "react-native";
 import BaseCard from "../src/components/Card/BaseCard";
 import CommandCard from "../src/components/Card/CommandCard";
 import SearchBar from "../src/components/Search/SearchBar";
 import FilterCard from "../src/components/Card/FilterCard";
 import { Palette } from "../styles/colors";
-import axios, { AxiosHeaders } from "axios";
+import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Restaurant {
   name: string;
-  subtitle: string;
-  picture: PictureInPictureEvent;
+  category: string;
+  picture: any;
 }
 
-const RestaurantList = [
-  {
-    name: "KFC",
-    category: "Fast Food",
-    picture: require("../assets/kfc.jpg"),
-  },
-  {
-    name: "McDonalds",
-    category: "Fast Food",
-    picture: require("../assets/mcdo.jpg"),
-  },
-  {
-    name: "TacosNaan",
-    category: "Fast Food",
-    picture: require("../assets/resto1.jpg"),
-  },
-  {
-    name: "KFC",
-    category: "Fast Food",
-    picture: require("../assets/resto1.jpg"),
-  },
-];
-
-const FilstersList = [
+const FiltersList = [
   {
     name: "Fast Food",
     picture: require("../assets/resto1.jpg"),
@@ -57,7 +34,7 @@ const FilstersList = [
 ];
 
 export default function HomeScreen() {
-  const [restaurantList, setRestaurantList] = useState([]);
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
 
   const fetchRestaurants = async () => {
     try {
@@ -82,7 +59,10 @@ export default function HomeScreen() {
     }
   };
 
-  // fetchRestaurants();
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
   return (
     <ScrollView
       style={{
@@ -99,7 +79,7 @@ export default function HomeScreen() {
       <View style={{ borderWidth: 0.5, borderColor: "black" }} />
       <FlatList
         horizontal={true}
-        data={FilstersList}
+        data={FiltersList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <FilterCard
@@ -121,7 +101,7 @@ export default function HomeScreen() {
           style={{ margin: 5, backgroundColor: "white" }}
         />
       </View>
-      {restaurantList.map(({ restaurant, index }) => {
+      {restaurantList.map((restaurant, index) => {
         return (
           <BaseCard
             key={index}

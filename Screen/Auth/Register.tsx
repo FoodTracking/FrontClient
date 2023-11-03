@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Image,
-  NativeSyntheticEvent,
-  Pressable,
-  Text,
-  TextInputChangeEventData,
-  View,
-} from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import BaseButton from "../../src/components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
 import BaseInput from "../../src/components/Input/BaseInput";
@@ -15,6 +8,30 @@ import { RootStackParamList } from "../../src/components/navigation/AuthStack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import axios, { AxiosError } from "axios";
 import Switch from "../../src/components/Button/Switch";
+import DropdownComponent from "../../src/components/List/DropdownList";
+
+const categoryList = [
+  {
+    value: "c81cccc8-987f-4ec0-945e-445ce43fda67",
+    label: "Japonais",
+  },
+  {
+    value: "7eff56e7-1237-498e-a36c-e6f25763d5d7",
+    label: "Fast-food",
+  },
+  {
+    value: "b7b15fc8-5f78-4ad3-8827-94b87039348c",
+    label: "Français",
+  },
+  {
+    value: "af075beb-69f4-42a1-9f1d-f8a4fcc05ba7",
+    label: "Indien",
+  },
+  {
+    value: "b32a4da0-3fdf-4dff-95fa-ca3e41699c0a",
+    label: "Sushi",
+  },
+];
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -39,7 +56,7 @@ export default function RegisterScreen({
   const [namePro, setNamePro] = useState("");
   const [description, setDescription] = useState("");
   const [addresse, setAddresse] = useState("");
-  const [categorie, setCategorie] = useState("");
+  const [category, setCategory] = useState("");
   const [role, setRole] = useState("user");
   const [isSelected, setIsSelected] = useState(false);
 
@@ -56,7 +73,7 @@ export default function RegisterScreen({
               } as object,
               email: email as string,
               password: password as string,
-              role: role as string,
+              role: "user" as string,
             }
           );
           console.log("LOG FROM REGISTER ", JSON.stringify(response)); // Log the response data for debuggin
@@ -68,20 +85,22 @@ export default function RegisterScreen({
             "An error occurred during USER registration:",
             (error as AxiosError)?.response?.data
           );
+          const data = JSON.parse((error as AxiosError)?.config?.data);
+          console.error("request data", data);
         }
       } else {
         try {
           const response = await axios.post(
             "https://api.follow-food.alexandre-pezat.fr/auth/register",
             {
+              email: email as string,
+              password: password as string,
+              role: "restaurant" as string,
               restaurant: {
                 name: namePro as string,
                 description: description as string,
                 address: addresse as string,
-                category: categorie as string,
-                email: email as string,
-                password: password as string,
-                role: role as string,
+                category: category as string,
               } as object,
             }
           );
@@ -94,6 +113,8 @@ export default function RegisterScreen({
             "An error occurred during USER registration:",
             (error as AxiosError)?.response?.data
           );
+          const data = JSON.parse((error as AxiosError)?.config?.data);
+          console.error("request data", data);
         }
       }
     } catch (error) {
@@ -102,9 +123,50 @@ export default function RegisterScreen({
         "An error occurred during USER registration:",
         (error as AxiosError)?.response?.data
       );
+      const data = JSON.parse((error as AxiosError)?.config?.data);
+      console.error("request data", data);
     }
   };
 
+  function handleMail(text: string) {
+    setEmail(text);
+  }
+
+  function handlePassword(text: string) {
+    setPassword(text);
+  }
+
+  function handleFirstName(text: string) {
+    setFirstName(text);
+  }
+
+  function handleLastName(text: string) {
+    setLastName(text);
+  }
+
+  function handleNamePro(text: string) {
+    setNamePro(text);
+  }
+
+  function handleDescription(text: string) {
+    setDescription(text);
+  }
+
+  function handleAddresse(text: string) {
+    setAddresse(text);
+  }
+  function handleCategorySelection(categoryGet: string) {
+    const selectedCategory = categoryList.find(
+      (c: any) => c.label === categoryGet
+    );
+    if (selectedCategory) {
+      const selectedCategoryValue = selectedCategory.value;
+      console.log(
+        `La valeur sélectionnée est : "value": "${selectedCategoryValue}"`
+      );
+      setCategory(categoryGet);
+    }
+  }
   return (
     <View style={{ flex: 1, backgroundColor: Palette.white }}>
       <Image
@@ -159,9 +221,7 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse Mail"
             value={email}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setEmail(event.nativeEvent.text)
-            }
+            onChange={handleMail}
           />
           <BaseInput
             style={{
@@ -173,9 +233,7 @@ export default function RegisterScreen({
             }}
             placeholder="Mot de passe"
             value={password}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setPassword(event.nativeEvent.text)
-            }
+            onChange={handlePassword}
           />
           <BaseInput
             style={{
@@ -187,9 +245,7 @@ export default function RegisterScreen({
             }}
             placeholder="Prénom"
             value={firstName}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setFirstName(event.nativeEvent.text)
-            }
+            onChange={handleFirstName}
           />
           <BaseInput
             style={{
@@ -201,9 +257,7 @@ export default function RegisterScreen({
             }}
             placeholder="Nom"
             value={lastName}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={handleLastName}
           />
         </View>
       ) : (
@@ -217,9 +271,7 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse Mail"
             value={email}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setEmail(event.nativeEvent.text)
-            }
+            onChange={handleMail}
           />
           <BaseInput
             style={{
@@ -231,10 +283,10 @@ export default function RegisterScreen({
             }}
             placeholder="Mot de passe"
             value={password}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setPassword(event.nativeEvent.text)
-            }
+            onChange={handlePassword}
           />
+          <DropdownComponent onSelect={handleCategorySelection} />
+
           <BaseInput
             style={{
               borderWidth: 1,
@@ -245,9 +297,7 @@ export default function RegisterScreen({
             }}
             placeholder="Nom"
             value={namePro}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setFirstName(event.nativeEvent.text)
-            }
+            onChange={handleNamePro}
           />
           <BaseInput
             style={{
@@ -259,9 +309,7 @@ export default function RegisterScreen({
             }}
             placeholder="Description"
             value={description}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={handleDescription}
           />
           <BaseInput
             style={{
@@ -273,27 +321,11 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse"
             value={addresse}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={handleAddresse}
           />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Categorie"
-            value={categorie}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
-          />
+          <View></View>
         </View>
       )}
-
       <BaseButton
         style={{ alignSelf: "center", marginTop: 20 }}
         title="S'inscrire"
@@ -311,7 +343,7 @@ export default function RegisterScreen({
           marginBottom: 15,
         }}
         onPress={() => {
-          // onPressLogin();
+          onPressLogin();
         }}
       >
         <Text>Vous avez déjà un compte ?</Text>
