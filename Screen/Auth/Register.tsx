@@ -10,29 +10,6 @@ import axios, { AxiosError } from "axios";
 import Switch from "../../src/components/Button/Switch";
 import DropdownComponent from "../../src/components/List/DropdownList";
 
-const categoryList = [
-  {
-    value: "c81cccc8-987f-4ec0-945e-445ce43fda67",
-    label: "Japonais",
-  },
-  {
-    value: "7eff56e7-1237-498e-a36c-e6f25763d5d7",
-    label: "Fast-food",
-  },
-  {
-    value: "b7b15fc8-5f78-4ad3-8827-94b87039348c",
-    label: "Français",
-  },
-  {
-    value: "af075beb-69f4-42a1-9f1d-f8a4fcc05ba7",
-    label: "Indien",
-  },
-  {
-    value: "b32a4da0-3fdf-4dff-95fa-ca3e41699c0a",
-    label: "Sushi",
-  },
-];
-
 type OnboardingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Register"
@@ -100,7 +77,7 @@ export default function RegisterScreen({
                 name: namePro as string,
                 description: description as string,
                 address: addresse as string,
-                category: category as string,
+                categoryId: category as string,
               } as object,
             }
           );
@@ -155,18 +132,12 @@ export default function RegisterScreen({
   function handleAddresse(text: string) {
     setAddresse(text);
   }
-  function handleCategorySelection(categoryGet: string) {
-    const selectedCategory = categoryList.find(
-      (c: any) => c.label === categoryGet
-    );
-    if (selectedCategory) {
-      const selectedCategoryValue = selectedCategory.value;
-      console.log(
-        `La valeur sélectionnée est : "value": "${selectedCategoryValue}"`
-      );
-      setCategory(categoryGet);
-    }
+
+  function handleCategorySelection(value: string) {
+    console.log("OK", JSON.stringify(value));
+    setCategory(value);
   }
+
   return (
     <View style={{ flex: 1, backgroundColor: Palette.white }}>
       <Image

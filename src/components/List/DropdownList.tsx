@@ -31,10 +31,13 @@ type DropdownComponentProps = {
 export default function DropdownComponent({
   onSelect,
 }: DropdownComponentProps) {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
 
-  const handleSelect = (value: string) => {
-    onSelect(value);
+  const handleSelect = (selectedItem: { label: string; value: string }) => {
+    const selectedValue = selectedItem.value || "";
+    console.log(selectedValue);
+    setValue(selectedValue);
+    onSelect(selectedValue);
   };
 
   const [isFocus, setIsFocus] = useState(false);
@@ -59,13 +62,13 @@ export default function DropdownComponent({
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={category as any}
+        data={category as []}
         maxHeight={300}
         labelField={"label" as any}
         valueField={"value" as any}
         placeholder={!isFocus ? "Catégorie" : "..."}
         searchPlaceholder="Search..."
-        value={value}
+        value={value as any}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleSelect}
