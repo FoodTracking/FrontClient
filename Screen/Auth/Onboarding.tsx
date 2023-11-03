@@ -14,10 +14,10 @@ import { Palette } from "../../styles/colors";
 import BaseButton from "../../src/components/Button/BaseButton";
 import { gutters } from "../../styles/main";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../src/components/navigation/AuthStack";
+import { AuthStackParamList } from "../../src/components/navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  AuthStackParamList,
   "Onboarding"
 >;
 

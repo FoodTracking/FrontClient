@@ -11,13 +11,13 @@ import BaseButton from "../../src/components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
 import BaseInput from "../../src/components/Input/BaseInput";
 import { Palette } from "../../styles/colors";
-import { RootStackParamList } from "../../src/components/navigation/AuthStack";
+import { AuthStackParamList } from "../../src/components/navigation/AuthStack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import axios, { AxiosError } from "axios";
 import Switch from "../../src/components/Button/Switch";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  AuthStackParamList,
   "Register"
 >;
 
