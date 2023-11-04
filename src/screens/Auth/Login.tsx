@@ -8,6 +8,7 @@ import { Image, Pressable, Text, View } from "react-native";
 import { Palette } from "../../../styles/colors";
 import BaseButton from "../../components/Button/BaseButton";
 import BaseInput from "../../components/Input/BaseInput";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
@@ -15,15 +16,11 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Login"
 >;
 
-export default function LoginScreen({
-  updateAccess,
-}: {
-  updateAccess: (access: boolean) => void;
-}) {
+export default function LoginScreen() {
+  const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSelected, setIsSelected] = useState(false);
 
   function handlePassword(text: string) {
     setPassword(text);
@@ -62,7 +59,7 @@ export default function LoginScreen({
         },
       );
 
-      updateAccess(true);
+      setIsAuthenticated(true);
       //
       // // console.log("LOG FROM LOGIN ", JSON.stringify(response.data));
       // console.log("LOG FROM LOGIN ", JSON.stringify(response.data.accessToken));

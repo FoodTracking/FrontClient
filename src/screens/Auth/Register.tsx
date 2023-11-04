@@ -2,19 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
-import {
-  Image,
-  NativeSyntheticEvent,
-  Pressable,
-  Text,
-  TextInputChangeEventData,
-  View,
-} from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
 import { Palette } from "../../../styles/colors";
 import BaseButton from "../../components/Button/BaseButton";
 import Switch from "../../components/Button/Switch";
 import BaseInput from "../../components/Input/BaseInput";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
@@ -22,11 +16,8 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Register"
 >;
 
-export default function RegisterScreen({
-  updateAccess,
-}: {
-  updateAccess: (access: boolean) => void;
-}) {
+export default function RegisterScreen() {
+  const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
   const onPressLogin = async () => {
@@ -61,7 +52,7 @@ export default function RegisterScreen({
             },
           );
           console.log("LOG FROM REGISTER ", JSON.stringify(response)); // Log the response data for debuggin
-          updateAccess(true);
+          setIsAuthenticated(true);
           // Update the access after successful registration
           console.log("LOG FROM REGISTER ", JSON.stringify(response.data)); // Log the response data for debugging
         } catch (error) {
@@ -86,7 +77,7 @@ export default function RegisterScreen({
               } as object,
             },
           );
-          updateAccess(true);
+          setIsAuthenticated(true);
           // Update the access after successful registration
           console.log("LOG FROM REGISTER ", JSON.stringify(response.data)); // Log the response data for debugging
         } catch (error) {
@@ -160,9 +151,7 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse Mail"
             value={email}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setEmail(event.nativeEvent.text)
-            }
+            onChange={(text) => setEmail(text)}
           />
           <BaseInput
             style={{
@@ -174,9 +163,7 @@ export default function RegisterScreen({
             }}
             placeholder="Mot de passe"
             value={password}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setPassword(event.nativeEvent.text)
-            }
+            onChange={(text) => setPassword(text)}
           />
           <BaseInput
             style={{
@@ -188,9 +175,7 @@ export default function RegisterScreen({
             }}
             placeholder="Prénom"
             value={firstName}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setFirstName(event.nativeEvent.text)
-            }
+            onChange={(text) => setFirstName(text)}
           />
           <BaseInput
             style={{
@@ -202,9 +187,7 @@ export default function RegisterScreen({
             }}
             placeholder="Nom"
             value={lastName}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={(text) => setLastName(text)}
           />
         </View>
       ) : (
@@ -218,9 +201,7 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse Mail"
             value={email}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setEmail(event.nativeEvent.text)
-            }
+            onChange={(text) => setEmail(text)}
           />
           <BaseInput
             style={{
@@ -232,9 +213,7 @@ export default function RegisterScreen({
             }}
             placeholder="Mot de passe"
             value={password}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setPassword(event.nativeEvent.text)
-            }
+            onChange={(text) => setPassword(text)}
           />
           <BaseInput
             style={{
@@ -246,9 +225,7 @@ export default function RegisterScreen({
             }}
             placeholder="Nom"
             value={namePro}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setFirstName(event.nativeEvent.text)
-            }
+            onChange={(text) => setFirstName(text)}
           />
           <BaseInput
             style={{
@@ -260,9 +237,7 @@ export default function RegisterScreen({
             }}
             placeholder="Description"
             value={description}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={(text) => setLastName(text)}
           />
           <BaseInput
             style={{
@@ -274,9 +249,7 @@ export default function RegisterScreen({
             }}
             placeholder="Adresse"
             value={addresse}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={(text) => setLastName(text)}
           />
           <BaseInput
             style={{
@@ -288,9 +261,7 @@ export default function RegisterScreen({
             }}
             placeholder="Categorie"
             value={categorie}
-            onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>) =>
-              setLastName(event.nativeEvent.text)
-            }
+            onChange={(text) => setLastName(text)}
           />
         </View>
       )}

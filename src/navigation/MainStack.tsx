@@ -18,13 +18,10 @@ export type MainStackParamList = {
   Commandes: undefined;
   Profile: undefined;
 };
-interface AuthStackProps {
-  setIsAuth: (access: boolean) => void;
-}
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainStackParamList>();
 
-export default function MainStack({ setIsAuth }: AuthStackProps) {
+export default function MainStack() {
   return (
     <Tab.Navigator
       initialRouteName="Restaurants"
@@ -68,6 +65,7 @@ export default function MainStack({ setIsAuth }: AuthStackProps) {
       />
       <Tab.Screen
         name="Profile"
+        component={ProfileScreen}
         options={{
           headerShown: false,
           tabBarLabel: "Settings",
@@ -75,14 +73,7 @@ export default function MainStack({ setIsAuth }: AuthStackProps) {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
-      >
-        {(props) => (
-          <ProfileScreen
-            updateAccess={(access: boolean) => setIsAuth(access)}
-            {...props}
-          />
-        )}
-      </Tab.Screen>
+      />
     </Tab.Navigator>
   );
 }

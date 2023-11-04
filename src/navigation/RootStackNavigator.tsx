@@ -4,31 +4,27 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React from "react";
 import { ColorSchemeName } from "react-native";
 
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Stack = createStackNavigator();
 
 export function RootStackNavigator() {
-  const [isAuth, setIsAuth] = useState(false);
-
+  const { isAuthenticated } = useAuthContext();
   return (
     <Stack.Navigator
       initialRouteName={"AuthStack"}
       screenOptions={{ headerShown: false }}
     >
-      {!isAuth && (
-        <Stack.Screen name="AuthStack">
-          {(props) => <AuthStack setIsAuth={setIsAuth} {...props} />}
-        </Stack.Screen>
+      {!isAuthenticated && (
+        <Stack.Screen name="AuthStack" component={AuthStack} />
       )}
-      {isAuth && (
-        <Stack.Screen name="MainStack">
-          <MainStack setIsAuth={setIsAuth} />
-        </Stack.Screen>
+      {isAuthenticated && (
+        <Stack.Screen name="MainStack" component={MainStack} />
       )}
     </Stack.Navigator>
   );

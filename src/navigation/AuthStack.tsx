@@ -13,11 +13,7 @@ export type AuthStackParamList = {
 };
 const Stack = createStackNavigator<AuthStackParamList>();
 
-interface AuthStackProps {
-  setIsAuth: (access: boolean) => void;
-}
-
-export default function AuthStack({ setIsAuth }: AuthStackProps) {
+export default function AuthStack() {
   return (
     <Stack.Navigator
       initialRouteName={"Onboarding"}
@@ -26,22 +22,8 @@ export default function AuthStack({ setIsAuth }: AuthStackProps) {
       }}
     >
       <Stack.Screen name="Onboarding" component={Onboarding} />
-      <Stack.Screen name="Register">
-        {(props) => (
-          <RegisterScreen
-            updateAccess={(access: boolean) => setIsAuth(access)}
-            {...props}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name="Login">
-        {(props) => (
-          <LoginScreen
-            updateAccess={(access: boolean) => setIsAuth(access)}
-            {...props}
-          />
-        )}
-      </Stack.Screen>
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
 }

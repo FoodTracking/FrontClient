@@ -1,15 +1,19 @@
-import {useColorScheme} from "react-native";
-import Navigation from "./src/navigation/RootStackNavigator";
-import {SafeAreaProvider} from "react-native-safe-area-context";
-import {StatusBar} from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { AuthProvider } from "./src/contexts/AuthContext";
+import Navigation from "./src/navigation/RootStackNavigator";
 
 export default function App() {
-  const [theme] = useColorScheme()
+  const theme = useColorScheme();
+
   return (
     <SafeAreaProvider>
-      <StatusBar style={'auto'}/>
-      <Navigation colorScheme={theme ?? 'light'}/>
+      <StatusBar style={"auto"} />
+      <AuthProvider>
+        <Navigation colorScheme={theme ?? "light"} />
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }
