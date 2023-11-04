@@ -7,6 +7,7 @@ interface BaseInputProps {
   value: string;
   secureTextEntry?: boolean;
   onChange: (text: string) => void;
+  onBlur?: () => void;
 }
 
 export default function BaseInput({
@@ -14,6 +15,7 @@ export default function BaseInput({
   style,
   value,
   onChange,
+  onBlur,
   secureTextEntry,
 }: BaseInputProps) {
   return (
@@ -30,6 +32,7 @@ export default function BaseInput({
         ...style,
       }}
       value={value}
+      onBlur={onBlur}
       onChangeText={onChange}
       secureTextEntry={secureTextEntry}
     />
