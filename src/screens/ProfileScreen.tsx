@@ -1,20 +1,19 @@
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import {
-  Button,
-  Text,
-  View,
   Alert,
-  ScrollView,
+  Button,
   SafeAreaView,
+  ScrollView,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
+
 import BaseInput from "../components/Input/BaseInput";
-import { MaterialIcons } from "@expo/vector-icons";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthStackParamList } from "../navigation/AuthStack";
-import { StackActions } from "@react-navigation/native";
 
 type UserProfileEditNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -71,7 +70,6 @@ export default function UserProfileEdit({
   const handleSubmit = () => {
     if (!isValidEmail(email)) {
       Alert.alert("Invalid email format. Please enter a valid email address.");
-      return;
     }
     // Send updated data to the backend
     // Handle profile update logic here

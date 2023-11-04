@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-} from "react-native";
+import { TextInput } from "react-native";
 
 interface BaseInputProps {
   placeholder: string;

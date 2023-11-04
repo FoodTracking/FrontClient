@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Animated, TouchableWithoutFeedback, ViewStyle } from "react-native";
 import { Motion } from "@legendapp/motion";
-import { customResponsiveWidth } from "../../../styles/helpers/helpers";
+import React, { useEffect, useRef } from "react";
+import { Animated, TouchableWithoutFeedback, ViewStyle } from "react-native";
+
 import { Palette } from "../../../styles/colors";
+import { customResponsiveWidth } from "../../../styles/helpers/helpers";
 
 type SwitchProps = {
   selected?: boolean;

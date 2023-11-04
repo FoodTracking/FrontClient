@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import React, { useState } from "react";
+import { FlatList, ScrollView, View } from "react-native";
+
+import { Palette } from "../../styles/colors";
 import BaseCard from "../components/Card/BaseCard";
 import CommandCard from "../components/Card/CommandCard";
-import SearchBar from "../components/Search/SearchBar";
 import FilterCard from "../components/Card/FilterCard";
-import { Palette } from "../../styles/colors";
-import axios, { AxiosHeaders } from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import SearchBar from "../components/Search/SearchBar";
 
 interface Restaurant {
   name: string;
@@ -67,7 +68,7 @@ export default function HomeScreen() {
 
       const response = await axios.get(
         "https://api.follow-food.alexandre-pezat.fr/restaurants",
-        { headers }
+        { headers },
       );
       const data = await response.data;
       console.log("LOG FROM HOME ", JSON.stringify(data));
@@ -77,7 +78,7 @@ export default function HomeScreen() {
     } catch (error: any) {
       console.error(
         "An error occurred during USER registration:",
-        error?.response?.data || error
+        error?.response?.data || error,
       );
     }
   };

@@ -1,9 +1,15 @@
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/Home";
-import {AntDesign, Entypo, Feather, MaterialCommunityIcons,} from "@expo/vector-icons";
-import ProfileScreen from "../screens/ProfileScreen";
+
 import CommandesScreen from "../screens/CommandesScreen";
+import HomeScreen from "../screens/Home";
+import ProfileScreen from "../screens/ProfileScreen";
 import TrackerScreen from "../screens/TrackerScreen";
 
 export type MainStackParamList = {
@@ -70,12 +76,12 @@ export default function MainStack({ setIsAuth }: AuthStackProps) {
           ),
         }}
       >
-        { (props) =>
+        {(props) => (
           <ProfileScreen
             updateAccess={(access: boolean) => setIsAuth(access)}
             {...props}
           />
-        }
+        )}
       </Tab.Screen>
     </Tab.Navigator>
   );
