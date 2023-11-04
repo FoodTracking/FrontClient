@@ -7,14 +7,14 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
-import BaseButton from "../../src/components/Button/BaseButton";
+import BaseButton from "../../components/Button/BaseButton";
 import { useNavigation } from "@react-navigation/native";
-import BaseInput from "../../src/components/Input/BaseInput";
-import { Palette } from "../../styles/colors";
-import { AuthStackParamList } from "../../src/components/navigation/AuthStack";
+import BaseInput from "../../components/Input/BaseInput";
+import { Palette } from "../../../styles/colors";
+import { AuthStackParamList } from "../../navigation/AuthStack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import axios, { AxiosError } from "axios";
-import Switch from "../../src/components/Button/Switch";
+import Switch from "../../components/Button/Switch";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -108,7 +108,7 @@ export default function RegisterScreen({
   return (
     <View style={{ flex: 1, backgroundColor: Palette.white }}>
       <Image
-        source={require("../../assets/logo.png")}
+        source={require("../../../assets/logo.png")}
         style={{
           alignSelf: "center",
           marginTop: 10,

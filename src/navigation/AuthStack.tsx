@@ -1,8 +1,8 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import Onboarding from "../../../Screen/Auth/Onboarding";
-import LoginScreen from "../../../Screen/Auth/Login";
-import RegisterScreen from "../../../Screen/Auth/Register";
+import {createStackNavigator} from "@react-navigation/stack";
+import Onboarding from "../screens/Auth/Onboarding";
+import LoginScreen from "../screens/Auth/Login";
+import RegisterScreen from "../screens/Auth/Register";
 
 export type AuthStackParamList = {
   Onboarding: undefined;
@@ -13,10 +13,10 @@ export type AuthStackParamList = {
 const Stack = createStackNavigator<AuthStackParamList>();
 
 interface AuthStackProps {
-  updateAccess: (access: string) => void;
+  setIsAuth: (access: boolean) => void;
 }
 
-export default function AuthStack({ updateAccess }: AuthStackProps) {
+export default function AuthStack({ setIsAuth }: AuthStackProps) {
   return (
     <Stack.Navigator
       initialRouteName={"Onboarding"}
@@ -27,20 +27,24 @@ export default function AuthStack({ updateAccess }: AuthStackProps) {
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen
         name="Register"
-        component={() => (
+      >
+        { (props) =>
           <RegisterScreen
-            updateAccess={(access: boolean) => updateAccess(access.toString())}
+            updateAccess={(access: boolean) => setIsAuth(access)}
+            {...props}
           />
-        )}
-      />
+        }
+      </Stack.Screen>
       <Stack.Screen
         name="Login"
-        component={() => (
+      >
+        { (props) =>
           <LoginScreen
-            updateAccess={(access: boolean) => updateAccess(access.toString())}
+            updateAccess={(access: boolean) => setIsAuth(access)}
+            {...props}
           />
-        )}
-      />
+        }
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
