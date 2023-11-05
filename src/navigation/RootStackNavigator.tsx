@@ -1,10 +1,11 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { ColorSchemeName } from "react-native";
 
 import AuthStack from "./AuthStack";
@@ -17,7 +18,7 @@ export function RootStackNavigator() {
   const { isAuthenticated } = useAuthContext();
   return (
     <Stack.Navigator
-      initialRouteName={"AuthStack"}
+      initialRouteName={isAuthenticated ? "MainStack" : "AuthStack"}
       screenOptions={{ headerShown: false }}
     >
       {!isAuthenticated && (

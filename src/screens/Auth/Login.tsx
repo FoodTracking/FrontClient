@@ -146,7 +146,7 @@ export default function LoginScreen() {
                 marginTop: 30,
                 marginHorizontal: 30,
               }}
-              placeholder="Adresse Mail"
+              placeholder="Mot de passe"
               onBlur={onBlur}
               onChange={onChange}
               value={value}
@@ -161,7 +161,7 @@ export default function LoginScreen() {
           title="Se connecter"
           onPress={() => {
             alert("Connexion");
-            handleSubmit((data) => handleLogin(data));
+            handleSubmit((data) => handleLogin(data))();
           }}
         />
         <Pressable

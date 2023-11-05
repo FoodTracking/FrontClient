@@ -7,8 +7,8 @@ import RegisterScreen from "../screens/Auth/Register";
 
 export type AuthStackParamList = {
   Onboarding: undefined;
-  Login: { email: string; password: string };
-  Register: { email: string; password: string };
+  Login: { email?: string; password?: string };
+  Register: { email?: string; password?: string };
   onBoarding: { userId: number };
 };
 const Stack = createStackNavigator<AuthStackParamList>();

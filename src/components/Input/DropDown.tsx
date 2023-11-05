@@ -1,30 +1,12 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-const category = [
-  {
-    value: "c81cccc8-987f-4ec0-945e-445ce43fda67",
-    label: "Japonais",
-  },
-  {
-    value: "7eff56e7-1237-498e-a36c-e6f25763d5d7",
-    label: "Fast-food",
-  },
-  {
-    value: "b7b15fc8-5f78-4ad3-8827-94b87039348c",
-    label: "Français",
-  },
-  {
-    value: "af075beb-69f4-42a1-9f1d-f8a4fcc05ba7",
-    label: "Indien",
-  },
-  {
-    value: "b32a4da0-3fdf-4dff-95fa-ca3e41699c0a",
-    label: "Sushi",
-  },
-];
+import { fetchCategories } from "../../lib/api/api";
+
+
 type DropdownComponentProps = {
   onSelect: (value: string) => void;
 };
@@ -32,6 +14,10 @@ export default function DropdownComponent({
   onSelect,
 }: DropdownComponentProps) {
   const [value, setValue] = useState("");
+  const { isError, isLoading, error, data, refetch } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
 
   const handleSelect = (selectedItem: { label: string; value: string }) => {
     const selectedValue = selectedItem.value || "";
@@ -53,6 +39,9 @@ export default function DropdownComponent({
     return null;
   };
 
+  if (isLoading) return <Text>Loading...</Text>;
+  if (isError) return <Text>Error :(</Text>;
+
   return (
     <View style={styles.container}>
       {renderLabel()}
@@ -62,7 +51,12 @@ export default function DropdownComponent({
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={category}
+        data={
+          data?.map((category) => ({
+            label: category.name,
+            value: category.id,
+          })) ?? []
+        }
         maxHeight={300}
         labelField={"label"}
         valueField={"value"}

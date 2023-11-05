@@ -19,10 +19,10 @@ export interface CreateRestaurantDto {
 }
 
 export interface RestaurantPreview {
+  id: string;
   name: string;
-  description: string;
   address: string;
-  categoryId: string;
+  category: string;
   image: Identity["image"];
 }
 

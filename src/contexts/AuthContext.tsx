@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useState, ReactNode } from "react";
 
 export interface AuthContextType {
@@ -6,7 +7,7 @@ export interface AuthContextType {
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
+  isAuthenticated: true,
   setIsAuthenticated: () => {},
 });
 
@@ -16,7 +17,9 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !!AsyncStorage.getItem("accessToken"),
+  );
 
   // The value that will be supplied to any descendants of this provider
   const authContextValue = {

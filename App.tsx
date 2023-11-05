@@ -1,8 +1,10 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AuthProvider } from "./src/contexts/AuthContext";
+import { queryClient } from "./src/lib/api/api";
 import Navigation from "./src/navigation/RootStackNavigator";
 
 export default function App() {
@@ -12,7 +14,9 @@ export default function App() {
     <SafeAreaProvider>
       <StatusBar style={"auto"} />
       <AuthProvider>
-        <Navigation colorScheme={theme ?? "light"} />
+        <QueryClientProvider client={queryClient}>
+          <Navigation colorScheme={theme ?? "light"} />
+        </QueryClientProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );
