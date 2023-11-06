@@ -3,7 +3,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -16,22 +16,29 @@ import {
 
 import { Palette } from "../../styles/colors";
 import RestaurantCard from "../components/Card/RestaurantCard";
-import SearchBarWithMenu from "../components/SearchBarMenu";
+import SearchBar from "../components/Search/SearchBarMenu";
 import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
-  const { fetchNextPage, isLoading, isError, data, isFetching, refetch } =
-    useInfiniteQuery({
+  let name: string = "";
+  const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
+    {
       initialPageParam: 1,
       queryKey: ["restaurants"],
-      queryFn: ({ pageParam = 1 }) => fetchRestaurants(pageParam),
+      queryFn: ({ pageParam = 1 }) => fetchRestaurants(pageParam, name),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
           return undefined;
         }
         return allPages.length + 1;
       },
-    });
+    },
+  );
+
+  const handleSearch = async (query: string) => {
+    name = query;
+    await refetch();
+  };
 
   // This is the event handler for scroll events
   const handleScroll = async ({
@@ -59,10 +66,9 @@ export default function HomeScreen() {
   if (isError) return <Text>Error :(</Text>;
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <SafeAreaView style={{ backgroundColor: Palette.lightGrey }}>
-        {/*<SearchBar placeholder="Rechercher un restaurant" />*/}
-        <SearchBarWithMenu />
+        <SearchBar onSearch={handleSearch} />
       </SafeAreaView>
       <ScrollView
         style={{
@@ -121,6 +127,6 @@ export default function HomeScreen() {
         {/*  <BaseButton onPress={fetchNextPage} title="Next page" />*/}
         {/*)}*/}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -24,10 +24,11 @@ export const fetchCategories = async (): Promise<
 
 export const fetchRestaurants = async (
   page: number,
+  name?: string,
 ): Promise<RestaurantPreview[]> => {
   const { data } = await axiosApiClient.get<RestaurantPreview[]>(
     "/restaurants",
-    { params: { page, take: 5 } },
+    { params: { page, take: 5, name } },
   );
   return data;
 };
