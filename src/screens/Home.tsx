@@ -1,9 +1,5 @@
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -11,16 +7,15 @@ import {
   SafeAreaView,
   ScrollView,
   Text,
-  View,
 } from "react-native";
 
-import { Palette } from "../../styles/colors";
 import RestaurantCard from "../components/Card/RestaurantCard";
 import SearchBar from "../components/Search/SearchBarMenu";
 import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
   let name: string = "";
+
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
       initialPageParam: 1,
@@ -67,7 +62,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: Palette.lightGrey }}>
+      <SafeAreaView>
         <SearchBar onSearch={handleSearch} />
       </SafeAreaView>
       <ScrollView
@@ -75,7 +70,6 @@ export default function HomeScreen() {
           alignSelf: "center",
           width: "100%",
           height: "100%",
-          backgroundColor: Palette.lightGrey,
         }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={() => refetch()} />
@@ -84,35 +78,11 @@ export default function HomeScreen() {
         onScroll={handleScroll}
         scrollEventThrottle={400}
       >
-        {/*<FlatList*/}
-        {/*  horizontal={true}*/}
-        {/*  data={FilstersList}*/}
-        {/*  keyExtractor={(_, index) => index.toString()}*/}
-        {/*  renderItem={({ item, index }) => (*/}
-        {/*    <FilterCard*/}
-        {/*      key={index}*/}
-        {/*      title={item.name}*/}
-        {/*      picture={item.picture}*/}
-        {/*      style={{ marginTop: 5, backgroundColor: "white" }}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*/>*/}
-
-        {/*<View style={{ flexDirection: "row", marginTop: 10 }}>*/}
-        {/*  <CommandCard*/}
-        {/*    title="Votre derniere commande"*/}
-        {/*    // nbCommandes={1}*/}
-        {/*    foodPlaceName="KFC"*/}
-        {/*    description={[{ name: "Poulet", quantity: 1 }]}*/}
-        {/*    price={0}*/}
-        {/*    style={{ margin: 5, backgroundColor: "white" }}*/}
-        {/*  />*/}
-        {/*</View>*/}
-        {data?.pages?.map((page, index) => {
-          return page.map((restaurant, index) => {
+        {data?.pages?.map((page) => {
+          return page.map((restaurant) => {
             return (
               <RestaurantCard
-                key={index}
+                key={restaurant.id}
                 name={restaurant.name}
                 category={restaurant.category}
                 picture={restaurant.image}
@@ -121,11 +91,6 @@ export default function HomeScreen() {
             );
           });
         })}
-
-        {/*  button next page */}
-        {/*{hasNextPage && (*/}
-        {/*  <BaseButton onPress={fetchNextPage} title="Next page" />*/}
-        {/*)}*/}
       </ScrollView>
     </SafeAreaView>
   );

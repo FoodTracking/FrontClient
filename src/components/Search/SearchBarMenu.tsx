@@ -1,43 +1,39 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AntDesign from "@expo/vector-icons/AntDesign";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
+import BottomSheetTest from "../BottomSheetTest";
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
 }
 const SearchBar = ({ onSearch }: SearchBarProps) => {
-  const [query, setQuery] = useState('');
-
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch(query);
-    }
-  };
+  const [open, setOpen] = useState(false);
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Search for food, groceries, etc."
-        onChangeText={setQuery}
-        value={query}
+        onChangeText={(text) => onSearch && onSearch(text)}
       />
-      <TouchableOpacity onPress={handleSearch} style={styles.icon}>
-        <Ionicons name="ios-search" size={20} color="gray" />
+      <TouchableOpacity onPress={() => setOpen(!open)} style={styles.icon}>
+        <AntDesign name="filter" size={24} color="black" />
       </TouchableOpacity>
+      <BottomSheetTest open={open} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    backgroundColor: "#fff",
     borderRadius: 15,
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 10,
     margin: 10,
+    marginTop: 5,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
