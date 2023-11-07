@@ -1,6 +1,9 @@
+import { Skeleton } from "@rneui/base";
+import { Image } from "@rneui/themed";
 import React from "react";
 import {
-  Image,
+  ActivityIndicator,
+  Dimensions,
   ImageSourcePropType,
   Pressable,
   Text,
@@ -22,45 +25,39 @@ export default function RestaurantCard({
     <Pressable
       style={{
         marginTop: 10,
-        marginHorizontal: 10,
-        borderWidth: 1,
-        borderColor: "grey",
+        marginBottom: 15,
         borderRadius: 10,
         ...style,
       }}
     >
       <Image
         source={{ uri: picture }}
+        PlaceholderContent={
+          <Skeleton style={{ height: "100%", width: "100%" }} />
+        }
+        containerStyle={{ width: "100%", height: 175, borderRadius: 8 }}
         resizeMode={"cover"}
-        style={{
-          flex: 1,
-          borderRadius: 9,
-          backgroundColor: "grey",
-        }}
       />
       <View
         style={{
           display: "flex",
-          alignItems: "center",
           alignContent: "center",
           borderRadius: 10,
-          paddingVertical: 10,
+          marginTop: 5,
         }}
       >
         <Text
           style={{
             fontSize: 16,
-            textAlign: "center",
             fontWeight: "bold",
             color: "black",
           }}
         >
-          {name} - {category}
+          {name}
         </Text>
         <Text
           style={{
             fontSize: 14,
-            textAlign: "center",
             color: "grey",
           }}
         >

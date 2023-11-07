@@ -2,12 +2,13 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
-import BottomSheetTest from "../BottomSheetTest";
+import CategoriesBottomSheet from "../CategoriesBottomSheet";
 
 interface SearchBarProps {
-  onSearch?: (query: string) => void;
+  onSearch: (query: string) => void;
+  onChangeCategory: (query: string) => void;
 }
-const SearchBar = ({ onSearch }: SearchBarProps) => {
+const SearchBar = ({ onSearch, onChangeCategory }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -15,12 +16,12 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
       <TextInput
         style={styles.input}
         placeholder="Search for food, groceries, etc."
-        onChangeText={(text) => onSearch && onSearch(text)}
+        onChangeText={(text) => onSearch(text)}
       />
       <TouchableOpacity onPress={() => setOpen(!open)} style={styles.icon}>
         <AntDesign name="filter" size={24} color="black" />
       </TouchableOpacity>
-      <BottomSheetTest open={open} />
+      <CategoriesBottomSheet isOpen={open} onChange={onChangeCategory} />
     </View>
   );
 };
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     paddingHorizontal: 10,
-    margin: 10,
+    marginVertical: 10,
     marginTop: 5,
     shadowColor: "#000",
     shadowOffset: {

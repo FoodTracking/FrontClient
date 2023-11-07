@@ -11,15 +11,17 @@ import { Text } from "react-native";
 import SingleChoice from "./CheckboxList";
 import { fetchCategories } from "../lib/api/api";
 
-const BottomSheetTest = ({ open }: { open: boolean }) => {
-  // ref
+interface CategoriesBottomSheetProps {
+  isOpen: boolean;
+  onChange: (query: string) => void;
+}
+
+const CategoriesBottomSheet = ({
+  isOpen,
+  onChange,
+}: CategoriesBottomSheetProps) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  const b = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchCategories,
-  });
-
+  const snapPoints = useMemo(() => ["50%", "75%"], []);
   const renderBackdrop = useCallback(
     (
       props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps,
@@ -27,18 +29,20 @@ const BottomSheetTest = ({ open }: { open: boolean }) => {
     [],
   );
 
+  const { data } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+
   useEffect(() => {
-    if (open) {
+    if (isOpen) {
       bottomSheetModalRef.current?.present();
     } else {
       bottomSheetModalRef.current?.close();
     }
-  }, [open]);
+  }, [isOpen]);
 
-  // variables
-  const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
-  // renders
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -55,13 +59,13 @@ const BottomSheetTest = ({ open }: { open: boolean }) => {
           marginBottom: 5,
         }}
       >
-        Filtrer par catégories
+        Filtrer par catégorie
       </Text>
       <BottomSheetScrollView>
-        <SingleChoice options={b.data!} />
+        <SingleChoice options={data!} onChange={onChange} />
       </BottomSheetScrollView>
     </BottomSheetModal>
   );
 };
 
-export default BottomSheetTest;
+export default CategoriesBottomSheet;

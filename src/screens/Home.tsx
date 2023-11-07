@@ -15,12 +15,14 @@ import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
   let name: string = "";
+  let category: string = "";
 
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
       initialPageParam: 1,
       queryKey: ["restaurants"],
-      queryFn: ({ pageParam = 1 }) => fetchRestaurants(pageParam, name),
+      queryFn: ({ pageParam = 1 }) =>
+        fetchRestaurants(pageParam, name, category),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
           return undefined;
@@ -32,6 +34,11 @@ export default function HomeScreen() {
 
   const handleSearch = async (query: string) => {
     name = query;
+    await refetch();
+  };
+
+  const handleCategory = async (query: string) => {
+    category = query;
     await refetch();
   };
 
@@ -61,9 +68,9 @@ export default function HomeScreen() {
   if (isError) return <Text>Error :(</Text>;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginHorizontal: 15 }}>
       <SafeAreaView>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} onChangeCategory={handleCategory}/>
       </SafeAreaView>
       <ScrollView
         style={{
@@ -77,6 +84,8 @@ export default function HomeScreen() {
         contentInsetAdjustmentBehavior="automatic"
         onScroll={handleScroll}
         scrollEventThrottle={400}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       >
         {data?.pages?.map((page) => {
           return page.map((restaurant) => {
@@ -86,7 +95,10 @@ export default function HomeScreen() {
                 name={restaurant.name}
                 category={restaurant.category}
                 picture={restaurant.image}
-                style={{ marginTop: 5, backgroundColor: "white", height: 200 }}
+                style={{
+                  marginTop: 5,
+                  backgroundColor: "white" /* height: 225*/,
+                }}
               />
             );
           });
