@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
+import { axiosInstance } from "../lib/api/api";
+
 export enum OrderStatusEnum {
   PENDING = "PENDING",
   IN_PROGRESS = "IN_PROGRESS",
@@ -26,38 +28,16 @@ const statusTranslation: Record<OrderStatusEnum, string> = {
 
 export default function TrackerScreen() {
   const [orders, setOrders] = React.useState<Order[]>([]);
-  const [order, setOrder] = React.useState<Order>({} as Order);
   const [socket, setSocket] = React.useState<Socket | null>(null);
-
-  const updateStatus = async (o: Order) => {
-    try {
-      console.log(o.id, await AsyncStorage.getItem("accessToken"));
-      const response = await axios.patch(
-        `https://api.follow-food.alexandre-pezat.fr/orders/${o.id}/next`,
-        {},
-        {
-          headers: {
-            Authorization:
-              "Bearer " + (await AsyncStorage.getItem("accessToken")),
-          },
-        },
-      );
-    } catch (error) {
-      console.error("An error occurred when trying to update order:", error);
-    }
-  };
 
   const getMyIdentity = async () => {
     try {
-      const response = await axios.get(
-        `https://api.follow-food.alexandre-pezat.fr/identity/me`,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + (await AsyncStorage.getItem("accessToken")),
-          },
+      const response = await axiosInstance.get(`/identity/me`, {
+        headers: {
+          Authorization:
+            "Bearer " + (await AsyncStorage.getItem("accessToken")),
         },
-      );
+      });
       return response.data;
     } catch (error) {
       console.error("An error occurred when trying to get my ID:", error);
@@ -72,8 +52,8 @@ export default function TrackerScreen() {
       console.log(await getMyIdentity());
 
       if (userId) {
-        const response = await axios.get(
-          `https://api.follow-food.alexandre-pezat.fr/${userRole}s/${userId}/orders`,
+        const response = await axiosInstance.get(
+          `/${userRole}s/${userId}/orders`,
           {
             headers: {
               Authorization:
@@ -125,7 +105,7 @@ export default function TrackerScreen() {
 
     getOrders();
 
-    setupSocket();
+    // setupSocket();
 
     return () => {
       if (socket) {
@@ -142,7 +122,6 @@ export default function TrackerScreen() {
         <View key={order.id}>
           <Text>{order.id}</Text>
           <Text>{statusTranslation[order.status]}</Text>
-          <Button title="Étape suivante" onPress={() => updateStatus(order)} />
         </View>
       ))}
     </View>

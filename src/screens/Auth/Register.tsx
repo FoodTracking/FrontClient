@@ -11,6 +11,7 @@ import Switch from "../../components/Button/Switch";
 import BaseInput from "../../components/Input/BaseInput";
 import DropdownComponent from "../../components/Input/DropDown";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { axiosInstance } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { CreateIdentityDto } from "../../types";
 
@@ -35,7 +36,6 @@ export default function RegisterScreen() {
   const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
-
   const {
     handleSubmit,
     control,
@@ -47,18 +47,15 @@ export default function RegisterScreen() {
     console.log("data", data);
     if (!isSelected) {
       try {
-        const response = await axios.post(
-          "https://api.follow-food.alexandre-pezat.fr/auth/register",
-          {
-            user: {
-              firstName: data.firstName,
-              lastName: data.lastName,
-            },
-            email: data.email,
-            password: data.password,
-            role: "user",
+        const response = await axiosInstance.post("/auth/register", {
+          user: {
+            firstName: data.firstName,
+            lastName: data.lastName,
           },
-        );
+          email: data.email,
+          password: data.password,
+          role: "user",
+        });
         console.log("LOG FROM REGISTER ", JSON.stringify(response));
         setIsAuthenticated(true);
         console.log("LOG FROM REGISTER ", JSON.stringify(response.data));
@@ -92,8 +89,8 @@ export default function RegisterScreen() {
             categoryId: data?.category,
           },
         };
-        const response = await axios.post<CreateIdentityDto>(
-          "https://api.follow-food.alexandre-pezat.fr/auth/register",
+        const response = await axiosInstance.post<CreateIdentityDto>(
+          "/auth/register",
           dataIdResto,
         );
 

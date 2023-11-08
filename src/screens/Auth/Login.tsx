@@ -10,6 +10,7 @@ import { Palette } from "../../../styles/colors";
 import BaseButton from "../../components/Button/BaseButton";
 import BaseInput from "../../components/Input/BaseInput";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { axiosInstance } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
@@ -33,7 +34,6 @@ export default function LoginScreen() {
       await AsyncStorage.setItem("accessToken", accessToken);
       await AsyncStorage.setItem("refreshToken", refreshToken);
       console.log("LOG FROM LOGIN: TOKEN STORED");
-      axios.defaults.headers.common["Authorization"] = accessToken;
 
       AsyncStorage.getItem("accessToken").then((value) => {
         console.log("LOG FROM LOGIN: ACCESSTOKEN STORED", value);
@@ -55,13 +55,10 @@ export default function LoginScreen() {
     password: string;
   }) => {
     try {
-      const response = await axios.post(
-        "https://api.follow-food.alexandre-pezat.fr/auth/login",
-        {
-          email,
-          password,
-        },
-      );
+      const response = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
 
       setIsAuthenticated(true);
       //
