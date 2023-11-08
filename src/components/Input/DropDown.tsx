@@ -1,11 +1,10 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useQuery } from "@tanstack/react-query";
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 import { fetchCategories } from "../../lib/api/api";
-
 
 type DropdownComponentProps = {
   onSelect: (value: string) => void;

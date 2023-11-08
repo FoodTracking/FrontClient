@@ -1,14 +1,7 @@
 import { Skeleton } from "@rneui/base";
 import { Image } from "@rneui/themed";
 import React from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  ImageSourcePropType,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function RestaurantCard({
   name,

@@ -1,6 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Button } from "@rneui/base";
-import axios from "axios";
 import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import io, { Socket } from "socket.io-client";

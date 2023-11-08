@@ -42,7 +42,6 @@ const CategoriesBottomSheet = ({
     }
   }, [isOpen]);
 
-
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}

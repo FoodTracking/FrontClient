@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import React, { useState } from "react";
-import { Controller, Resolver, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Image, Pressable, Text, View } from "react-native";
 
 import { Palette } from "../../../styles/colors";

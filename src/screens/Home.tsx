@@ -70,7 +70,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1, marginHorizontal: 15 }}>
       <SafeAreaView>
-        <SearchBar onSearch={handleSearch} onChangeCategory={handleCategory}/>
+        <SearchBar onSearch={handleSearch} onChangeCategory={handleCategory} />
       </SafeAreaView>
       <ScrollView
         style={{
