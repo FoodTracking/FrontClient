@@ -1,139 +1,109 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import React, { useState } from "react";
-import { FlatList, ScrollView, View } from "react-native";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  Text,
+} from "react-native";
 
-import { Palette } from "../../styles/colors";
-import BaseCard from "../components/Card/BaseCard";
-import CommandCard from "../components/Card/CommandCard";
-import FilterCard from "../components/Card/FilterCard";
-import SearchBar from "../components/Search/SearchBar";
-
-interface Restaurant {
-  name: string;
-  category: string;
-  picture: any;
-}
-
-const RestaurantList = [
-  {
-    name: "KFC",
-    category: "Fast Food",
-    picture: require("../../assets/kfc.jpg"),
-  },
-  {
-    name: "McDonalds",
-    category: "Fast Food",
-    picture: require("../../assets/mcdo.jpg"),
-  },
-  {
-    name: "TacosNaan",
-    category: "Fast Food",
-    picture: require("../../assets/resto1.jpg"),
-  },
-  {
-    name: "KFC",
-    category: "Fast Food",
-    picture: require("../../assets/resto1.jpg"),
-  },
-];
-
-const FilstersList = [
-  {
-    name: "Fast Food",
-    picture: require("../../assets/resto1.jpg"),
-  },
-  {
-    name: "Sushi",
-    picture: require("../../assets/resto1.jpg"),
-  },
-  {
-    name: "Indien",
-    picture: require("../../assets/resto1.jpg"),
-  },
-  {
-    name: "Italien",
-    picture: require("../../assets/resto1.jpg"),
-  },
-];
+import RestaurantCard from "../components/Card/RestaurantCard";
+import SearchBar from "../components/Search/SearchBarMenu";
+import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
-  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  let name: string = "";
+  let category: string = "";
 
-  const fetchRestaurants = async () => {
-    try {
-      const headers = {
-        Authorization: "Bearer " + (await AsyncStorage.getItem("accessToken")),
-      };
+  const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
+    {
+      initialPageParam: 1,
+      queryKey: ["restaurants"],
+      queryFn: ({ pageParam = 1 }) =>
+        fetchRestaurants(pageParam, name, category),
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.length < 5) {
+          return undefined;
+        }
+        return allPages.length + 1;
+      },
+    },
+  );
 
-      const response = await axios.get(
-        "https://api.follow-food.alexandre-pezat.fr/restaurants",
-        { headers },
-      );
-      const data = await response.data;
-      console.log("LOG FROM HOME ", JSON.stringify(data));
+  const handleSearch = async (query: string) => {
+    name = query;
+    await refetch();
+  };
 
-      setRestaurantList(data);
-      console.log("LOG FROM HOME ", JSON.stringify(restaurantList));
-    } catch (error: any) {
-      console.error(
-        "An error occurred during USER registration:",
-        error?.response?.data || error,
-      );
+  const handleCategory = async (query: string) => {
+    category = query;
+    await refetch();
+  };
+
+  // This is the event handler for scroll events
+  const handleScroll = async ({
+    nativeEvent,
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (isCloseToBottom(nativeEvent)) {
+      await fetchNextPage();
     }
   };
 
-  // fetchRestaurants();
-  return (
-    <ScrollView
-      style={{
-        flex: 1,
-        alignSelf: "center",
-        marginTop: 30,
-        backgroundColor: Palette.lightGrey,
-      }}
-      stickyHeaderIndices={[0]}
-    >
-      <View style={{ backgroundColor: Palette.lightGrey }}>
-        <SearchBar placeholder="Rechercher un restaurant" />
-      </View>
-      <View style={{ borderWidth: 0.5, borderColor: "black" }} />
-      <FlatList
-        horizontal={true}
-        data={FilstersList}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <FilterCard
-            key={index}
-            title={item.name}
-            picture={item.picture}
-            style={{ marginTop: 5, backgroundColor: "white" }}
-          />
-        )}
-      />
+  // Helper function to determine if the scroll is close to the bottom
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const paddingToBottom = 500; // how far from the bottom you want to trigger the fetch
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
 
-      <View style={{ flexDirection: "row", marginTop: 10 }}>
-        <CommandCard
-          title="Votre derniere commande"
-          nbCommandes={1}
-          foodPlaceName="KFC"
-          description={[{ name: "Poulet", quantity: 1 }]}
-          price={0}
-          style={{ margin: 5, backgroundColor: "white" }}
-        />
-      </View>
-      {restaurantList.map((restaurant, index) => {
-        return (
-          <BaseCard
-            key={index}
-            name={restaurant.name}
-            category={restaurant.category}
-            picture={restaurant.picture}
-            style={{ marginTop: 5, backgroundColor: "white" }}
-          />
-        );
-      })}
-      {/* <BaseButton text="Ajouter au panier" onPress={() => {}} /> */}
-    </ScrollView>
+  if (isLoading) return <Text>Loading...</Text>;
+  if (isError) return <Text>Error :(</Text>;
+
+  return (
+    <SafeAreaView style={{ flex: 1, marginHorizontal: 15 }}>
+      <SafeAreaView>
+        <SearchBar onSearch={handleSearch} onChangeCategory={handleCategory} />
+      </SafeAreaView>
+      <ScrollView
+        style={{
+          alignSelf: "center",
+          width: "100%",
+          height: "100%",
+        }}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={() => refetch()} />
+        }
+        contentInsetAdjustmentBehavior="automatic"
+        onScroll={handleScroll}
+        scrollEventThrottle={400}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {data?.pages?.map((page) => {
+          return page.map((restaurant) => {
+            return (
+              <RestaurantCard
+                key={restaurant.id}
+                name={restaurant.name}
+                category={restaurant.category}
+                picture={restaurant.image}
+                style={{
+                  marginTop: 5,
+                  backgroundColor: "white" /* height: 225*/,
+                }}
+              />
+            );
+          });
+        })}
+      </ScrollView>
+    </SafeAreaView>
   );
 }

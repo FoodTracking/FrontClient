@@ -50,7 +50,7 @@ export default function CommandesScreen() {
       <View style={{ margin: 10 }}>
         <CommandCard
           title="Votre derniere commande"
-          nbCommandes={1}
+          // nbCommandes={1}
           picture={require("../../assets/kfc.jpg")}
           foodPlaceName="KFC"
           description={[{ name: "Poulet", quantity: 1 }]}
@@ -66,15 +66,15 @@ export default function CommandesScreen() {
             <CommandCard
               key={index}
               title={item.foodPlaceName}
-              subtitle={item.title}
+              // subtitle={item.title}
               picture={require("../../assets/mcdo.jpg")}
               description={item.description}
               foodPlaceName={item.foodPlaceName}
               price={item.price}
-              image={item.image}
-              nbCommandes={item.nbCommandes}
+              // image={item.image}
+              // nbCommandes={item.nbCommandes}
               style={{ margin: 5, backgroundColor: "white" }}
-              onPress={() => {}}
+              // onPress={() => {}}
             />
           )}
         />

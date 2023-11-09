@@ -1,13 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Image, Pressable, Text, View } from "react-native";
 
 import { Palette } from "../../../styles/colors";
 import BaseButton from "../../components/Button/BaseButton";
 import BaseInput from "../../components/Input/BaseInput";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { axiosInstance } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
@@ -15,30 +17,22 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Login"
 >;
 
-export default function LoginScreen({
-  updateAccess,
-}: {
-  updateAccess: (access: boolean) => void;
-}) {
+export default function LoginScreen() {
+  const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSelected, setIsSelected] = useState(false);
 
-  function handlePassword(text: string) {
-    setPassword(text);
-  }
-
-  function handleMail(text: string) {
-    setEmail(text);
-  }
+  const {
+    handleSubmit,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm<{ email: string; password: string }>({});
 
   const storeData = async (accessToken: string, refreshToken: string) => {
     try {
       await AsyncStorage.setItem("accessToken", accessToken);
       await AsyncStorage.setItem("refreshToken", refreshToken);
       console.log("LOG FROM LOGIN: TOKEN STORED");
-      axios.defaults.headers.common["Authorization"] = accessToken;
 
       AsyncStorage.getItem("accessToken").then((value) => {
         console.log("LOG FROM LOGIN: ACCESSTOKEN STORED", value);
@@ -52,17 +46,20 @@ export default function LoginScreen({
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     try {
-      const response = await axios.post(
-        "https://api.follow-food.alexandre-pezat.fr/auth/login",
-        {
-          email,
-          password,
-        },
-      );
+      const response = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
 
-      updateAccess(true);
+      setIsAuthenticated(true);
       //
       // // console.log("LOG FROM LOGIN ", JSON.stringify(response.data));
       // console.log("LOG FROM LOGIN ", JSON.stringify(response.data.accessToken));
@@ -81,6 +78,7 @@ export default function LoginScreen({
   };
 
   const onPressLogin = async () => {
+    const { email, password } = getValues();
     navigation.navigate("Register", { email, password });
   };
 
@@ -106,39 +104,60 @@ export default function LoginScreen({
         Connexion
       </Text>
       <View style={{ marginHorizontal: 50 }}>
-        <BaseInput
-          style={{
-            borderWidth: 1,
-            borderColor: "black",
-            borderRadius: 10,
-            marginTop: 30,
-            marginHorizontal: 30,
+        <Controller
+          control={control}
+          rules={{
+            required: true,
           }}
-          placeholder="Adresse Mail"
-          value={email}
-          onChange={handleMail}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <BaseInput
+              style={{
+                borderWidth: 1,
+                borderColor: "black",
+                borderRadius: 10,
+                marginTop: 30,
+                marginHorizontal: 30,
+              }}
+              placeholder="Adresse Mail"
+              onBlur={onBlur}
+              onChange={onChange}
+              value={value}
+            />
+          )}
+          name="email"
         />
-        <View style={{ marginHorizontal: 50 }}>
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 30,
-              marginHorizontal: 30,
-            }}
-            placeholder="Password"
-            value={password}
-            onChange={handlePassword}
-            secureTextEntry={true}
-          />
-        </View>
+        {errors.email && <Text>This is required.</Text>}
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <BaseInput
+              style={{
+                borderWidth: 1,
+                borderColor: "black",
+                borderRadius: 10,
+                marginTop: 30,
+                marginHorizontal: 30,
+              }}
+              placeholder="Mot de passe"
+              onBlur={onBlur}
+              onChange={onChange}
+              value={value}
+            />
+          )}
+          name="password"
+        />
+        {errors.password && <Text>This is required.</Text>}
+
         <BaseButton
           style={{ alignSelf: "center", marginTop: 20 }}
           title="Se connecter"
           onPress={() => {
             alert("Connexion");
-            handleLogin();
+            handleSubmit((data) => handleLogin(data))();
           }}
         />
         <Pressable

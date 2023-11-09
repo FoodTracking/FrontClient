@@ -12,7 +12,6 @@ import BaseButton from "../Button/BaseButton";
 export default function CommandCard({
   title,
   foodPlaceName,
-  nbCommandes,
   description,
   price,
   style,
@@ -20,8 +19,7 @@ export default function CommandCard({
 }: {
   title: string;
   foodPlaceName: string;
-  description: [{ name: string; quantity: number }];
-  nbCommandes: number;
+  description: { name: string; quantity: number }[];
   price: number;
   style?: object;
   picture?: unknown;

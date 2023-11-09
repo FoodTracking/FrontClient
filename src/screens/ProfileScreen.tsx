@@ -13,23 +13,11 @@ import {
 } from "react-native";
 
 import BaseInput from "../components/Input/BaseInput";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { AuthStackParamList } from "../navigation/AuthStack";
 
-type UserProfileEditNavigationProp = StackNavigationProp<
-  AuthStackParamList,
-  "Onboarding"
->;
-
 interface UserProfileEditProps {
-  navigation: UserProfileEditNavigationProp;
-  updateAccess: (access: boolean) => void;
-}
-
-interface State {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
+  navigation: StackNavigationProp<AuthStackParamList, "Onboarding">;
 }
 
 export function isValidEmail(email: string): boolean {
@@ -39,8 +27,9 @@ export function isValidEmail(email: string): boolean {
 
 export default function UserProfileEdit({
   navigation,
-  updateAccess,
 }: UserProfileEditProps): React.JSX.Element {
+  const { setIsAuthenticated } = useAuthContext();
+
   const [firstname, setFirstname] = React.useState("");
   const [lastname, setLastname] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -81,7 +70,7 @@ export default function UserProfileEdit({
     await AsyncStorage.removeItem("refreshToken");
 
     // Rediriger vers l'écran de connexion
-    updateAccess(false);
+    setIsAuthenticated(false);
   };
 
   return (
