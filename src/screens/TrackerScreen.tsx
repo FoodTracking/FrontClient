@@ -1,9 +1,9 @@
-import { Button } from "@rneui/base";
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import axios from "axios";
-import io, { Socket } from "socket.io-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Button } from "@rneui/base";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { Text, View } from "react-native";
+import io, { Socket } from "socket.io-client";
 
 export enum OrderStatusEnum {
   PENDING = "PENDING",
@@ -40,7 +40,7 @@ export default function TrackerScreen() {
             Authorization:
               "Bearer " + (await AsyncStorage.getItem("accessToken")),
           },
-        }
+        },
       );
     } catch (error) {
       console.error("An error occurred when trying to update order:", error);
@@ -56,7 +56,7 @@ export default function TrackerScreen() {
             Authorization:
               "Bearer " + (await AsyncStorage.getItem("accessToken")),
           },
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -79,7 +79,7 @@ export default function TrackerScreen() {
               Authorization:
                 "Bearer " + (await AsyncStorage.getItem("accessToken")),
             },
-          }
+          },
         );
         console.log(response.data);
         setOrders(response.data);
@@ -101,7 +101,7 @@ export default function TrackerScreen() {
             "https://api.follow-food.alexandre-pezat.fr/orders",
             {
               auth: { token: accessToken },
-            }
+            },
           );
           newSocket.on("updateOrder", (order: Order) => {
             const o = orders.find((o) => o.id === order.id);
@@ -118,7 +118,7 @@ export default function TrackerScreen() {
       } catch (error) {
         console.error(
           "Error retrieving access token from AsyncStorage:",
-          error
+          error,
         );
       }
     };

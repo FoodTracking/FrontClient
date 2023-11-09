@@ -1,7 +1,12 @@
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
-import BaseButton from "../Button/BaseButton";
-import { ImageSourcePropType } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+
 export default function BaseCard({
   name,
   category,

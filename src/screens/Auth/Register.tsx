@@ -1,3 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import {
   Image,
@@ -7,14 +10,12 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
-import BaseButton from "../../components/Button/BaseButton";
-import { useNavigation } from "@react-navigation/native";
-import BaseInput from "../../components/Input/BaseInput";
+
 import { Palette } from "../../../styles/colors";
-import { AuthStackParamList } from "../../navigation/AuthStack";
-import { StackNavigationProp } from "@react-navigation/stack";
-import axios, { AxiosError } from "axios";
+import BaseButton from "../../components/Button/BaseButton";
 import Switch from "../../components/Button/Switch";
+import BaseInput from "../../components/Input/BaseInput";
+import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -29,7 +30,7 @@ export default function RegisterScreen({
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
   const onPressLogin = async () => {
-    navigation.navigate("Login", { email: email, password: password });
+    navigation.navigate("Login", { email, password });
   };
 
   const [email, setEmail] = useState("");
@@ -57,7 +58,7 @@ export default function RegisterScreen({
               email: email as string,
               password: password as string,
               role: role as string,
-            }
+            },
           );
           console.log("LOG FROM REGISTER ", JSON.stringify(response)); // Log the response data for debuggin
           updateAccess(true);
@@ -66,7 +67,7 @@ export default function RegisterScreen({
         } catch (error) {
           console.log(
             "An error occurred during USER registration:",
-            (error as AxiosError)?.response?.data
+            (error as AxiosError)?.response?.data,
           );
         }
       } else {
@@ -83,7 +84,7 @@ export default function RegisterScreen({
                 password: password as string,
                 role: role as string,
               } as object,
-            }
+            },
           );
           updateAccess(true);
           // Update the access after successful registration
@@ -92,7 +93,7 @@ export default function RegisterScreen({
           console.error("An error occurred during USER registration:", error);
           console.log(
             "An error occurred during USER registration:",
-            (error as AxiosError)?.response?.data
+            (error as AxiosError)?.response?.data,
           );
         }
       }
@@ -100,7 +101,7 @@ export default function RegisterScreen({
       console.error("An error occurred during registration:", error);
       console.log(
         "An error occurred during USER registration:",
-        (error as AxiosError)?.response?.data
+        (error as AxiosError)?.response?.data,
       );
     }
   };

@@ -1,19 +1,19 @@
+import { StackNavigationProp } from "@react-navigation/stack";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
-  Alert,
   ImageBackground,
-  Text,
-  View,
-  TextStyle,
   StyleProp,
+  Text,
+  TextStyle,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
-import Fonts from "../../../styles/fonts";
+
 import { Palette } from "../../../styles/colors";
-import BaseButton from "../../components/Button/BaseButton";
+import Fonts from "../../../styles/fonts";
 import { gutters } from "../../../styles/main";
-import { StackNavigationProp } from "@react-navigation/stack";
+import BaseButton from "../../components/Button/BaseButton";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<

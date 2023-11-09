@@ -1,7 +1,7 @@
 import React from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
+
 import CommandCard from "../components/Card/CommandCard";
-import BaseCard from "../components/Card/BaseCard";
 
 const ListCommandes = [
   {

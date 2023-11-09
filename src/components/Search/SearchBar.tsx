@@ -1,6 +1,6 @@
+import { AntDesign, Feather } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, TextInput } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
 
 export default function SearchBar({
   placeholder,

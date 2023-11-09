@@ -1,16 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import axios from "axios";
 import React, { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
-import BaseButton from "../../components/Button/BaseButton";
-import { useNavigation } from "@react-navigation/native";
-import BaseInput from "../../components/Input/BaseInput";
+
 import { Palette } from "../../../styles/colors";
+import BaseButton from "../../components/Button/BaseButton";
+import BaseInput from "../../components/Input/BaseInput";
 import { AuthStackParamList } from "../../navigation/AuthStack";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import PropTypes from "prop-types";
-import Switch from "../../components/Button/Switch";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -59,9 +57,9 @@ export default function LoginScreen({
       const response = await axios.post(
         "https://api.follow-food.alexandre-pezat.fr/auth/login",
         {
-          email: email,
-          password: password,
-        }
+          email,
+          password,
+        },
       );
 
       updateAccess(true);
@@ -83,7 +81,7 @@ export default function LoginScreen({
   };
 
   const onPressLogin = async () => {
-    navigation.navigate("Register", { email: email, password: password });
+    navigation.navigate("Register", { email, password });
   };
 
   return (
