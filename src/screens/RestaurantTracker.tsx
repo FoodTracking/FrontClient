@@ -1,21 +1,18 @@
+/* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import io, { Socket } from 'socket.io-client';
-
-import { axiosInstance } from '../lib/api/api';
-import { Identity } from '../types';
+import OrderListCard from '../components/Card/OrderListCard';
+import { axiosInstance, fetchOrders, getMyIdentity } from '../lib/api/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Identity, Order } from '../types';
 
 export enum OrderStatusEnum {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   FINISHED = 'FINISHED',
   DELIVERED = 'DELIVERED',
-}
-
-interface Order {
-  id: string;
-  status: OrderStatusEnum;
 }
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
@@ -25,23 +22,20 @@ const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.IN_PROGRESS]: 'En cours',
 };
 
-export default function TrackerScreen() {
+export default function RestaurantTrackerScreen() {
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
-  const getMyIdentity = async () => {
-    try {
-      const response = await axiosInstance.get(`/identity/me`, {
-        headers: {
-          Authorization:
-            'Bearer ' + (await AsyncStorage.getItem('accessToken')),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('An error occurred when trying to get my ID:', error);
-    }
-  };
+  const queryClient = useQueryClient();
+
+  const myIdentity = useQuery({
+    queryKey: ['my-identity'],
+    queryFn: getMyIdentity,
+  });
+  const order = useQuery({
+    queryKey: ['Orders', myIdentity.data?.id],
+    queryFn: () => fetchOrders(myIdentity.data?.id),
+  });
 
   const getOrders = async () => {
     try {
@@ -70,12 +64,9 @@ export default function TrackerScreen() {
         const accessToken = await AsyncStorage.getItem('accessToken');
         console.log('Access Token:', accessToken);
         if (accessToken) {
-          const newSocket = io(
-            'https://api.follow-food.alexandre-pezat.fr/orders',
-            {
-              auth: { token: accessToken },
-            }
-          );
+          const newSocket = io('EXPO_PUBLIC_API_URL/orders', {
+            auth: { token: accessToken },
+          });
           newSocket.on('updateOrder', (order: Order) => {
             const o = orders.find((o) => o.id === order.id);
             console.log('o', o);
@@ -98,7 +89,7 @@ export default function TrackerScreen() {
 
     getOrders();
 
-    // setupSocket();
+    setupSocket();
 
     return () => {
       if (socket) {
@@ -112,10 +103,14 @@ export default function TrackerScreen() {
   return (
     <View>
       {orders.map((order) => (
-        <View key={order.id}>
-          <Text>{order.id}</Text>
-          <Text>{statusTranslation[order.status]}</Text>
-        </View>
+        <OrderListCard
+          key={order.id}
+          Customer={order.Customer}
+          orderId={order.id}
+          orderDetails={order.products}
+          price={order.totalPrice}
+          orderStatus={statusTranslation[order.status]}
+        ></OrderListCard>
       ))}
     </View>
   );
