@@ -8,12 +8,12 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import BaseInput from "../src/components/Input/BaseInput";
+import BaseInput from "../components/Input/BaseInput";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthStackParamList } from "../src/components/navigation/AuthStack";
+import { AuthStackParamList } from "../navigation/AuthStack";
 import { StackActions } from "@react-navigation/native";
 
 type UserProfileEditNavigationProp = StackNavigationProp<

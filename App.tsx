@@ -1,7 +1,15 @@
-import * as React from "react";
-import { Text, View } from "react-native";
-import Root from "./src/components/navigation/Root";
+import {useColorScheme} from "react-native";
+import Navigation from "./src/navigation/RootStackNavigator";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import {StatusBar} from "expo-status-bar";
+
 
 export default function App() {
-  return <Root />;
+  const [theme] = useColorScheme()
+  return (
+    <SafeAreaProvider>
+      <StatusBar style={'auto'}/>
+      <Navigation colorScheme={theme ?? 'light'}/>
+    </SafeAreaProvider>
+  );
 }

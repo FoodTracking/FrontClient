@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, Text, View } from "react-native";
-import CommandCard from "../src/components/Card/CommandCard";
-import BaseCard from "../src/components/Card/BaseCard";
+import CommandCard from "../components/Card/CommandCard";
+import BaseCard from "../components/Card/BaseCard";
 
 const ListCommandes = [
   {
@@ -10,7 +10,7 @@ const ListCommandes = [
     foodPlaceName: "MCDO",
     description: [{ name: "CBO", quantity: 3 }],
     price: 18,
-    image: require("../assets/mcdo.jpg"),
+    image: require("../../assets/mcdo.jpg"),
   },
   {
     title: "",
@@ -18,7 +18,7 @@ const ListCommandes = [
     foodPlaceName: "OTACOS",
     description: [{ name: "Tacos", quantity: 2 }],
     price: 18,
-    image: require("../assets/kfc.jpg"),
+    image: require("../../assets/kfc.jpg"),
   },
   {
     title: "",
@@ -26,7 +26,7 @@ const ListCommandes = [
     foodPlaceName: "SUSHI DESIGN",
     description: [{ name: "California saumon", quantity: 3 }],
     price: 18,
-    image: require("../assets/mcdo.jpg"),
+    image: require("../../assets/mcdo.jpg"),
   },
   {
     title: "",
@@ -34,7 +34,7 @@ const ListCommandes = [
     foodPlaceName: "LA BOUCHERIE",
     description: [{ name: "Steack", quantity: 4 }],
     price: 18,
-    image: require("../assets/kfc.jpg"),
+    image: require("../../assets/kfc.jpg"),
   },
 ];
 
@@ -51,7 +51,7 @@ export default function CommandesScreen() {
         <CommandCard
           title="Votre derniere commande"
           nbCommandes={1}
-          picture={require("../assets/kfc.jpg")}
+          picture={require("../../assets/kfc.jpg")}
           foodPlaceName="KFC"
           description={[{ name: "Poulet", quantity: 1 }]}
           price={24}
@@ -67,7 +67,7 @@ export default function CommandesScreen() {
               key={index}
               title={item.foodPlaceName}
               subtitle={item.title}
-              picture={require("../assets/mcdo.jpg")}
+              picture={require("../../assets/mcdo.jpg")}
               description={item.description}
               foodPlaceName={item.foodPlaceName}
               price={item.price}

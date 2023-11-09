@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import Fonts from "../../styles/fonts";
-import { Palette } from "../../styles/colors";
-import BaseButton from "../../src/components/Button/BaseButton";
-import { gutters } from "../../styles/main";
+import Fonts from "../../../styles/fonts";
+import { Palette } from "../../../styles/colors";
+import BaseButton from "../../components/Button/BaseButton";
+import { gutters } from "../../../styles/main";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthStackParamList } from "../../src/components/navigation/AuthStack";
+import { AuthStackParamList } from "../../navigation/AuthStack";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -48,7 +48,7 @@ export default function Onboarding({ navigation }: Props) {
 
   return (
     <ImageBackground
-      source={require("../../assets/onboarding.png") as any}
+      source={require("../../../assets/onboarding.png") as any}
       style={{
         flex: 1,
         justifyContent: "center",

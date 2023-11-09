@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, ScrollView, Text, View } from "react-native";
-import BaseCard from "../src/components/Card/BaseCard";
-import CommandCard from "../src/components/Card/CommandCard";
-import SearchBar from "../src/components/Search/SearchBar";
-import FilterCard from "../src/components/Card/FilterCard";
-import { Palette } from "../styles/colors";
+import BaseCard from "../components/Card/BaseCard";
+import CommandCard from "../components/Card/CommandCard";
+import SearchBar from "../components/Search/SearchBar";
+import FilterCard from "../components/Card/FilterCard";
+import { Palette } from "../../styles/colors";
 import axios, { AxiosHeaders } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -18,41 +18,41 @@ const RestaurantList = [
   {
     name: "KFC",
     category: "Fast Food",
-    picture: require("../assets/kfc.jpg"),
+    picture: require("../../assets/kfc.jpg"),
   },
   {
     name: "McDonalds",
     category: "Fast Food",
-    picture: require("../assets/mcdo.jpg"),
+    picture: require("../../assets/mcdo.jpg"),
   },
   {
     name: "TacosNaan",
     category: "Fast Food",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
   {
     name: "KFC",
     category: "Fast Food",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
 ];
 
 const FilstersList = [
   {
     name: "Fast Food",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
   {
     name: "Sushi",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
   {
     name: "Indien",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
   {
     name: "Italien",
-    picture: require("../assets/resto1.jpg"),
+    picture: require("../../assets/resto1.jpg"),
   },
 ];
 

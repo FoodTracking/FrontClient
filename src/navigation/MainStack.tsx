@@ -1,16 +1,10 @@
 import * as React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../../../Screen/Home";
-import {
-  AntDesign,
-  Entypo,
-  Feather,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import ProfileScreen from "../../../Screen/ProfileScreen";
-import CommandesScreen from "../../../Screen/CommandesScreen";
-import TrackerScreen from "../../../Screen/TrackerScreen";
-import LoginScreen from "../../../Screen/Auth/Login";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import HomeScreen from "../screens/Home";
+import {AntDesign, Entypo, Feather, MaterialCommunityIcons,} from "@expo/vector-icons";
+import ProfileScreen from "../screens/ProfileScreen";
+import CommandesScreen from "../screens/CommandesScreen";
+import TrackerScreen from "../screens/TrackerScreen";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -19,12 +13,12 @@ export type MainStackParamList = {
   Profile: undefined;
 };
 interface AuthStackProps {
-  updateAccess: (access: string) => void;
+  setIsAuth: (access: boolean) => void;
 }
 
 const Tab = createBottomTabNavigator();
 
-export default function MainStack({ updateAccess }: AuthStackProps) {
+export default function MainStack({ setIsAuth }: AuthStackProps) {
   return (
     <Tab.Navigator
       initialRouteName="Restaurants"
@@ -68,12 +62,6 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
       />
       <Tab.Screen
         name="Profile"
-        component={(props: any) => (
-          <ProfileScreen
-            updateAccess={(access: boolean) => updateAccess(access.toString())}
-            navigation={props.navigation} // Pass the navigation prop
-          />
-        )}
         options={{
           headerShown: false,
           tabBarLabel: "Settings",
@@ -81,7 +69,14 @@ export default function MainStack({ updateAccess }: AuthStackProps) {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
-      />
+      >
+        { (props) =>
+          <ProfileScreen
+            updateAccess={(access: boolean) => setIsAuth(access)}
+            {...props}
+          />
+        }
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
