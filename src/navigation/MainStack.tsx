@@ -8,14 +8,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import CommandesScreen from '../screens/CommandesScreen';
 import HomeScreen from '../screens/Home';
 import ProfileScreen from '../screens/ProfileScreen';
 import RestaurantTrackerScreen from '../screens/RestaurantTracker';
 import TrackerScreen from '../screens/TrackerScreen';
-import { axiosInstance, getMyIdentity } from '../lib/api/api';
+import { axiosInstance } from '../lib/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import OrderScreen from "../screens/OrderScreen";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -89,7 +89,7 @@ export default function MainStack() {
       />
       <Tab.Screen
         name='Commandes'
-        component={CommandesScreen}
+        component={OrderScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Commandes',

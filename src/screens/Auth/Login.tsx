@@ -17,6 +17,13 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Login"
 >;
 
+interface CreateProduct {
+  name: string;
+  price: number;
+  picture: string;
+  restaurantId: string;
+}
+
 export default function LoginScreen() {
   const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
@@ -155,10 +162,7 @@ export default function LoginScreen() {
         <BaseButton
           style={{ alignSelf: "center", marginTop: 20 }}
           title="Se connecter"
-          onPress={() => {
-            alert("Connexion");
-            handleSubmit((data) => handleLogin(data))();
-          }}
+          onPress={handleSubmit((data) => handleLogin(data))}
         />
         <Pressable
           style={{

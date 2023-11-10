@@ -1,96 +1,99 @@
+import { Skeleton } from "@rneui/base";
+import { Image } from "@rneui/themed";
 import React from "react";
-import {
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Button, Pressable, Text, View, ViewStyle } from "react-native";
 
-import BaseButton from "../Button/BaseButton";
+import { fetchOrder, insertOrder, queryClient } from "../../lib/api/api";
+
+interface CommandCardProps {
+  id: string;
+  title: string;
+  quantity: number;
+  price: number;
+  picture: string;
+  date: string;
+  style?: ViewStyle;
+}
 
 export default function CommandCard({
+  id,
   title,
-  foodPlaceName,
-  description,
+  quantity,
   price,
   style,
   picture,
-}: {
-  title: string;
-  foodPlaceName: string;
-  description: { name: string; quantity: number }[];
-  price: number;
-  style?: object;
-  picture?: unknown;
-}) {
+  date,
+}: CommandCardProps) {
+  const handlePress = async (id: string) => {
+    // Get order by id with products
+    const order = await fetchOrder(id);
+    try {
+      await insertOrder({
+        restaurantId: order.restaurant.id,
+        products: order.products.map((product) => ({
+          productId: product.productId,
+          quantity: product.quantity,
+        })),
+      });
+      await queryClient.invalidateQueries({ queryKey: ["orders"] });
+    } catch (error) {
+      console.log(error);
+    }
+    // POst /orders
+  };
+
   return (
     <Pressable
       style={{
-        height: 150,
-        width: 350,
-        marginHorizontal: 10,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         borderWidth: 1,
         borderColor: "grey",
         borderRadius: 10,
+        padding: 10,
         ...style,
       }}
     >
-      <Text
+      <View
         style={{
-          fontSize: 20,
-          marginLeft: 10,
-          fontWeight: "bold",
-          color: "black",
-          paddingBottom: 10,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
         }}
       >
-        {title}
-      </Text>
-      <Image
-        source={picture as ImageSourcePropType}
-        style={{
-          height: 80,
-          width: 80,
-          position: "absolute",
-          right: 10,
-          top: 10,
-          borderRadius: 10,
-          backgroundColor: picture ? "grey" : "white",
-        }}
-      />
-      <BaseButton
-        title="Repasser commande"
-        onPress={() => {}}
-        style={{
-          zIndex: 1,
-          height: 30,
-          width: 150,
-          right: 2,
-          position: "absolute",
-          top: 70,
-        }}
-      />
-      <View style={{ marginLeft: 10 }}>
-        {/* <Text style={{}}>
-          N° commande :{"  "}
-          <Text style={{ fontWeight: "bold" }}>{nbCommandes}</Text>
-        </Text> */}
-        <Text style={{}}>
-          Restaurant :{"  "}
-          <Text style={{ fontWeight: "bold" }}>{foodPlaceName}</Text>
-        </Text>
-        <Text style={{ marginBottom: 5 }}>Description : </Text>
-
-        {description.map((item, index) => (
-          <Text key={index} style={{ fontWeight: "bold", marginBottom: 2 }}>
-            {" "}
-            - {item.quantity}x {item.name}
+        <Image
+          source={{ uri: picture }}
+          PlaceholderContent={
+            <Skeleton style={{ height: "100%", width: "100%" }} />
+          }
+          containerStyle={{ width: 60, height: 60, borderRadius: 50 }}
+          resizeMode={"cover"}
+        />
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              marginLeft: 10,
+              fontWeight: "bold",
+              color: "black",
+            }}
+          >
+            {title}
           </Text>
-        ))}
-        <Text style={{}}>Total de la commande : </Text>
-        <Text style={{ fontWeight: "bold" }}>{price} €</Text>
+          <View
+            style={{ display: "flex", flexDirection: "row", marginLeft: 10 }}
+          >
+            <Text>{date}</Text>
+            <Text style={{ marginHorizontal: 5 }}>•</Text>
+            <Text>{quantity} produits</Text>
+            <Text style={{ marginHorizontal: 5 }}>•</Text>
+            <Text style={{ fontWeight: "bold" }}>{price} €</Text>
+          </View>
+        </View>
       </View>
+      <Button title={"Commander"} onPress={() => handlePress(id)} />
     </Pressable>
   );
 }
