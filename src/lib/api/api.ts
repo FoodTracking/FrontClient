@@ -5,13 +5,12 @@ import axios from "axios";
 import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
+  CreateProduct,
   Order,
   RestaurantOrder,
   RestaurantPreview,
   UserOrder,
-  UserSession,
-  CreateProduct,
-  OrderItem,
+  UserSession
 } from "../../types";
 
 export const queryClient = new QueryClient({
@@ -122,7 +121,6 @@ export const fetchIdentity = async () => {
 export const fetchOrders = async (
   restaurantId: string
 ): Promise<RestaurantOrder[]> => {
-  alert(restaurantId);
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`
   );
@@ -134,26 +132,42 @@ export const updateStatus = async (id: string) => {
   return data;
 };
 
-const fetchImageFromUri = async (uri: string) => {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  const file = new File([blob], "image.jpeg");
-  return file;
-};
+
+
+async function uploadImageAsync(uri: string) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  return await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response); // when BlobModule finishes reading, resolve with the blob
+    };
+    xhr.onerror = function() {
+      reject(new TypeError('Network request failed')); // error occurred, rejecting
+    };
+    xhr.responseType = 'blob'; // use BlobModule's UriHandler
+    xhr.open('GET', uri, true); // fetch the blob from uri in async mode
+    xhr.send(null); // no initial data
+  });
+}
 
 export const createProduct = async (data: CreateProduct) => {
-  const file = await fetchImageFromUri(data.image);
-  alert(JSON.stringify(file));
-  const form = new FormData();
-  form.append("name", data.name);
-  form.append("price", data.price);
-  form.append("description", data.description);
-  form.append("image", file);
-  form.append("restaurantId", data.restaurantId);
-  const { data: product } = await axiosInstance.post(`/products`, form, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  return product;
+  try {
+    const form = new FormData();
+    form.append("name", data.name);
+    form.append("price", data.price);
+    form.append("description", data.description);
+    // @ts-ignore
+    // https://github.com/expo/expo/issues/11422
+    form.append("image",  data.image);
+    form.append("restaurantId", data.restaurantId);
+    const { data: product } = await axiosInstance.post(`/products`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return product;
+  } catch (error) {
+    alert(error);
+  }
 };

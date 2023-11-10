@@ -12,42 +12,60 @@ import { CreateProduct } from "../types";
 
 export default function CreateNewProduct() {
   const [image, setImage] = React.useState<string | null>(null);
-  const queryClient = useQueryClient();
+  const [image64, setImage64] = React.useState<{ uri: string; name: string; type: string; } | undefined>(undefined);
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    alert(user);
-  }, []);
+
 
   const mutation = useMutation({
     mutationFn: (data: CreateProduct) =>
       createProduct({
         ...data,
         restaurantId: user!.id,
-        image: image ?? "",
+        image: image64!,
       }),
   });
 
-  const { handleSubmit, control, setValue } = useForm<CreateProduct>();
+  const { handleSubmit, control } = useForm<CreateProduct>();
 
   const handleCreateProduct = async (data: CreateProduct) => {
-    alert("Produit créé");
-
-    const response = await mutation.mutateAsync(data);
-    console.log("Product created:", response);
+    alert("Produit créé")
+    if (!image) {
+      alert("Veuillez choisir une image");
+    }
+    mutation.mutate(data);
   };
+
+
+
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
       base64: true,
     });
+    
 
     if (!result.canceled) {
+      const file = result.assets[0];
+
+      const localUri = file.uri;
+      const filename = localUri.split('/').pop();
+
+// Infer the type of the image
+      const match = /\.(\w+)$/.exec(filename!);
+      const type = match ? `image/${match[1]}` : `image`;
+
+
       setImage(result.assets[0].uri);
+      setImage64({
+        uri: localUri,
+        name: filename!,
+        type,
+      });
     }
   };
 
@@ -152,13 +170,8 @@ export default function CreateNewProduct() {
           style={{ alignSelf: "center", marginTop: 20 }}
           title="Créer un produit"
           onPress={() => {
-            alert("Are you sure you want to create this product?");
             handleSubmit(
-              (data) => {
-                alert("Produit créé");
-                handleCreateProduct(data);
-              },
-              (error) => alert(error)
+              (data) => handleCreateProduct(data)
             )();
           }}
         />

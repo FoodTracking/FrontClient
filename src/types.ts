@@ -82,6 +82,6 @@ export interface CreateProduct {
   name: string;
   price: string;
   description: string;
-  image: string;
+  image: { uri: string; name: string; type: string; };
   restaurantId: string;
 }
