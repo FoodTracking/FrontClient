@@ -1,10 +1,10 @@
-import { Feather } from '@expo/vector-icons';
-import { Card } from '@rneui/themed';
-import { Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { OrderItem } from '../../types';
-import { updateStatus } from '../../lib/api/api';
+import { Feather } from "@expo/vector-icons";
+import { Card } from "@rneui/themed";
+import { Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { OrderItem } from "../../types";
+import { updateStatus } from "../../lib/api/api";
 
 export interface OrderListCardProps {
   Customer: string;
@@ -27,32 +27,38 @@ export default function OrderListCard({
     <SafeAreaView>
       <Card
         containerStyle={{
-          width: '90%',
+          width: "90%",
           height: 200,
           marginHorizontal: 10,
           marginLeft: 20,
           borderWidth: 1,
-          borderColor: 'grey',
+          borderColor: "grey",
           borderRadius: 10,
+          marginBottom: -30,
         }}
       >
         <Card.Title>{Customer}</Card.Title>
         <Card.Divider />
         <View
           style={{
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            flexDirection: "column",
+            justifyContent: "space-between",
           }}
         >
           <View>
             <Text style={{ marginBottom: 10 }}>
               Détail Commande :
-              {orderDetails.map((products) => products.name).join(', ')}
+              {orderDetails
+                .map(
+                  (products) =>
+                    " " + products.name + " Quantité: " + products.quantity
+                )
+                .join("\n")}
             </Text>
             <Text style={{ marginBottom: 10 }}>Prix : {price} €</Text>
           </View>
           <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text>Status Commande: {orderStatus}</Text>
             <TouchableOpacity
@@ -61,7 +67,7 @@ export default function OrderListCard({
               }}
               onPress={() => updateStatus(orderId)}
             >
-              <Feather name='check-circle' size={24} color='black' />
+              <Feather name="check-circle" size={24} color="black" />
             </TouchableOpacity>
           </View>
         </View>

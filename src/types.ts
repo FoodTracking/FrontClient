@@ -1,9 +1,9 @@
-import { OrderStatusEnum } from './screens/RestaurantTracker';
+import { OrderStatusEnum } from "./screens/RestaurantTracker";
 
 export interface CreateIdentityDto {
   email: string;
   password: string;
-  role: 'user' | 'restaurant';
+  role: "user" | "restaurant";
   user?: CreateUserDto;
   restaurant?: CreateRestaurantDto;
 }
@@ -25,22 +25,22 @@ export interface RestaurantPreview {
   name: string;
   address: string;
   category: string;
-  image: Identity['image'];
+  image: Identity["image"];
 }
 
 export interface Identity {
   email: string;
   id: string;
-  role: 'user' | 'restaurant';
+  role: "user" | "restaurant";
   image: string;
 }
 
 export interface Order {
   id: string;
-  totalPrice: number;
+  price: number;
   status: OrderStatusEnum;
   products: OrderItem[];
-  Customer: string;
+  user: string;
 }
 
 export interface OrderItem {
