@@ -1,15 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
+
+import { fetchIdentity } from "../lib/api/api";
+import { UserSession } from "../types";
 
 export interface AuthContextType {
+  user: UserSession | null;
+  setUser: (user: UserSession | null) => void;
+
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-export const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: true,
-  setIsAuthenticated: () => {},
-});
+export const AuthContext = createContext<AuthContextType>(null!);
 
 // Define the AuthProvider props type with children
 interface AuthProviderProps {
@@ -17,12 +20,28 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  //TODO move to reducer
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!AsyncStorage.getItem("accessToken"),
   );
+  const [user, setUser] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+    fetchIdentity()
+      .then((user) => {
+        setUser(user);
+        setIsAuthenticated(true);
+      })
+      .catch((error) => {
+        setUser(null);
+        setIsAuthenticated(false);
+      });
+  }, []);
 
   // The value that will be supplied to any descendants of this provider
   const authContextValue = {
+    user,
+    setUser,
     isAuthenticated,
     setIsAuthenticated,
   };

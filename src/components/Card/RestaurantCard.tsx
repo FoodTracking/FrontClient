@@ -5,7 +5,6 @@ import { Pressable, Text, View } from "react-native";
 
 export default function RestaurantCard({
   name,
-  category,
   style,
   picture,
 }: {
@@ -34,6 +33,7 @@ export default function RestaurantCard({
       <View
         style={{
           display: "flex",
+          gap: 3,
           alignContent: "center",
           borderRadius: 10,
           marginTop: 5,

@@ -3,6 +3,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
+import { eventManager } from "../../EventEmitter";
+import {
+  CreateOrderDto,
+  Order,
+  RestaurantPreview,
+  UserOrder,
+  UserSession,
+} from "../../types";
 import { Identity, Order, OrderItem, RestaurantPreview } from '../../types';
 
 export const queryClient = new QueryClient({
@@ -30,7 +38,10 @@ axiosInstance.interceptors.response.use(
     const config = error.config;
     if (error.response.status === 401 && config.url !== '/auth/refresh') {
       const token = await refreshTokenFn();
-      if (!token) return Promise.reject(error);
+      if (!token) {
+        eventManager.emit("unauthorized");
+        return Promise.resolve();
+      }
 
       config.headers.Authorization = `Bearer ${token}`;
       return axiosInstance(config);
@@ -82,8 +93,28 @@ export const fetchRestaurants = async (
   return data;
 };
 
-export const getMyIdentity = async (): Promise<Identity> => {
-  const { data } = await axiosInstance.get<Identity>(`/identity/me`);
+export const fetchUserOrders = async (uid: string, page: number) => {
+  const { data } = await axiosInstance.get<UserOrder[]>(
+    `/users/${uid}/orders`,
+    {
+      params: { page, take: 5 },
+    },
+  );
+  return data;
+};
+
+export const fetchOrder = async (id: string) => {
+  const { data } = await axiosInstance.get<Order>(`/orders/${id}`);
+  return data;
+};
+
+export const insertOrder = async (order: CreateOrderDto) => {
+  const { data } = await axiosInstance.post<CreateOrderDto>(`/orders`, order);
+  return data;
+};
+
+export const fetchIdentity = async () => {
+  const { data } = await axiosInstance.get<UserSession>(`/identity/me`);
   return data;
 };
 

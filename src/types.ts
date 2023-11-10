@@ -1,3 +1,11 @@
+export interface UserSession {
+  id: string;
+  email: string;
+  role: "user" | "restaurant" | "admin";
+  avatar: string;
+  name: string;
+}
+
 import { OrderStatusEnum } from "./screens/RestaurantTracker";
 
 export interface CreateIdentityDto {
@@ -25,17 +33,38 @@ export interface RestaurantPreview {
   name: string;
   address: string;
   category: string;
-  image: Identity["image"];
+  image: UserSession["avatar"];
 }
 
-export interface Identity {
-  email: string;
-  id: string;
-  role: "user" | "restaurant";
-  image: string;
+interface OrderItem {
+  productId: string;
+  name: string;
+  quantity: number;
 }
+
+export interface CreateOrderDto {
+  restaurantId: string;
+  products: Omit<OrderItem, "name">[];
+}
+
 
 export interface Order {
+  id: string;
+  restaurant: RestaurantPreview;
+  products: OrderItem[];
+  status: string;
+  createdAt: string;
+}
+
+export interface UserOrder {
+  id: string;
+  restaurant: Omit<RestaurantPreview, "category">;
+  quantity: number;
+  price: number;
+  createdAt: string;
+}
+
+export interface ProductOrder {
   id: string;
   price: number;
   status: OrderStatusEnum;
@@ -43,8 +72,3 @@ export interface Order {
   user: string;
 }
 
-export interface OrderItem {
-  id: string;
-  name: string;
-  quantity: number;
-}

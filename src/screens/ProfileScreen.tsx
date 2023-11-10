@@ -78,7 +78,6 @@ export default function UserProfileEdit({
       style={{
         flex: 1,
         backgroundColor: 'white',
-        paddingHorizontal: 22,
       }}
     >
       <View
