@@ -1,30 +1,14 @@
-import {
-  AntDesign,
-  Entypo,
-  Feather,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import { useEffect } from "react";
 
-import CommandesScreen from "../screens/CommandesScreen";
+import { useAuthContext } from "../hooks/useAuthContext";
 import HomeScreen from "../screens/Home";
+import OrderScreen from "../screens/OrderScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
-import { axiosInstance, getMyIdentity } from "../lib/api/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import CreateNewProduct from "../screens/CreateProduct";
-import HomeScreen from '../screens/Home';
-import ProfileScreen from '../screens/ProfileScreen';
-import RestaurantTrackerScreen from '../screens/RestaurantTracker';
-import TrackerScreen from '../screens/TrackerScreen';
-import { axiosInstance } from '../lib/api/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import OrderScreen from "../screens/OrderScreen";
+import { useEffect } from "react";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -36,34 +20,11 @@ export type MainStackParamList = {
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
-const getMyRole = async () => {
-  const identity = await getMyIdentity();
-  const userRole: string = identity.role;
-  return userRole;
-};
-
-const isRestaurant = async () => {
-  const role: string = await getMyRole();
-  if (role === "restaurant") {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 export default function MainStack() {
-  const [isRestaurantUser, setIsRestaurantUser] = React.useState(false);
-  const queryClient = useQueryClient();
-  const query = useQuery({ queryKey: ["my-identity"], queryFn: getMyIdentity });
+  const { user } = useAuthContext()
 
   useEffect(() => {
-    const checkUserRole = async () => {
-      const result = await isRestaurant();
-      setIsRestaurantUser(result);
-    };
-
-    checkUserRole();
-  }, []);
+  }, [user]);
 
   return (
     <Tab.Navigator
@@ -85,8 +46,8 @@ export default function MainStack() {
       />
 
       <Tab.Screen
-        name="Tracker"
-        component={isRestaurantUser ? RestaurantTrackerScreen : TrackerScreen}
+        name='Tracker'
+        component={user?.role === 'restaurant' ? RestaurantTrackerScreen : TrackerScreen}
         options={{
           headerShown: false,
           tabBarLabel: "Tracker",
