@@ -1,4 +1,9 @@
-import { AntDesign, Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
@@ -9,6 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
 import { useEffect } from "react";
+import CreateNewProduct from "../screens/CreateProduct";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -21,10 +27,9 @@ export type MainStackParamList = {
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
 export default function MainStack() {
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
 
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <Tab.Navigator
@@ -46,8 +51,10 @@ export default function MainStack() {
       />
 
       <Tab.Screen
-        name='Tracker'
-        component={user?.role === 'restaurant' ? RestaurantTrackerScreen : TrackerScreen}
+        name="Tracker"
+        component={
+          user?.role === "restaurant" ? RestaurantTrackerScreen : TrackerScreen
+        }
         options={{
           headerShown: false,
           tabBarLabel: "Tracker",
@@ -58,7 +65,7 @@ export default function MainStack() {
         }}
       />
       <Tab.Screen
-        name='Commandes'
+        name="Commandes"
         component={OrderScreen}
         options={{
           headerShown: false,

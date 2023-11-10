@@ -1,11 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { QueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
-  Order, RestaurantOrder,
+  Order,
+  RestaurantOrder,
   RestaurantPreview,
   UserOrder,
   UserSession,
@@ -118,8 +119,10 @@ export const fetchIdentity = async () => {
   return data;
 };
 
-export const fetchOrders = async (restaurantId: string): Promise<RestaurantOrder[]> => {
-  alert(restaurantId)
+export const fetchOrders = async (
+  restaurantId: string
+): Promise<RestaurantOrder[]> => {
+  alert(restaurantId);
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`
   );
@@ -131,12 +134,22 @@ export const updateStatus = async (id: string) => {
   return data;
 };
 
+const fetchImageFromUri = async (uri: string) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  const file = new File([blob], "image.jpeg");
+  return file;
+};
+
 export const createProduct = async (data: CreateProduct) => {
+  const file = await fetchImageFromUri(data.image);
+  alert(JSON.stringify(file));
   const form = new FormData();
   form.append("name", data.name);
   form.append("price", data.price);
   form.append("description", data.description);
-  form.append("image", data.image);
+  form.append("image", file);
+  form.append("restaurantId", data.restaurantId);
   const { data: product } = await axiosInstance.post(`/products`, form, {
     headers: {
       "Content-Type": "multipart/form-data",

@@ -13,7 +13,6 @@ export interface UserSession {
   name: string;
 }
 
-
 export interface CreateIdentityDto {
   email: string;
   password: string;
@@ -53,13 +52,13 @@ export interface CreateOrderDto {
   products: Omit<OrderItem, "name">[];
 }
 
-
 export interface Order {
   id: string;
   restaurant: RestaurantPreview;
   products: OrderItem[];
   status: string;
   createdAt: string;
+  price: number;
 }
 
 export interface UserOrder {
@@ -79,16 +78,10 @@ export interface RestaurantOrder {
   restaurant: RestaurantPreview;
 }
 
-export interface OrderItem {
-  id: string;
-  name: string;
-  quantity: number;
-}
-
 export interface CreateProduct {
   name: string;
   price: string;
   description: string;
-  image: File | string;
+  image: string;
   restaurantId: string;
 }

@@ -1,15 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
 import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { axiosInstance, fetchOrders, queryClient } from "../lib/api/api";
+import { fetchOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-
-
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -21,7 +19,6 @@ const statusTranslation: Record<OrderStatusEnum, string> = {
 export default function RestaurantTrackerScreen() {
   const { user } = useAuthContext();
   const [socket, setSocket] = React.useState<Socket | null>(null);
-
 
   const { data: orders, refetch } = useQuery({
     queryKey: ["restaurants-orders", user?.id],
@@ -38,7 +35,7 @@ export default function RestaurantTrackerScreen() {
             auth: { token: accessToken },
           });
           newSocket.on("updateOrder", (order: Order) => {
-            queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] })
+            queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
             refetch();
           });
           setSocket(newSocket);
@@ -54,7 +51,6 @@ export default function RestaurantTrackerScreen() {
       }
     };
 
-
     setupSocket();
 
     return () => {
@@ -68,7 +64,7 @@ export default function RestaurantTrackerScreen() {
 
   return (
     <View>
-      {orders.map((order) => (
+      {orders?.map((order) => (
         <OrderListCard
           key={order.id}
           Customer={order.user}

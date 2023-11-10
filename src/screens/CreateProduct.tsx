@@ -1,73 +1,42 @@
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { View, Button, Image, Text } from "react-native";
-import BaseInput from "../components/Input/BaseInput";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as ImagePicker from "expo-image-picker";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { View, Image, Text } from "react-native";
+
 import BaseButton from "../components/Button/BaseButton";
-import { axiosInstance, createProduct } from "../lib/api/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import BaseInput from "../components/Input/BaseInput";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { createProduct } from "../lib/api/api";
 import { CreateProduct } from "../types";
 
 export default function CreateNewProduct() {
   const [image, setImage] = React.useState<string | null>(null);
   const queryClient = useQueryClient();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    alert(user);
+  }, []);
 
   const mutation = useMutation({
-    mutationFn: (data: CreateProduct) => createProduct(data),
+    mutationFn: (data: CreateProduct) =>
+      createProduct({
+        ...data,
+        restaurantId: user!.id,
+        image: image ?? "",
+      }),
   });
 
-  const { handleSubmit, control } = useForm<{
-    name: string;
-    price: string;
-    description: string;
-    restaurantId: string;
-    image: File | string;
-  }>();
+  const { handleSubmit, control, setValue } = useForm<CreateProduct>();
 
   const handleCreateProduct = async (data: CreateProduct) => {
     alert("Produit créé");
 
-    try {
-      if (
-        typeof data.image === "string" &&
-        (data.image as string).startsWith("data:image")
-      ) {
-        const file = dataURLtoFile(data.image as string, "image.png");
-        if (file) {
-          data.image = file;
-        } else {
-          console.error("Error converting base64 to File");
-          return;
-        }
-      }
-
-      const response = await mutation.mutateAsync(data);
-      console.log("Product created:", response);
-    } catch (error) {
-      console.error("Error creating product:", error);
-    }
+    const response = await mutation.mutateAsync(data);
+    console.log("Product created:", response);
   };
 
-  function dataURLtoFile(dataurl: string, filename: string): File | null {
-    const arr = dataurl.split(",");
-    const matchResult = arr[0].match(/:(.*?);/);
-
-    if (matchResult?.[1]) {
-      const mime = matchResult[1];
-      const bstr = atob(arr[arr.length - 1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-
-      return new File([u8arr], filename, { type: mime });
-    } else {
-      console.error("Invalid data URL format");
-      return null;
-    }
-  }
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
