@@ -6,8 +6,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { updateStatus } from "../../lib/api/api";
 import { OrderItem } from "../../types";
 
-export interface OrderListCardProps {
-  Customer: string;
+export interface UserOrderCardProps {
+  Restaurant: string;
   orderDetails: OrderItem[];
   price: number;
   style?: object;
@@ -15,14 +15,14 @@ export interface OrderListCardProps {
   orderId: string;
   children?: React.ReactNode;
 }
-export default function OrderListCard({
-  Customer,
+export default function UserOrderCard({
+  Restaurant,
   orderDetails,
   price,
   style,
   orderId,
   orderStatus,
-}: OrderListCardProps) {
+}: UserOrderCardProps) {
   return (
     <SafeAreaView>
       <Card
@@ -36,7 +36,7 @@ export default function OrderListCard({
           marginBottom: -30,
         }}
       >
-        <Card.Title>{Customer}</Card.Title>
+        <Card.Title>{Restaurant}</Card.Title>
         <Card.Divider />
         <View
           style={{
@@ -48,11 +48,13 @@ export default function OrderListCard({
             <Text style={{ marginBottom: 10 }}>
               Détail Commande :
               {orderDetails
-                .map(
-                  (products) =>
-                    " " + products.name + " Quantité: " + products.quantity
-                )
-                .join("\n")}
+                ? orderDetails
+                    .map(
+                      (products) =>
+                        " " + products.name + " Quantité: " + products.quantity
+                    )
+                    .join("\n")
+                : "No details available"}
             </Text>
             <Text style={{ marginBottom: 10 }}>Prix : {price} €</Text>
           </View>
@@ -60,14 +62,6 @@ export default function OrderListCard({
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text>Status Commande: {orderStatus}</Text>
-            <TouchableOpacity
-              style={{
-                right: 0,
-              }}
-              onPress={() => updateStatus(orderId)}
-            >
-              <Feather name="check-circle" size={24} color="black" />
-            </TouchableOpacity>
           </View>
         </View>
       </Card>

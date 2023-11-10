@@ -41,10 +41,19 @@ export interface Order {
   status: OrderStatusEnum;
   products: OrderItem[];
   user: string;
+  restaurant: RestaurantPreview;
 }
 
 export interface OrderItem {
   id: string;
   name: string;
   quantity: number;
+}
+
+export interface CreateProduct {
+  name: string;
+  price: string;
+  description: string;
+  image: File | string;
+  restaurantId: string;
 }

@@ -3,19 +3,20 @@ import {
   Entypo,
   Feather,
   MaterialCommunityIcons,
-} from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as React from 'react';
-import { useEffect } from 'react';
+} from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as React from "react";
+import { useEffect } from "react";
 
-import CommandesScreen from '../screens/CommandesScreen';
-import HomeScreen from '../screens/Home';
-import ProfileScreen from '../screens/ProfileScreen';
-import RestaurantTrackerScreen from '../screens/RestaurantTracker';
-import TrackerScreen from '../screens/TrackerScreen';
-import { axiosInstance, getMyIdentity } from '../lib/api/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import CommandesScreen from "../screens/CommandesScreen";
+import HomeScreen from "../screens/Home";
+import ProfileScreen from "../screens/ProfileScreen";
+import RestaurantTrackerScreen from "../screens/RestaurantTracker";
+import TrackerScreen from "../screens/TrackerScreen";
+import { axiosInstance, getMyIdentity } from "../lib/api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import CreateNewProduct from "../screens/CreateProduct";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -35,7 +36,7 @@ const getMyRole = async () => {
 
 const isRestaurant = async () => {
   const role: string = await getMyRole();
-  if (role === 'restaurant') {
+  if (role === "restaurant") {
     return true;
   } else {
     return false;
@@ -45,7 +46,7 @@ const isRestaurant = async () => {
 export default function MainStack() {
   const [isRestaurantUser, setIsRestaurantUser] = React.useState(false);
   const queryClient = useQueryClient();
-  const query = useQuery({ queryKey: ['my-identity'], queryFn: getMyIdentity });
+  const query = useQuery({ queryKey: ["my-identity"], queryFn: getMyIdentity });
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -58,54 +59,54 @@ export default function MainStack() {
 
   return (
     <Tab.Navigator
-      initialRouteName='Restaurants'
+      initialRouteName="Restaurants"
       screenOptions={{
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: "black",
       }}
     >
       <Tab.Screen
-        name='Restaurants'
+        name="Restaurants"
         component={HomeScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name='home' color={color} size={size} />
+            <AntDesign name="home" color={color} size={size} />
           ),
         }}
       />
 
       <Tab.Screen
-        name='Tracker'
+        name="Tracker"
         component={isRestaurantUser ? RestaurantTrackerScreen : TrackerScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Tracker',
+          tabBarLabel: "Tracker",
           tabBarIcon: ({ color, size }) => (
-            <Entypo name='bell' color={color} size={size} />
+            <Entypo name="bell" color={color} size={size} />
           ),
           tabBarBadge: 3,
         }}
       />
       <Tab.Screen
-        name='Commandes'
+        name="Commandes"
         component={CommandesScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Commandes',
+          tabBarLabel: "Commandes",
           tabBarIcon: ({ color, size }) => (
-            <Feather name='shopping-bag' color={color} size={size} />
+            <Feather name="shopping-bag" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name='Profile'
-        component={ProfileScreen}
+        name="Profile"
+        component={CreateNewProduct}
         options={{
           headerShown: false,
-          tabBarLabel: 'Settings',
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='account' color={color} size={size} />
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />

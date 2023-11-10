@@ -1,9 +1,15 @@
 /* eslint-disable prettier/prettier */
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { QueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
-import { Identity, Order, OrderItem, RestaurantPreview } from '../../types';
+import {
+  CreateProduct,
+  Identity,
+  Order,
+  OrderItem,
+  RestaurantPreview,
+} from "../../types";
 
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -15,9 +21,9 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    if (config.url === '/auth/refresh') return config;
+    if (config.url === "/auth/refresh") return config;
 
-    const token = await AsyncStorage.getItem('accessToken');
+    const token = await AsyncStorage.getItem("accessToken");
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
@@ -28,7 +34,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
-    if (error.response.status === 401 && config.url !== '/auth/refresh') {
+    if (error.response.status === 401 && config.url !== "/auth/refresh") {
       const token = await refreshTokenFn();
       if (!token) return Promise.reject(error);
 
@@ -41,18 +47,18 @@ axiosInstance.interceptors.response.use(
 
 const refreshTokenFn = async () => {
   try {
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    const refreshToken = await AsyncStorage.getItem("refreshToken");
     const { data } = await axiosInstance.get<{
       accessToken: string;
       refreshToken: string;
-    }>('/auth/refresh', {
+    }>("/auth/refresh", {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
       },
     });
 
-    await AsyncStorage.setItem('accessToken', data.accessToken);
-    await AsyncStorage.setItem('refreshToken', data.refreshToken);
+    await AsyncStorage.setItem("accessToken", data.accessToken);
+    await AsyncStorage.setItem("refreshToken", data.refreshToken);
     return data.accessToken;
   } catch {
     return null;
@@ -66,7 +72,7 @@ export const fetchCategories = async (): Promise<
   }[]
 > => {
   const { data } =
-    await axiosInstance.get<{ id: string; name: string }[]>('/categories');
+    await axiosInstance.get<{ id: string; name: string }[]>("/categories");
   return data;
 };
 
@@ -76,7 +82,7 @@ export const fetchRestaurants = async (
   category?: string
 ): Promise<RestaurantPreview[]> => {
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
-    '/restaurants',
+    "/restaurants",
     { params: { page, take: 5, name, category } }
   );
   return data;
@@ -87,7 +93,7 @@ export const getMyIdentity = async (): Promise<Identity> => {
   return data;
 };
 
-export const fetchOrders = async ({restaurantId}: any): Promise<Order[]> => {
+export const fetchOrders = async ({ restaurantId }: any): Promise<Order[]> => {
   const { data } = await axiosInstance.get<Order[]>(
     `restaurants/${restaurantId}/orders/`
   );
@@ -97,4 +103,18 @@ export const fetchOrders = async ({restaurantId}: any): Promise<Order[]> => {
 export const updateStatus = async (id: string) => {
   const { data } = await axiosInstance.patch(`/orders/${id}/next`, {});
   return data;
+};
+
+export const createProduct = async (data: CreateProduct) => {
+  const form = new FormData();
+  form.append("name", data.name);
+  form.append("price", data.price);
+  form.append("description", data.description);
+  form.append("image", data.image);
+  const { data: product } = await axiosInstance.post(`/products`, form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return product;
 };

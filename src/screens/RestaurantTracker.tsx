@@ -7,6 +7,8 @@ import OrderListCard from "../components/Card/OrderListCard";
 import { axiosInstance, fetchOrders, getMyIdentity } from "../lib/api/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Identity, Order } from "../types";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export enum OrderStatusEnum {
   PENDING = "PENDING",
@@ -100,17 +102,34 @@ export default function RestaurantTrackerScreen() {
   }, []);
 
   return (
-    <View>
-      {orders.map((order) => (
-        <OrderListCard
-          key={order.id}
-          Customer={order.user}
-          orderId={order.id}
-          orderDetails={order.products}
-          price={order.price}
-          orderStatus={statusTranslation[order.status]}
-        ></OrderListCard>
-      ))}
-    </View>
+    <SafeAreaView>
+      <ScrollView
+        style={{
+          alignSelf: "center",
+          width: "100%",
+          height: "100%",
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={order.isLoading}
+            onRefresh={() => order.refetch()}
+          />
+        }
+        contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {orders.map((order) => (
+          <OrderListCard
+            key={order.id}
+            Customer={order.user}
+            orderId={order.id}
+            orderDetails={order.products}
+            price={order.price}
+            orderStatus={statusTranslation[order.status]}
+          ></OrderListCard>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }

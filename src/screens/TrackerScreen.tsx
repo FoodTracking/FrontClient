@@ -3,19 +3,19 @@ import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
-import { axiosInstance } from "../lib/api/api";
-import { Identity } from "../types";
+import { axiosInstance, fetchOrders, getMyIdentity } from "../lib/api/api";
+import { Identity, Order } from "../types";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
+import OrderListCard from "../components/Card/OrderListCard";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import UserOrderCard from "../components/Card/UserOrder";
 
 export enum OrderStatusEnum {
   PENDING = "PENDING",
   IN_PROGRESS = "IN_PROGRESS",
   FINISHED = "FINISHED",
   DELIVERED = "DELIVERED",
-}
-
-interface Order {
-  id: string;
-  status: OrderStatusEnum;
 }
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
@@ -29,19 +29,16 @@ export default function TrackerScreen() {
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
-  const getMyIdentity = async () => {
-    try {
-      const response = await axiosInstance.get(`/identity/me`, {
-        headers: {
-          Authorization:
-            "Bearer " + (await AsyncStorage.getItem("accessToken")),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("An error occurred when trying to get my ID:", error);
-    }
-  };
+  const queryClient = useQueryClient();
+
+  const myIdentity = useQuery({
+    queryKey: ["my-identity"],
+    queryFn: getMyIdentity,
+  });
+  const order = useQuery({
+    queryKey: ["Orders", myIdentity.data?.id],
+    queryFn: () => fetchOrders(myIdentity.data?.id),
+  });
 
   const getOrders = async () => {
     try {
@@ -70,12 +67,9 @@ export default function TrackerScreen() {
         const accessToken = await AsyncStorage.getItem("accessToken");
         console.log("Access Token:", accessToken);
         if (accessToken) {
-          const newSocket = io(
-            "https://api.follow-food.alexandre-pezat.fr/orders",
-            {
-              auth: { token: accessToken },
-            }
-          );
+          const newSocket = io(`${process.env.EXPO_PUBLIC_API_URL}/orders`, {
+            auth: { token: accessToken },
+          });
           newSocket.on("updateOrder", (order: Order) => {
             const o = orders.find((o) => o.id === order.id);
             console.log("o", o);
@@ -110,13 +104,36 @@ export default function TrackerScreen() {
   }, []);
 
   return (
-    <View>
-      {orders.map((order) => (
-        <View key={order.id}>
-          <Text>{order.id}</Text>
-          <Text>{statusTranslation[order.status]}</Text>
-        </View>
-      ))}
-    </View>
+    <SafeAreaView>
+      <ScrollView
+        style={{
+          alignSelf: "center",
+          width: "100%",
+          height: "100%",
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={order.isLoading}
+            onRefresh={() => order.refetch()}
+          />
+        }
+        contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {orders.map((order) => (
+          <View>
+            <UserOrderCard
+              key={order.id}
+              Restaurant={order.restaurant.name}
+              orderId={order.id}
+              orderDetails={order.products}
+              price={order.price}
+              orderStatus={statusTranslation[order.status]}
+            ></UserOrderCard>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
