@@ -36,12 +36,6 @@ export interface RestaurantPreview {
   image: UserSession["avatar"];
 }
 
-interface OrderItem {
-  productId: string;
-  name: string;
-  quantity: number;
-}
-
 export interface CreateOrderDto {
   restaurantId: string;
   products: Omit<OrderItem, "name">[];
