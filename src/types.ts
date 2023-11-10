@@ -1,3 +1,10 @@
+export enum OrderStatusEnum {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  FINISHED = "FINISHED",
+  DELIVERED = "DELIVERED",
+}
+
 export interface UserSession {
   id: string;
   email: string;
@@ -6,7 +13,6 @@ export interface UserSession {
   name: string;
 }
 
-import { OrderStatusEnum } from "./screens/RestaurantTracker";
 
 export interface CreateIdentityDto {
   email: string;
@@ -36,7 +42,7 @@ export interface RestaurantPreview {
   image: UserSession["avatar"];
 }
 
-interface OrderItem {
+export interface OrderItem {
   productId: string;
   name: string;
   quantity: number;
@@ -64,7 +70,7 @@ export interface UserOrder {
   createdAt: string;
 }
 
-export interface ProductOrder {
+export interface RestaurantOrder {
   id: string;
   price: number;
   status: OrderStatusEnum;

@@ -6,7 +6,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx', '*.d.ts'],
       parserOptions: {
-        project: './FrontClient/tsconfig.json',
+        project: './tsconfig.json',
       },
     },
   ],

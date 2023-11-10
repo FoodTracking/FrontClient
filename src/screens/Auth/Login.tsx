@@ -17,12 +17,6 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Login"
 >;
 
-interface CreateProduct {
-  name: string;
-  price: number;
-  picture: string;
-  restaurantId: string;
-}
 
 export default function LoginScreen() {
   const { setIsAuthenticated } = useAuthContext();
@@ -65,6 +59,8 @@ export default function LoginScreen() {
         email,
         password,
       });
+
+      if (response.status !== 201) return;
 
       setIsAuthenticated(true);
       //
