@@ -4,7 +4,6 @@ import { Text, View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
 import { axiosInstance } from "../lib/api/api";
-import { Identity } from "../types";
 
 export enum OrderStatusEnum {
   PENDING = "PENDING",
@@ -42,72 +41,6 @@ export default function TrackerScreen() {
       console.error("An error occurred when trying to get my ID:", error);
     }
   };
-
-  const getOrders = async () => {
-    try {
-      const identity: Identity = await getMyIdentity();
-      const userId: string = identity.id;
-      const userRole: string = identity.role;
-      console.log(await getMyIdentity());
-
-      if (userId) {
-        const response = await axiosInstance.get(
-          `/${userRole}s/${userId}/orders`
-        );
-        console.log(response.data);
-        setOrders(response.data);
-      } else {
-        console.error("User ID not found");
-      }
-    } catch (error) {
-      console.error("An error occurred when trying to get orders:", error);
-    }
-  };
-
-  useEffect(() => {
-    const setupSocket = async () => {
-      try {
-        const accessToken = await AsyncStorage.getItem("accessToken");
-        console.log("Access Token:", accessToken);
-        if (accessToken) {
-          const newSocket = io(
-            "https://api.follow-food.alexandre-pezat.fr/orders",
-            {
-              auth: { token: accessToken },
-            }
-          );
-          newSocket.on("updateOrder", (order: Order) => {
-            const o = orders.find((o) => o.id === order.id);
-            console.log("o", o);
-            if (!o) return;
-            o.status = order.status;
-            setOrders([...orders]);
-          });
-          setSocket(newSocket);
-          console.log("Socket ON");
-        } else {
-          console.error("Ca marche pas");
-        }
-      } catch (error) {
-        console.error(
-          "Error retrieving access token from AsyncStorage:",
-          error
-        );
-      }
-    };
-
-    getOrders();
-
-    setupSocket();
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-        socket.off("updateOrder");
-        setSocket(null);
-      }
-    };
-  }, []);
 
   return (
     <View>

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -6,12 +5,11 @@ import axios from 'axios';
 import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
-  Order,
+  Order, RestaurantOrder,
   RestaurantPreview,
   UserOrder,
-  UserSession,
+  UserSession
 } from "../../types";
-import { Identity, Order, OrderItem, RestaurantPreview } from '../../types';
 
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -118,8 +116,9 @@ export const fetchIdentity = async () => {
   return data;
 };
 
-export const fetchOrders = async ({restaurantId}: any): Promise<Order[]> => {
-  const { data } = await axiosInstance.get<Order[]>(
+export const fetchOrders = async (restaurantId: string): Promise<RestaurantOrder[]> => {
+  alert(restaurantId)
+  const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`
   );
   return data;

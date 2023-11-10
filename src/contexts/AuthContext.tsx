@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     fetchIdentity()
       .then((user) => {
         setUser(user);
+        alert(JSON.stringify(user));
         setIsAuthenticated(true);
       })
       .catch((error) => {
