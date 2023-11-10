@@ -490,7 +490,6 @@ export default function RegisterScreen() {
         style={{ alignSelf: "center", marginTop: 20 }}
         title="S'inscrire"
         onPress={() => {
-          alert("Inscription");
           handleSubmit(onSubmit)();
 
           // updateAccess(true);
