@@ -1,14 +1,15 @@
 import { AntDesign, Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
+import { useEffect } from "react";
 
+import ExploreNavigator from "./ExploreStack";
 import { useAuthContext } from "../hooks/useAuthContext";
 import HomeScreen from "../screens/Home";
 import OrderScreen from "../screens/OrderScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
-import { useEffect } from "react";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -34,10 +35,10 @@ export default function MainStack() {
     >
       <Tab.Screen
         name='Restaurants'
-        component={HomeScreen}
+        component={ExploreNavigator}
         options={{
           headerShown: false,
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Explorer',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name='home' color={color} size={size} />
           ),
@@ -51,9 +52,8 @@ export default function MainStack() {
           headerShown: false,
           tabBarLabel: 'Tracker',
           tabBarIcon: ({ color, size }) => (
-            <Entypo name='bell' color={color} size={size} />
+            <AntDesign name="bells" color={color} size={size} />
           ),
-          tabBarBadge: 3,
         }}
       />
       <Tab.Screen
@@ -63,7 +63,7 @@ export default function MainStack() {
           headerShown: false,
           tabBarLabel: 'Commandes',
           tabBarIcon: ({ color, size }) => (
-            <Feather name='shopping-bag' color={color} size={size} />
+            <AntDesign name="shoppingcart" color={color} size={size} />
           ),
         }}
       />
@@ -72,9 +72,9 @@ export default function MainStack() {
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Paramètres',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='account' color={color} size={size} />
+            <AntDesign name="setting" color={color} size={size}/>
           ),
         }}
       />

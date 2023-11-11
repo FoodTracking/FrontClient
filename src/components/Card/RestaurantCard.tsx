@@ -1,18 +1,24 @@
+import {NavigationProp, useNavigation} from "@react-navigation/native";
 import { Skeleton } from "@rneui/base";
 import { Image } from "@rneui/themed";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
+import {ExploreParamList} from "../../navigation/ExploreStack";
+
 export default function RestaurantCard({
+  id,
   name,
   style,
   picture,
 }: {
+  id: string;
   name: string;
   category: string;
   style?: object;
   picture?: string;
 }) {
+  const navigation = useNavigation<NavigationProp<ExploreParamList>>();
   return (
     <Pressable
       style={{
@@ -21,6 +27,7 @@ export default function RestaurantCard({
         borderRadius: 10,
         ...style,
       }}
+      onPress={() => navigation.navigate("Details", { id })}
     >
       <Image
         source={{ uri: picture }}
