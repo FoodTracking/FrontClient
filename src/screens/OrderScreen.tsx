@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -11,7 +11,7 @@ import {
 
 import CommandCard from "../components/Card/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { fetchUserOrders } from "../lib/api/api";
+import { fetchUserOrders, queryClient } from "../lib/api/api";
 
 export default function OrderScreen() {
   const { user } = useAuthContext();

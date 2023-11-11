@@ -27,6 +27,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserSession | null>(null);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setUser(null)
+      return;
+    }
+
     fetchIdentity()
       .then((user) => {
         setUser(user);
@@ -37,7 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
         setIsAuthenticated(false);
       });
-  }, []);
+  }, [isAuthenticated]);
 
   // The value that will be supplied to any descendants of this provider
   const authContextValue = {

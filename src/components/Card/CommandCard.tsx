@@ -1,9 +1,11 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Skeleton } from "@rneui/base";
-import { Image } from "@rneui/themed";
-import React from "react";
+import { Image, Overlay } from "@rneui/themed";
+import React, { useState } from "react";
 import { Button, Pressable, Text, View, ViewStyle } from "react-native";
 
-import { fetchOrder, insertOrder, queryClient } from "../../lib/api/api";
+import { fetchOrder, insertOrder } from "../../lib/api/api";
+import { MainStackParamList } from "../../navigation/MainStack";
 
 interface CommandCardProps {
   id: string;
@@ -16,14 +18,16 @@ interface CommandCardProps {
 }
 
 export default function CommandCard({
-  id,
-  title,
-  quantity,
-  price,
-  style,
-  picture,
-  date,
-}: CommandCardProps) {
+                                      id,
+                                      title,
+                                      quantity,
+                                      price,
+                                      style,
+                                      picture,
+                                      date,
+                                    }: CommandCardProps) {
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const [isVisible, setVisible] =  useState(false);
   const handlePress = async (id: string) => {
     // Get order by id with products
     const order = await fetchOrder(id);
@@ -35,12 +39,17 @@ export default function CommandCard({
           quantity: product.quantity,
         })),
       });
-      await queryClient.invalidateQueries({ queryKey: ["orders"] });
+      navigation.navigate("Tracker");
     } catch (error) {
       console.log(error);
     }
     // POst /orders
   };
+
+  const handleOverlay = () => {
+    setVisible(true);
+
+  }
 
   return (
     <Pressable
@@ -93,7 +102,12 @@ export default function CommandCard({
           </View>
         </View>
       </View>
-      <Button title={"Commander"} onPress={() => handlePress(id)} />
+      <Button title={"Commander"} onPress={() => handleOverlay()} />
+      <Overlay isVisible={isVisible}>
+        <Text>Voulez vous recommandé ?</Text>
+        <Button title={"Oui"} onPress={() => handlePress(id)} />
+        <Button title={"Non"} onPress={() => setVisible(false)} />
+      </Overlay>
     </Pressable>
   );
 }

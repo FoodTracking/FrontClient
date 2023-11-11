@@ -67,6 +67,7 @@ export interface UserOrder {
   restaurant: Omit<RestaurantPreview, "category">;
   quantity: number;
   price: number;
+  status: OrderStatusEnum;
   createdAt: string;
 }
 
