@@ -6,7 +6,7 @@ import io, { Socket } from "socket.io-client";
 
 import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { axiosInstance, fetchOrders, queryClient } from "../lib/api/api";
+import { axiosInstance, fetchRestaurantsOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
 
 
@@ -25,7 +25,7 @@ export default function RestaurantTrackerScreen() {
 
   const { data: orders, refetch } = useQuery({
     queryKey: ["restaurants-orders", user?.id],
-    queryFn: () => fetchOrders(user!.id),
+    queryFn: () => fetchRestaurantsOrders(user!.id),
   });
 
   useEffect(() => {

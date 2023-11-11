@@ -15,7 +15,6 @@ export type MainStackParamList = {
   Tracker: undefined;
   Commandes: undefined;
   Profile: undefined;
-  RestaurantTracker: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
@@ -79,6 +78,7 @@ export default function MainStack() {
           ),
         }}
       />
+
     </Tab.Navigator>
   );
 }
