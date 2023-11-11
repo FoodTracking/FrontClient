@@ -92,6 +92,7 @@ export default function HomeScreen() {
             return (
               <RestaurantCard
                 key={restaurant.id}
+                id={restaurant.id}
                 name={restaurant.name}
                 category={restaurant.category}
                 picture={restaurant.image}
