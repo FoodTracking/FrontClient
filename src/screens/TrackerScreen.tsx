@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
-import { axiosInstance } from "../lib/api/api";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { fetchUserOrders, queryClient } from "../lib/api/api";
 
 export enum OrderStatusEnum {
   PENDING = "PENDING",
@@ -25,31 +27,47 @@ const statusTranslation: Record<OrderStatusEnum, string> = {
 };
 
 export default function TrackerScreen() {
-  const [orders, setOrders] = React.useState<Order[]>([]);
+  const { user } = useAuthContext();
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
-  const getMyIdentity = async () => {
-    try {
-      const response = await axiosInstance.get(`/identity/me`, {
-        headers: {
-          Authorization:
-            "Bearer " + (await AsyncStorage.getItem("accessToken")),
-        },
+  const query = useQuery({
+    queryKey: ["user-orders"],
+    queryFn: () => fetchUserOrders(user!.id, 1),
+  });
+
+  useEffect(() => {
+    const setupSocket = async () => {
+      const newSocket = io(`${process.env.EXPO_PUBLIC_API_URL}/orders`, {
+        auth: { token: await AsyncStorage.getItem("accessToken") },
       });
-      return response.data;
-    } catch (error) {
-      console.error("An error occurred when trying to get my ID:", error);
-    }
-  };
+      newSocket.on("updateOrder", (order: Order) => {
+        queryClient.invalidateQueries({ queryKey: ["user-orders"] })
+        query.refetch();
+      });
+      setSocket(newSocket);
+    };
+
+    setupSocket();
+
+    return () => {
+      if (socket) {
+        socket.off("updateOrder");
+        socket.disconnect();
+        setSocket(null);
+      }
+    };
+  }, []);
+
+
 
   return (
-    <View>
-      {orders.map((order) => (
+    <SafeAreaView>
+      {query.data?.map((order) => (
         <View key={order.id}>
           <Text>{order.id}</Text>
           <Text>{statusTranslation[order.status]}</Text>
         </View>
       ))}
-    </View>
+    </SafeAreaView>
   );
 }

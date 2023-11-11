@@ -116,7 +116,7 @@ export const fetchIdentity = async () => {
   return data;
 };
 
-export const fetchOrders = async (restaurantId: string): Promise<RestaurantOrder[]> => {
+export const fetchRestaurantsOrders = async (restaurantId: string): Promise<RestaurantOrder[]> => {
   alert(restaurantId)
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`
