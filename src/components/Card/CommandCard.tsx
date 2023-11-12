@@ -18,16 +18,16 @@ interface CommandCardProps {
 }
 
 export default function CommandCard({
-                                      id,
-                                      title,
-                                      quantity,
-                                      price,
-                                      style,
-                                      picture,
-                                      date,
-                                    }: CommandCardProps) {
+  id,
+  title,
+  quantity,
+  price,
+  style,
+  picture,
+  date,
+}: CommandCardProps) {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const [isVisible, setVisible] =  useState(false);
+  const [isVisible, setVisible] = useState(false);
   const handlePress = async (id: string) => {
     // Get order by id with products
     const order = await fetchOrder(id);
@@ -48,8 +48,7 @@ export default function CommandCard({
 
   const handleOverlay = () => {
     setVisible(true);
-
-  }
+  };
 
   return (
     <Pressable

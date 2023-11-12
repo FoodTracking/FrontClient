@@ -1,14 +1,17 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { QueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
-  Order, RestaurantOrder,
+  Order,
+  Product,
+  Restaurant,
+  RestaurantOrder,
   RestaurantPreview,
   UserOrder,
-  UserSession
+  UserSession,
 } from "../../types";
 
 export const queryClient = new QueryClient({
@@ -21,20 +24,20 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    if (config.url === '/auth/refresh') return config;
+    if (config.url === "/auth/refresh") return config;
 
-    const token = await AsyncStorage.getItem('accessToken');
+    const token = await AsyncStorage.getItem("accessToken");
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
-    if (error.response.status === 401 && config.url !== '/auth/refresh') {
+    if (error.response.status === 401 && config.url !== "/auth/refresh") {
       const token = await refreshTokenFn();
       if (!token) {
         eventManager.emit("unauthorized");
@@ -45,23 +48,23 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(config);
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 const refreshTokenFn = async () => {
   try {
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    const refreshToken = await AsyncStorage.getItem("refreshToken");
     const { data } = await axiosInstance.get<{
       accessToken: string;
       refreshToken: string;
-    }>('/auth/refresh', {
+    }>("/auth/refresh", {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
       },
     });
 
-    await AsyncStorage.setItem('accessToken', data.accessToken);
-    await AsyncStorage.setItem('refreshToken', data.refreshToken);
+    await AsyncStorage.setItem("accessToken", data.accessToken);
+    await AsyncStorage.setItem("refreshToken", data.refreshToken);
     return data.accessToken;
   } catch {
     return null;
@@ -75,18 +78,18 @@ export const fetchCategories = async (): Promise<
   }[]
 > => {
   const { data } =
-    await axiosInstance.get<{ id: string; name: string }[]>('/categories');
+    await axiosInstance.get<{ id: string; name: string }[]>("/categories");
   return data;
 };
 
 export const fetchRestaurants = async (
   page: number,
   name?: string,
-  category?: string
+  category?: string,
 ): Promise<RestaurantPreview[]> => {
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
-    '/restaurants',
-    { params: { page, take: 5, name, category } }
+    "/restaurants",
+    { params: { page, take: 5, name, category } },
   );
   return data;
 };
@@ -116,10 +119,27 @@ export const fetchIdentity = async () => {
   return data;
 };
 
-export const fetchRestaurantsOrders = async (restaurantId: string): Promise<RestaurantOrder[]> => {
-  alert(restaurantId)
+export const fetchRestaurant = async (id: string) => {
+  const { data } = await axiosInstance.get<Restaurant>(`/restaurants/${id}`);
+  return data;
+};
+
+export const fetchProducts = async (id: string, page: number) => {
+  const { data } = await axiosInstance.get<Product[]>(
+    `/restaurants/${id}/products`,
+    {
+      params: { page, take: 5 },
+    },
+  );
+  return data;
+};
+
+export const fetchRestaurantsOrders = async (
+  restaurantId: string,
+): Promise<RestaurantOrder[]> => {
+  alert(restaurantId);
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
-    `restaurants/${restaurantId}/orders/`
+    `restaurants/${restaurantId}/orders/`,
   );
   return data;
 };

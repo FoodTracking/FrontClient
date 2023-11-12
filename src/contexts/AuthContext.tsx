@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setUser(null)
+      setUser(null);
       return;
     }
 

@@ -1,4 +1,9 @@
-import { AntDesign, Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { useEffect } from "react";
@@ -21,64 +26,64 @@ export type MainStackParamList = {
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
 export default function MainStack() {
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
 
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <Tab.Navigator
-      initialRouteName='Restaurants'
+      initialRouteName="Restaurants"
       screenOptions={{
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: "black",
       }}
     >
       <Tab.Screen
-        name='Restaurants'
+        name="Restaurants"
         component={ExploreNavigator}
         options={{
           headerShown: false,
-          tabBarLabel: 'Explorer',
+          tabBarLabel: "Explorer",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name='home' color={color} size={size} />
+            <AntDesign name="home" color={color} size={size} />
           ),
         }}
       />
 
       <Tab.Screen
-        name='Tracker'
-        component={user?.role === 'restaurant' ? RestaurantTrackerScreen : TrackerScreen}
+        name="Tracker"
+        component={
+          user?.role === "restaurant" ? RestaurantTrackerScreen : TrackerScreen
+        }
         options={{
           headerShown: false,
-          tabBarLabel: 'Tracker',
+          tabBarLabel: "Tracker",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="bells" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name='Commandes'
+        name="Commandes"
         component={OrderScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Commandes',
+          tabBarLabel: "Commandes",
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="shoppingcart" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name='Profile'
+        name="Profile"
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Paramètres',
+          tabBarLabel: "Paramètres",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="setting" color={color} size={size}/>
+            <AntDesign name="setting" color={color} size={size} />
           ),
         }}
       />
-
     </Tab.Navigator>
   );
 }

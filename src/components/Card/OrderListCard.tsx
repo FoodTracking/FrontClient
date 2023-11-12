@@ -3,8 +3,9 @@ import { Card } from "@rneui/themed";
 import { Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { OrderItem } from "../../types";
+
 import { updateStatus } from "../../lib/api/api";
+import { OrderItem } from "../../types";
 
 export interface OrderListCardProps {
   Customer: string;
@@ -51,7 +52,7 @@ export default function OrderListCard({
               {orderDetails
                 .map(
                   (products) =>
-                    " " + products.name + " Quantité: " + products.quantity
+                    " " + products.name + " Quantité: " + products.quantity,
                 )
                 .join("\n")}
             </Text>

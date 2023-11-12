@@ -1,7 +1,7 @@
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
 import {
   Alert,
   Button,
@@ -10,14 +10,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 
-import BaseInput from '../components/Input/BaseInput';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { AuthStackParamList } from '../navigation/AuthStack';
+import BaseInput from "../components/Input/BaseInput";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { AuthStackParamList } from "../navigation/AuthStack";
 
 interface UserProfileEditProps {
-  navigation: StackNavigationProp<AuthStackParamList, 'Onboarding'>;
+  navigation: StackNavigationProp<AuthStackParamList, "Onboarding">;
 }
 
 export function isValidEmail(email: string): boolean {
@@ -30,10 +30,10 @@ export default function UserProfileEdit({
 }: UserProfileEditProps): React.JSX.Element {
   const { setIsAuthenticated } = useAuthContext();
 
-  const [firstname, setFirstname] = React.useState('');
-  const [lastname, setLastname] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [firstname, setFirstname] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleFirstnameChange = (text: string) => {
@@ -58,7 +58,7 @@ export default function UserProfileEdit({
 
   const handleSubmit = () => {
     if (!isValidEmail(email)) {
-      Alert.alert('Invalid email format. Please enter a valid email address.');
+      Alert.alert("Invalid email format. Please enter a valid email address.");
     }
     // Send updated data to the backend
     // Handle profile update logic here
@@ -66,8 +66,8 @@ export default function UserProfileEdit({
 
   const handleLogout = async () => {
     // Supprimer le jeton d'authentification du stockage
-    await AsyncStorage.removeItem('accessToken');
-    await AsyncStorage.removeItem('refreshToken');
+    await AsyncStorage.removeItem("accessToken");
+    await AsyncStorage.removeItem("refreshToken");
 
     // Rediriger vers l'écran de connexion
     setIsAuthenticated(false);
@@ -77,33 +77,33 @@ export default function UserProfileEdit({
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: "white",
       }}
     >
       <View
         style={{
           marginHorizontal: 12,
-          flexDirection: 'row',
-          justifyContent: 'center',
+          flexDirection: "row",
+          justifyContent: "center",
           marginTop: 10,
         }}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
-            position: 'absolute',
+            position: "absolute",
             left: 0,
           }}
         >
-          <MaterialIcons name='keyboard-arrow-left' size={24} color='black' />
+          <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
         </TouchableOpacity>
 
         <Text style={{ fontSize: 18, paddingBottom: 20 }}>Edit Profile</Text>
         <TouchableOpacity
           onPress={() => handleLogout()}
-          style={{ position: 'absolute', right: 0 }}
+          style={{ position: "absolute", right: 0 }}
         >
-          <FontAwesome name='power-off' size={24} color='black' />
+          <FontAwesome name="power-off" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -111,7 +111,7 @@ export default function UserProfileEdit({
         <View>
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: "column",
               marginBottom: 6,
             }}
           >
@@ -127,7 +127,7 @@ export default function UserProfileEdit({
         <View>
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: "column",
               marginBottom: 6,
             }}
           >
@@ -142,7 +142,7 @@ export default function UserProfileEdit({
 
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: "column",
               marginBottom: 6,
             }}
           >
@@ -156,12 +156,12 @@ export default function UserProfileEdit({
 
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: "column",
               marginBottom: 6,
             }}
           >
             <Text>Password</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <BaseInput
                 secureTextEntry={!showPassword}
                 placeholder={password}
@@ -171,9 +171,9 @@ export default function UserProfileEdit({
               />
               <TouchableOpacity>
                 <MaterialIcons
-                  name={showPassword ? 'visibility' : 'visibility-off'}
+                  name={showPassword ? "visibility" : "visibility-off"}
                   size={24}
-                  color='black'
+                  color="black"
                   onPress={toggleShowPassword}
                 />
               </TouchableOpacity>
@@ -182,11 +182,11 @@ export default function UserProfileEdit({
         </View>
         <TouchableOpacity
           onPress={() => handleLogout()}
-          style={{ position: 'absolute', right: 0 }}
+          style={{ position: "absolute", right: 0 }}
         >
-          <FontAwesome name='power-off' size={24} color='black' />
+          <FontAwesome name="power-off" size={24} color="black" />
         </TouchableOpacity>
-        <Button color='black' title='Save Changes' onPress={handleSubmit} />
+        <Button color="black" title="Save Changes" onPress={handleSubmit} />
       </ScrollView>
     </SafeAreaView>
   );

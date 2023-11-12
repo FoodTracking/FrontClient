@@ -13,7 +13,6 @@ export interface UserSession {
   name: string;
 }
 
-
 export interface CreateIdentityDto {
   email: string;
   password: string;
@@ -42,6 +41,18 @@ export interface RestaurantPreview {
   image: UserSession["avatar"];
 }
 
+export interface Restaurant extends RestaurantPreview {
+  description: string;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+}
+
 export interface OrderItem {
   productId: string;
   name: string;
@@ -52,7 +63,6 @@ export interface CreateOrderDto {
   restaurantId: string;
   products: Omit<OrderItem, "name">[];
 }
-
 
 export interface Order {
   id: string;
@@ -78,4 +88,3 @@ export interface RestaurantOrder {
   products: OrderItem[];
   user: string;
 }
-
