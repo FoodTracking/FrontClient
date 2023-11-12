@@ -19,7 +19,7 @@ import ProductCard from "../components/Card/ProductCard";
 import { fetchProducts, fetchRestaurant } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
 
-export interface DetailsScreenProps {
+interface DetailsScreenProps {
   route: RouteProp<ExploreParamList, "Details">;
   navigation: StackNavigationProp<ExploreParamList>;
 }
@@ -29,7 +29,7 @@ export default function DetailsScreen({
   navigation,
 }: DetailsScreenProps) {
   const { id } = route.params;
-  const { data } = useQuery({
+  const { data: restaurant } = useQuery({
     queryKey: ["restaurant", id],
     queryFn: () => fetchRestaurant(id),
   });
@@ -43,7 +43,17 @@ export default function DetailsScreen({
     name: "products",
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    navigation.navigate("Cart", {
+      restaurant: restaurant!,
+      products: data.products.map((product: any) => ({
+        product: products?.pages
+          .flatMap((page) => page)
+          .find((p) => p.id === product.productId),
+        quantity: product.quantity,
+      })),
+    });
+  };
 
   const {
     fetchNextPage,
@@ -85,8 +95,8 @@ export default function DetailsScreen({
   };
 
   useEffect(() => {
-    navigation.setOptions({ title: data?.name });
-  }, [data]);
+    navigation.setOptions({ title: restaurant?.name });
+  }, [restaurant]);
 
   const handleProductQuantityChange = (productId: string, quantity: number) => {
     const index = fields.findIndex((field) => field.productId === productId);
@@ -121,7 +131,7 @@ export default function DetailsScreen({
         showsHorizontalScrollIndicator={false}
       >
         <Image
-          source={{ uri: data?.image }}
+          source={{ uri: restaurant?.image }}
           PlaceholderContent={
             <Skeleton style={{ height: "100%", width: "100%" }} />
           }
@@ -130,7 +140,7 @@ export default function DetailsScreen({
         />
 
         <Text h3>Description</Text>
-        <Text>{data?.description}</Text>
+        <Text>{restaurant?.description}</Text>
 
         <Text h3>Produits</Text>
         <View>

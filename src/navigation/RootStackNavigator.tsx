@@ -13,7 +13,12 @@ import MainStack from "./MainStack";
 import { eventManager } from "../EventEmitter";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Auth: undefined;
+  Main: undefined;
+};
+
+const Root = createStackNavigator<RootStackParamList>();
 
 export function RootStackNavigator() {
   const { isAuthenticated, setIsAuthenticated } = useAuthContext();
@@ -33,17 +38,13 @@ export function RootStackNavigator() {
   }, [navigation]);
 
   return (
-    <Stack.Navigator
-      initialRouteName={isAuthenticated ? "MainStack" : "AuthStack"}
+    <Root.Navigator
+      initialRouteName={isAuthenticated ? "Main" : "Auth"}
       screenOptions={{ headerShown: false }}
     >
-      {!isAuthenticated && (
-        <Stack.Screen name="AuthStack" component={AuthStack} />
-      )}
-      {isAuthenticated && (
-        <Stack.Screen name="MainStack" component={MainStack} />
-      )}
-    </Stack.Navigator>
+      {!isAuthenticated && <Root.Screen name="Auth" component={AuthStack} />}
+      {isAuthenticated && <Root.Screen name="Main" component={MainStack} />}
+    </Root.Navigator>
   );
 }
 
