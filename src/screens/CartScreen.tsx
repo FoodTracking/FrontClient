@@ -1,10 +1,15 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  NavigationProp,
+  RouteProp,
+  StackActions,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Skeleton } from "@rneui/base";
 import { Button, Divider, Image, Text } from "@rneui/themed";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
 
 import { insertOrder } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
@@ -23,6 +28,12 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
   const mutation = useMutation({
     mutationFn: (data: CreateOrderDto) => insertOrder(data),
     onSuccess: () => {
+      showMessage({
+        message: "Commande validée",
+        type: "success",
+      });
+
+      navigation.dispatch(StackActions.popToTop());
       navigation.navigate("Tracker");
     },
   });
