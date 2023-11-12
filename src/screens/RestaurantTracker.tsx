@@ -6,10 +6,12 @@ import io, { Socket } from "socket.io-client";
 
 import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { axiosInstance, fetchRestaurantsOrders, queryClient } from "../lib/api/api";
+import {
+  axiosInstance,
+  fetchRestaurantsOrders,
+  queryClient,
+} from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-
-
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -21,7 +23,6 @@ const statusTranslation: Record<OrderStatusEnum, string> = {
 export default function RestaurantTrackerScreen() {
   const { user } = useAuthContext();
   const [socket, setSocket] = React.useState<Socket | null>(null);
-
 
   const { data: orders, refetch } = useQuery({
     queryKey: ["restaurants-orders", user?.id],
@@ -38,7 +39,7 @@ export default function RestaurantTrackerScreen() {
             auth: { token: accessToken },
           });
           newSocket.on("updateOrder", (order: Order) => {
-            queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] })
+            queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
             refetch();
           });
           setSocket(newSocket);
@@ -49,11 +50,10 @@ export default function RestaurantTrackerScreen() {
       } catch (error) {
         console.error(
           "Error retrieving access token from AsyncStorage:",
-          error
+          error,
         );
       }
     };
-
 
     setupSocket();
 

@@ -41,7 +41,7 @@ export default function TrackerScreen() {
         auth: { token: await AsyncStorage.getItem("accessToken") },
       });
       newSocket.on("updateOrder", (order: Order) => {
-        queryClient.invalidateQueries({ queryKey: ["user-orders"] })
+        queryClient.invalidateQueries({ queryKey: ["user-orders"] });
         query.refetch();
       });
       setSocket(newSocket);
@@ -57,8 +57,6 @@ export default function TrackerScreen() {
       }
     };
   }, []);
-
-
 
   return (
     <SafeAreaView>

@@ -17,7 +17,6 @@ type OnboardingScreenNavigationProp = StackNavigationProp<
   "Login"
 >;
 
-
 export default function LoginScreen() {
   const { setIsAuthenticated } = useAuthContext();
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
