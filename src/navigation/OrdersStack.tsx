@@ -1,14 +1,11 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {createStackNavigator} from "@react-navigation/stack";
 
-import { CartScreen } from "../screens/CartScreen";
-import DetailsScreen from "../screens/DetailsScreen";
-import HomeScreen from "../screens/Home";
-import { Product, Restaurant } from "../types";
+import {CartScreen} from "../screens/CartScreen";
+import {Product, Restaurant} from "../types";
 import OrderScreen from "../screens/OrderScreen";
 
 export type OrdersParamList = {
   Logs: undefined;
-  Details: { id: string };
   Cart: {
     restaurant: Restaurant;
     products: { product: Product; quantity: number }[];
@@ -28,7 +25,6 @@ export default function OrdersStack() {
         }}
         component={OrderScreen}
       />
-      <Orders.Screen name="Details" component={DetailsScreen} />
       <Orders.Screen
         name={"Cart"}
         options={{

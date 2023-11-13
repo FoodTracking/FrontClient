@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         alert(JSON.stringify(user));
         setIsAuthenticated(true);
       })
-      .catch((error) => {
+      .catch(() => {
         setUser(null);
         setIsAuthenticated(false);
       });

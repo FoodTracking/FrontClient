@@ -80,22 +80,22 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
         ))}
       </ScrollView>
 
-      <View
-        style={{
-          zIndex: 2,
-          position: "absolute",
-          bottom: 20,
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity>
-          <Button size={"md"} radius={"md"} onPress={handleConfirm}>
-            <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
-          </Button>
-        </TouchableOpacity>
-      </View>
+        <View
+          style={{
+            zIndex: 2,
+            position: "absolute",
+            bottom: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <TouchableOpacity>
+            <Button size={"md"} radius={"md"} onPress={handleConfirm}>
+              <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
+            </Button>
+          </TouchableOpacity>
+        </View>
     </SafeAreaView>
   );
 }

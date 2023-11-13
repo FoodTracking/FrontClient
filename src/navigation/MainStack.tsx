@@ -9,15 +9,17 @@ import * as React from "react";
 import { useEffect } from "react";
 
 import ExploreNavigator from "./ExploreStack";
+import OrdersStack from "./OrdersStack";
+import ProfileStack from "./ProfileStack";
 import { useAuthContext } from "../hooks/useAuthContext";
 import HomeScreen from "../screens/Home";
 import OrderScreen from "../screens/OrderScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../screens/ProfileEditScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
-import OrdersStack from "./OrdersStack";
 
 export type MainStackParamList = {
+  Admin: undefined;
   Restaurants: undefined;
   Tracker: undefined;
   Commandes: undefined;
@@ -76,15 +78,28 @@ export default function MainStack() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStack}
         options={{
           headerShown: false,
-          tabBarLabel: "Paramètres",
+          tabBarLabel: "Profil",
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="setting" color={color} size={size} />
+            <AntDesign name="user" color={color} size={size} />
           ),
         }}
       />
+      {user?.role === "admin" && (
+        <Tab.Screen
+          name="Admin"
+          component={ProfileScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Gestion",
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="setting" color={color} size={size} />
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 }

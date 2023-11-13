@@ -1,193 +1,70 @@
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
-import {
-  Alert,
-  Button,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { NavigationProp } from "@react-navigation/native";
+import { Icon, ListItem, Text } from "@rneui/themed";
+import { SafeAreaView, TouchableHighlight } from "react-native";
 
-import BaseInput from "../components/Input/BaseInput";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { AuthStackParamList } from "../navigation/AuthStack";
+import { ProfileParamList } from "../navigation/ProfileStack";
+import {useAuthContext} from "../hooks/useAuthContext";
 
-interface UserProfileEditProps {
-  navigation: StackNavigationProp<AuthStackParamList, "Onboarding">;
+const items: { title: string; path: keyof ProfileParamList; icon: string }[] = [
+  {
+    title: "Informations de connexion",
+    icon: "idcard",
+    path: "ConnectionInformation",
+  },
+  {
+    title: "Informations du compte",
+    icon: "user",
+    path: "AccountInformation",
+  },
+  {
+    title: "Produits",
+    icon: "shoppingcart",
+    path: "Products",
+  },
+];
+
+interface ProfileScreenProps {
+  navigation: NavigationProp<ProfileParamList>;
 }
 
-export function isValidEmail(email: string): boolean {
-  const emailPattern: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  return emailPattern.test(email);
-}
-
-export default function UserProfileEdit({
-  navigation,
-}: UserProfileEditProps): React.JSX.Element {
+export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const { setIsAuthenticated } = useAuthContext();
 
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleFirstnameChange = (text: string) => {
-    setFirstname(text);
-  };
-
-  const handleLastnameChange = (text: string) => {
-    setLastname(text);
-  };
-
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-  };
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-  };
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = () => {
-    if (!isValidEmail(email)) {
-      Alert.alert("Invalid email format. Please enter a valid email address.");
-    }
-    // Send updated data to the backend
-    // Handle profile update logic here
-  };
-
-  const handleLogout = async () => {
-    // Supprimer le jeton d'authentification du stockage
-    await AsyncStorage.removeItem("accessToken");
-    await AsyncStorage.removeItem("refreshToken");
-
-    // Rediriger vers l'écran de connexion
-    setIsAuthenticated(false);
-  };
-
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-      }}
-    >
-      <View
-        style={{
-          marginHorizontal: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
+    <SafeAreaView>
+      <Text h2>Profil</Text>
+      {items.map((item, i) => (
+        <ListItem
+          key={i}
+          Component={TouchableHighlight}
+          onPress={() => navigation.navigate(item.path)}
+          bottomDivider
+        >
+          {/* @ts-ignore */}
+          <AntDesign name={item.icon} size={24} color="black" />
+          <ListItem.Content>
+            <ListItem.Title>{item.title}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      ))}
+      <ListItem
+        Component={TouchableHighlight}
+        onPress={async () => {
+          await AsyncStorage.removeItem("accessToken");
+          await AsyncStorage.removeItem("refreshToken");
+          setIsAuthenticated(false);
         }}
+        bottomDivider
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: "absolute",
-            left: 0,
-          }}
-        >
-          <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-
-        <Text style={{ fontSize: 18, paddingBottom: 20 }}>Edit Profile</Text>
-        <TouchableOpacity
-          onPress={() => handleLogout()}
-          style={{ position: "absolute", right: 0 }}
-        >
-          <FontAwesome name="power-off" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView>
-        <View>
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
-            }}
-          >
-            <Text>First Name</Text>
-
-            <BaseInput
-              placeholder={firstname}
-              onChange={handleFirstnameChange}
-              value={firstname}
-            />
-          </View>
-        </View>
-        <View>
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
-            }}
-          >
-            <Text>Last Name</Text>
-
-            <BaseInput
-              placeholder={lastname}
-              onChange={handleLastnameChange}
-              value={lastname}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
-            }}
-          >
-            <Text>Email</Text>
-            <BaseInput
-              placeholder={email}
-              onChange={handleEmailChange}
-              value={email}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
-            }}
-          >
-            <Text>Password</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <BaseInput
-                secureTextEntry={!showPassword}
-                placeholder={password}
-                onChange={handlePasswordChange}
-                value={password}
-                style={{ flex: 1 }}
-              />
-              <TouchableOpacity>
-                <MaterialIcons
-                  name={showPassword ? "visibility" : "visibility-off"}
-                  size={24}
-                  color="black"
-                  onPress={toggleShowPassword}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => handleLogout()}
-          style={{ position: "absolute", right: 0 }}
-        >
-          <FontAwesome name="power-off" size={24} color="black" />
-        </TouchableOpacity>
-        <Button color="black" title="Save Changes" onPress={handleSubmit} />
-      </ScrollView>
+        <AntDesign name={"logout"} size={24} color="black" />
+        <ListItem.Content>
+          <ListItem.Title>{"Déconnexion"}</ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
     </SafeAreaView>
   );
 }

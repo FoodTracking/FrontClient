@@ -13,6 +13,13 @@ export interface UserSession {
   name: string;
 }
 
+export interface UpdateIdentityDto {
+  id: string
+  email?: string;
+  password?: string;
+  avatar?: UserSession["avatar"];
+}
+
 export interface CreateIdentityDto {
   email: string;
   password: string;
