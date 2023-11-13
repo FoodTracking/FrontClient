@@ -1,3 +1,4 @@
+import { NavigationProp } from "@react-navigation/native";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
@@ -12,8 +13,13 @@ import {
 import CommandCard from "../components/Card/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders, queryClient } from "../lib/api/api";
+import { MainStackParamList } from "../navigation/MainStack";
 
-export default function OrderScreen() {
+interface OrderScreenProps {
+  navigation: NavigationProp<MainStackParamList>;
+}
+
+export default function OrderScreen({ navigation }: OrderScreenProps) {
   const { user } = useAuthContext();
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
@@ -83,12 +89,13 @@ export default function OrderScreen() {
                 <CommandCard
                   key={item.id}
                   id={item.id}
+                  restaurantId={item.restaurant.id}
                   title={item.restaurant.name}
                   picture={item.restaurant.image}
                   quantity={item.quantity}
                   price={item.price}
                   date={dayjs(item.createdAt).format("D MMM.")}
-                  style={{ margin: 5, backgroundColor: "white" }}
+                  style={{ marginVertical: 5, backgroundColor: "white" }}
                   // onPress={() => {}}
                 />
               );
