@@ -112,38 +112,6 @@ export default function RegisterScreen() {
   const [isSelected, setIsSelected] = useState(false);
   const [role, setRole] = useState("user");
 
-  // function handleMail(text: string) {
-  //   setEmail(text);
-  // }
-
-  // function handlePassword(text: string) {
-  //   setPassword(text);
-  // }
-
-  // function handleFirstName(text: string) {
-  //   setFirstName(text);
-  // }
-
-  // function handleLastName(text: string) {
-  //   setLastName(text);
-  // }
-
-  // function handleNamePro(text: string) {
-  //   setNamePro(text);
-  // }
-
-  // function handleDescription(text: string) {
-  //   setDescription(text);
-  // }
-
-  // function handleAddresse(text: string) {
-  //   setAddresse(text);
-  // }
-
-  // function handleCategorySelection(value: string) {
-  //   console.log("OK", JSON.stringify(value));
-  //   setCategory(value);
-  // }
   return (
     <View style={{ flex: 1, backgroundColor: Palette.white }}>
       <Image

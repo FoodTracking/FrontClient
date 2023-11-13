@@ -1,18 +1,20 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 import { fetchCategories } from "../../lib/api/api";
 
 type DropdownComponentProps = {
+  value?: string;
   onSelect: (value: string) => void;
 };
 export default function DropdownComponent({
+  value,
   onSelect,
 }: DropdownComponentProps) {
-  const [value, setValue] = useState("");
+  const [v, setV] = useState<string | undefined>(value);
   const { isError, isLoading, error, data, refetch } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
@@ -20,10 +22,14 @@ export default function DropdownComponent({
 
   const handleSelect = (selectedItem: { label: string; value: string }) => {
     const selectedValue = selectedItem.value || "";
-    console.log(selectedValue);
-    setValue(selectedValue);
+    setV(selectedValue);
     onSelect(selectedValue);
   };
+
+  useEffect(() => {
+    setV(value);
+    alert(value)
+  }, [value]);
 
   const [isFocus, setIsFocus] = useState(false);
 
@@ -61,7 +67,7 @@ export default function DropdownComponent({
         valueField={"value"}
         placeholder={!isFocus ? "Catégorie" : "..."}
         searchPlaceholder="Search..."
-        value={value}
+        value={v}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleSelect}
