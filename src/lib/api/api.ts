@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import qs from "qs";
 
 import { eventManager } from "../../EventEmitter";
 import {
@@ -10,10 +11,10 @@ import {
   Restaurant,
   RestaurantOrder,
   RestaurantPreview,
+  UpdateIdentityDto,
   UserOrder,
   UserSession,
 } from "../../types";
-import qs from "qs";
 
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -21,8 +22,7 @@ export const queryClient = new QueryClient({
 
 export const axiosInstance = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
-  paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'})
-
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
 });
 
 axiosInstance.interceptors.request.use(
@@ -162,5 +162,18 @@ export const fetchRestaurantsOrders = async (
 
 export const updateStatus = async (id: string) => {
   const { data } = await axiosInstance.patch(`/orders/${id}/next`, {});
+  return data;
+};
+
+export const updateIdentity = async (identity: UpdateIdentityDto) => {
+  const formData = new FormData();
+  identity.avatar && formData.append("avatar", identity.avatar);
+  identity.password && formData.append("password", identity.password);
+  identity.email && formData.append("email", identity.email);
+  const { data } = await axiosInstance.patch(`/identity/${identity.id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return data;
 };
