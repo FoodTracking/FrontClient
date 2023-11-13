@@ -20,6 +20,20 @@ export interface UpdateIdentityDto {
   avatar?: UserSession["avatar"];
 }
 
+export interface UpdateUserDto {
+  id: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface UpdateRestaurantDto {
+  id: string;
+  name?: string;
+  description?: string;
+  address?: string;
+  categoryId?: string;
+}
+
 export interface CreateIdentityDto {
   email: string;
   password: string;
@@ -50,6 +64,7 @@ export interface RestaurantPreview {
 
 export interface Restaurant extends RestaurantPreview {
   description: string;
+  categoryId: string;
 }
 
 export interface Product {

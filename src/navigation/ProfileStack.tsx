@@ -1,8 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { useAuthContext } from "../hooks/useAuthContext";
-import UserProfileEdit from "../screens/ProfileEditScreen";
+import UserProfileEdit from "../screens/EditIdentityScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import EditUserScreen from "../screens/EditUserScreen";
+import EditRestaurantScreen from "../screens/EditRestaurantScreen";
 
 export type ProfileParamList = {
   List: undefined;
@@ -39,7 +41,9 @@ export default function ProfileStack() {
           headerShown: false,
           title: "Informations du compte",
         }}
-        component={UserProfileEdit}
+        component={
+          user?.role === "restaurant" ? EditRestaurantScreen : EditUserScreen
+        }
       />
       {user?.role === "restaurant" && (
         <Profile.Screen

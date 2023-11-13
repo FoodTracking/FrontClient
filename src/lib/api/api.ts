@@ -11,7 +11,7 @@ import {
   Restaurant,
   RestaurantOrder,
   RestaurantPreview,
-  UpdateIdentityDto,
+  UpdateIdentityDto, UpdateRestaurantDto, UpdateUserDto,
   UserOrder,
   UserSession,
 } from "../../types";
@@ -170,10 +170,24 @@ export const updateIdentity = async (identity: UpdateIdentityDto) => {
   identity.avatar && formData.append("avatar", identity.avatar);
   identity.password && formData.append("password", identity.password);
   identity.email && formData.append("email", identity.email);
-  const { data } = await axiosInstance.patch(`/identity/${identity.id}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
+  const { data } = await axiosInstance.patch(
+    `/identity/${identity.id}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     },
-  });
+  );
+  return data;
+};
+
+export const updateUser = async (dto: UpdateUserDto) => {
+  const { data } = await axiosInstance.patch(`/users/${dto.id}`, dto);
+  return data;
+};
+
+export const updateRestaurant = async (dto: UpdateRestaurantDto) => {
+  const { data } = await axiosInstance.patch(`/restaurants/${dto.id}`, dto);
   return data;
 };

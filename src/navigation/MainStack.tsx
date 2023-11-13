@@ -14,7 +14,7 @@ import ProfileStack from "./ProfileStack";
 import { useAuthContext } from "../hooks/useAuthContext";
 import HomeScreen from "../screens/Home";
 import OrderScreen from "../screens/OrderScreen";
-import ProfileScreen from "../screens/ProfileEditScreen";
+import ProfileScreen from "../screens/EditIdentityScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
 
