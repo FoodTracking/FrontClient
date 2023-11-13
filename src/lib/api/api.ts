@@ -13,6 +13,7 @@ import {
   UserOrder,
   UserSession,
 } from "../../types";
+import qs from "qs";
 
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -20,6 +21,8 @@ export const queryClient = new QueryClient({
 
 export const axiosInstance = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
+  paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'})
+
 });
 
 axiosInstance.interceptors.request.use(
@@ -89,7 +92,7 @@ export const fetchRestaurants = async (
 ): Promise<RestaurantPreview[]> => {
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
     "/restaurants",
-    { params: { page, take: 5, name, category } },
+    { params: { page, size: 5, name, category } },
   );
   return data;
 };
@@ -98,7 +101,7 @@ export const fetchUserOrders = async (uid: string, page: number) => {
   const { data } = await axiosInstance.get<UserOrder[]>(
     `/users/${uid}/orders`,
     {
-      params: { page, take: 5 },
+      params: { page, size: 5 },
     },
   );
   return data;
@@ -124,11 +127,25 @@ export const fetchRestaurant = async (id: string) => {
   return data;
 };
 
-export const fetchProducts = async (id: string, page: number) => {
+export const fetchProducts = async (
+  id: string,
+  page?: number,
+  productIds?: string[],
+  size: number = 5,
+) => {
+  // const params = new URLSearchParams();
+  // params.append("size", size.toString());
+  // page && params.append("page", page.toString());
+  // productIds?.forEach((id) => params.append("ids", id));
+
   const { data } = await axiosInstance.get<Product[]>(
     `/restaurants/${id}/products`,
     {
-      params: { page, take: 5 },
+      params: {
+        size,
+        page,
+        ids: productIds,
+      },
     },
   );
   return data;
@@ -137,7 +154,6 @@ export const fetchProducts = async (id: string, page: number) => {
 export const fetchRestaurantsOrders = async (
   restaurantId: string,
 ): Promise<RestaurantOrder[]> => {
-  alert(restaurantId);
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`,
   );

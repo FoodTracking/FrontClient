@@ -15,6 +15,7 @@ import OrderScreen from "../screens/OrderScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";
+import OrdersStack from "./OrdersStack";
 
 export type MainStackParamList = {
   Restaurants: undefined;
@@ -64,7 +65,7 @@ export default function MainStack() {
       />
       <Tab.Screen
         name="Commandes"
-        component={OrderScreen}
+        component={OrdersStack}
         options={{
           headerShown: false,
           tabBarLabel: "Commandes",
