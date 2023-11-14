@@ -1,7 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp } from "@react-navigation/native";
-import { Icon, ListItem, Text } from "@rneui/themed";
+import { ListItem, Text } from "@rneui/themed";
 import { SafeAreaView, TouchableHighlight } from "react-native";
 
 import { useAuthContext } from "../hooks/useAuthContext";

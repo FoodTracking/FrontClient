@@ -1,10 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Alert,
   Button,
   SafeAreaView,
   ScrollView,
@@ -82,7 +81,9 @@ export default function UserProfileEdit({
           <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 18, paddingBottom: 20 }}>Edition du profil</Text>
+        <Text style={{ fontSize: 18, paddingBottom: 20 }}>
+          Edition du profil
+        </Text>
       </View>
 
       <ScrollView>

@@ -15,10 +15,9 @@ import {
   View,
 } from "react-native";
 
-import ProductCard from "../components/Card/ProductCard";
+import ProductCardWithBottomSheet from "../components/Card/ProductCardWithBottomSheet";
 import { fetchProducts, fetchRestaurant } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
-import ProductCardWithBottomSheet from "../components/Card/ProductCardWithBottomSheet";
 
 interface DetailsScreenProps {
   route: RouteProp<ExploreParamList, "Details">;

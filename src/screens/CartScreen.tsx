@@ -3,7 +3,6 @@ import {
   RouteProp,
   StackActions,
 } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Skeleton } from "@rneui/base";
 import { Button, Divider, Image, Text } from "@rneui/themed";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +13,6 @@ import { showMessage } from "react-native-flash-message";
 import { insertOrder } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
 import { MainStackParamList } from "../navigation/MainStack";
-import { RootStackParamList } from "../navigation/RootStackNavigator";
 import { CreateOrderDto } from "../types";
 
 interface CartScreenProps {
@@ -80,22 +78,22 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
         ))}
       </ScrollView>
 
-        <View
-          style={{
-            zIndex: 2,
-            position: "absolute",
-            bottom: 20,
-            flexDirection: "row",
-            justifyContent: "center",
-            width: "100%",
-          }}
-        >
-          <TouchableOpacity>
-            <Button size={"md"} radius={"md"} onPress={handleConfirm}>
-              <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
-            </Button>
-          </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          zIndex: 2,
+          position: "absolute",
+          bottom: 20,
+          flexDirection: "row",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity>
+          <Button size={"md"} radius={"md"} onPress={handleConfirm}>
+            <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
+          </Button>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }

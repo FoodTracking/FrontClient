@@ -1,6 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useQuery } from "@tanstack/react-query";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
@@ -28,7 +28,7 @@ export default function DropdownComponent({
 
   useEffect(() => {
     setV(value);
-    alert(value)
+    alert(value);
   }, [value]);
 
   const [isFocus, setIsFocus] = useState(false);

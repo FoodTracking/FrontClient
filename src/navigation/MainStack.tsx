@@ -1,9 +1,4 @@
-import {
-  AntDesign,
-  Entypo,
-  Feather,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { useEffect } from "react";
@@ -12,8 +7,6 @@ import ExploreNavigator from "./ExploreStack";
 import OrdersStack from "./OrdersStack";
 import ProfileStack from "./ProfileStack";
 import { useAuthContext } from "../hooks/useAuthContext";
-import HomeScreen from "../screens/Home";
-import OrderScreen from "../screens/OrderScreen";
 import ProfileScreen from "../screens/EditIdentityScreen";
 import RestaurantTrackerScreen from "../screens/RestaurantTracker";
 import TrackerScreen from "../screens/TrackerScreen";

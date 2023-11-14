@@ -1,9 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import CreateProductScreen from "../screens/CreateProductScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import OrdersListScreen from "../screens/OrdersListScreen";
-import {Product} from "../types";
+import { Product } from "../types";
 
 export type ProfileOrderParamList = {
   List: undefined;

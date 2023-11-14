@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { CartScreen } from "../screens/CartScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import HomeScreen from "../screens/Home";
-import {Product, Restaurant} from "../types";
+import { Product, Restaurant } from "../types";
 
 export type ExploreParamList = {
   Discover: undefined;
