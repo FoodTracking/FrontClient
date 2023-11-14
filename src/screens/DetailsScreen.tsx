@@ -18,6 +18,7 @@ import {
 import ProductCard from "../components/Card/ProductCard";
 import { fetchProducts, fetchRestaurant } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
+import ProductCardWithBottomSheet from "../components/Card/ProductCardWithBottomSheet";
 
 interface DetailsScreenProps {
   route: RouteProp<ExploreParamList, "Details">;
@@ -147,7 +148,7 @@ export default function DetailsScreen({
           {products?.pages?.map((page) => {
             return page.map((product) => {
               return (
-                <ProductCard
+                <ProductCardWithBottomSheet
                   key={product.id}
                   product={product}
                   quantity={

@@ -10,7 +10,7 @@ import { Product } from "../types";
 interface BottomSheetProductProps {
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
   product: Product;
   quantity?: number;
 }
@@ -39,7 +39,7 @@ export const BottomSheetProduct = ({
   }, []);
 
   const handleQuantityChange = (value: number) => {
-    onChange(value);
+    onChange && onChange(value);
   };
 
   return (

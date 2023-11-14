@@ -1,10 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { useEffect } from "react";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import UserProfileEdit from "../screens/EditIdentityScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import EditUserScreen from "../screens/EditUserScreen";
 import EditRestaurantScreen from "../screens/EditRestaurantScreen";
+import EditUserScreen from "../screens/EditUserScreen";
+import OrdersListScreen from "../screens/OrdersListScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import ProfileOrdersStack from "./ProfileOrdersStack";
 
 export type ProfileParamList = {
   List: undefined;
@@ -17,6 +20,7 @@ const Profile = createStackNavigator<ProfileParamList>();
 
 export default function ProfileStack() {
   const { user } = useAuthContext();
+
   return (
     <Profile.Navigator initialRouteName={"List"}>
       <Profile.Screen
@@ -52,7 +56,7 @@ export default function ProfileStack() {
             headerShown: false,
             title: "Produits",
           }}
-          component={UserProfileEdit}
+          component={ProfileOrdersStack}
         />
       )}
     </Profile.Navigator>

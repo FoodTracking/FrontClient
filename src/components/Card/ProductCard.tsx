@@ -8,17 +8,13 @@ import BottomSheetProduct from "../BottomSheetProduct";
 
 interface ProductCardProps {
   product: Product;
-  quantity?: number;
-  onChange: (value: number) => void;
+  onPress?: () => void;
 }
 
 export default function ProductCard({
   product,
-  quantity,
-  onChange,
+  onPress,
 }: ProductCardProps) {
-  const [open, setOpen] = useState(false);
-
   return (
     <Pressable
       style={{
@@ -28,7 +24,7 @@ export default function ProductCard({
         alignItems: "center",
         padding: 10,
       }}
-      onPress={() => setOpen(true)}
+      onPress={onPress}
     >
       <View
         style={{
@@ -59,13 +55,6 @@ export default function ProductCard({
           <Text style={{ fontWeight: "bold" }}>{product.price} €</Text>
           <Text>{product.description}</Text>
         </View>
-        <BottomSheetProduct
-          isOpen={open}
-          setOpen={setOpen}
-          product={product}
-          quantity={quantity}
-          onChange={onChange}
-        />
       </View>
     </Pressable>
   );

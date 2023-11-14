@@ -6,12 +6,15 @@ import qs from "qs";
 import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
+  CreateProduct,
   Order,
   Product,
   Restaurant,
   RestaurantOrder,
   RestaurantPreview,
-  UpdateIdentityDto, UpdateRestaurantDto, UpdateUserDto,
+  UpdateIdentityDto,
+  UpdateRestaurantDto,
+  UpdateUserDto,
   UserOrder,
   UserSession,
 } from "../../types";
@@ -133,11 +136,6 @@ export const fetchProducts = async (
   productIds?: string[],
   size: number = 5,
 ) => {
-  // const params = new URLSearchParams();
-  // params.append("size", size.toString());
-  // page && params.append("page", page.toString());
-  // productIds?.forEach((id) => params.append("ids", id));
-
   const { data } = await axiosInstance.get<Product[]>(
     `/restaurants/${id}/products`,
     {
@@ -148,6 +146,11 @@ export const fetchProducts = async (
       },
     },
   );
+  return data;
+};
+
+export const fetchProduct = async (id: string) => {
+  const { data } = await axiosInstance.get<Product>(`/products/${id}`);
   return data;
 };
 
@@ -190,4 +193,39 @@ export const updateUser = async (dto: UpdateUserDto) => {
 export const updateRestaurant = async (dto: UpdateRestaurantDto) => {
   const { data } = await axiosInstance.patch(`/restaurants/${dto.id}`, dto);
   return data;
+};
+
+export const createProduct = async (data: CreateProduct) => {
+  const form = new FormData();
+  form.append("name", data.name);
+  form.append("price", data.price);
+  form.append("description", data.description);
+  // @ts-ignore
+  // https://github.com/expo/expo/issues/11422
+  form.append("image", data.image);
+  form.append("restaurantId", data.restaurantId);
+
+  const { data: product } = await axiosInstance.post(`/products`, form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return product;
+};
+
+export const updateProduct = async (id: string, data: CreateProduct) => {
+  const form = new FormData();
+  form.append("name", data.name);
+  form.append("price", data.price);
+  form.append("description", data.description);
+  // @ts-ignore
+  // https://github.com/expo/expo/issues/11422
+  data.image && form.append("image", data.image);
+
+  const { data: product } = await axiosInstance.patch(`/products/${id}`, form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return product;
 };
