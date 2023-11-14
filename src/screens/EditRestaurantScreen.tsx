@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, SafeAreaView } from "react-native";
 import { showMessage } from "react-native-flash-message";
@@ -26,6 +26,13 @@ export default function EditRestaurantScreen() {
       categoryId: restaurant?.categoryId,
     },
   });
+
+  useEffect(() => {
+    setValue("name", restaurant?.name);
+    setValue("address", restaurant?.address);
+    setValue("description", restaurant?.description);
+    setValue("categoryId", restaurant?.categoryId);
+  }, [restaurant]);
 
   const mutate = useMutation({
     mutationFn: async (data: UpdateRestaurantDto) => updateRestaurant(data),
