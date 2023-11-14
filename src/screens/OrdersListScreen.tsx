@@ -1,6 +1,5 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { NavigationProp } from "@react-navigation/native";
-import { Button } from "@rneui/themed";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import {
@@ -13,10 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  GestureDetector,
-  LongPressGestureHandler,
-} from "react-native-gesture-handler";
 
 import ProductCard from "../components/Card/ProductCard";
 import { useAuthContext } from "../hooks/useAuthContext";

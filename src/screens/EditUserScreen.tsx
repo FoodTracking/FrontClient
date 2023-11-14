@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView, Text } from "react-native";
+import { Button, SafeAreaView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 import BaseInput from "../components/Input/BaseInput";

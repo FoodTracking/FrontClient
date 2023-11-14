@@ -1,14 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView, Text } from "react-native";
+import { Button, SafeAreaView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 import BaseInput from "../components/Input/BaseInput";
 import DropdownComponent from "../components/Input/DropDown";
 import { useAuthContext } from "../hooks/useAuthContext";
-import {fetchRestaurant, updateIdentity, updateRestaurant, updateUser} from "../lib/api/api";
-import { UpdateRestaurantDto, UpdateUserDto } from "../types";
+import { fetchRestaurant, updateRestaurant } from "../lib/api/api";
+import { UpdateRestaurantDto } from "../types";
 
 export default function EditRestaurantScreen() {
   const { user } = useAuthContext();

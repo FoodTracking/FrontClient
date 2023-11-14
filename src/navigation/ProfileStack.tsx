@@ -1,13 +1,11 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useEffect } from "react";
 
+import ProfileOrdersStack from "./ProfileOrdersStack";
 import { useAuthContext } from "../hooks/useAuthContext";
 import UserProfileEdit from "../screens/EditIdentityScreen";
 import EditRestaurantScreen from "../screens/EditRestaurantScreen";
 import EditUserScreen from "../screens/EditUserScreen";
-import OrdersListScreen from "../screens/OrdersListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import ProfileOrdersStack from "./ProfileOrdersStack";
 
 export type ProfileParamList = {
   List: undefined;

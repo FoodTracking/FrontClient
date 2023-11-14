@@ -1,16 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
 import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import {
-  axiosInstance,
-  fetchRestaurantsOrders,
-  queryClient,
-} from "../lib/api/api";
+import { fetchRestaurantsOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {

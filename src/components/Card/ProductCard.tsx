@@ -1,20 +1,16 @@
 import { Skeleton } from "@rneui/base";
 import { Image } from "@rneui/themed";
-import React, { useState } from "react";
+import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { Product } from "../../types";
-import BottomSheetProduct from "../BottomSheetProduct";
 
 interface ProductCardProps {
   product: Product;
   onPress?: () => void;
 }
 
-export default function ProductCard({
-  product,
-  onPress,
-}: ProductCardProps) {
+export default function ProductCard({ product, onPress }: ProductCardProps) {
   return (
     <Pressable
       style={{
