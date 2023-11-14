@@ -14,7 +14,7 @@ export interface UserSession {
 }
 
 export interface UpdateIdentityDto {
-  id: string
+  id: string;
   email?: string;
   password?: string;
   avatar?: UserSession["avatar"];
@@ -109,4 +109,12 @@ export interface RestaurantOrder {
   status: OrderStatusEnum;
   products: OrderItem[];
   user: string;
+}
+
+export interface CreateProduct {
+  name: string;
+  price: string;
+  description: string;
+  image: { uri: string; name: string; type: string };
+  restaurantId: string;
 }

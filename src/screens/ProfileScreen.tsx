@@ -4,10 +4,15 @@ import { NavigationProp } from "@react-navigation/native";
 import { Icon, ListItem, Text } from "@rneui/themed";
 import { SafeAreaView, TouchableHighlight } from "react-native";
 
+import { useAuthContext } from "../hooks/useAuthContext";
 import { ProfileParamList } from "../navigation/ProfileStack";
-import {useAuthContext} from "../hooks/useAuthContext";
 
-const items: { title: string; path: keyof ProfileParamList; icon: string }[] = [
+const items: {
+  title: string;
+  path: keyof ProfileParamList;
+  icon: string;
+  requiredRole?: string;
+}[] = [
   {
     title: "Informations de connexion",
     icon: "idcard",
@@ -22,6 +27,7 @@ const items: { title: string; path: keyof ProfileParamList; icon: string }[] = [
     title: "Produits",
     icon: "shoppingcart",
     path: "Products",
+    requiredRole: "restaurant",
   },
 ];
 
@@ -30,26 +36,28 @@ interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
-  const { setIsAuthenticated } = useAuthContext();
+  const { user, setIsAuthenticated } = useAuthContext();
 
   return (
     <SafeAreaView>
       <Text h2>Profil</Text>
-      {items.map((item, i) => (
-        <ListItem
-          key={i}
-          Component={TouchableHighlight}
-          onPress={() => navigation.navigate(item.path)}
-          bottomDivider
-        >
-          {/* @ts-ignore */}
-          <AntDesign name={item.icon} size={24} color="black" />
-          <ListItem.Content>
-            <ListItem.Title>{item.title}</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
-      ))}
+      {items
+        .filter((it) => !it.requiredRole || it.requiredRole === user?.role)
+        .map((item, i) => (
+          <ListItem
+            key={i}
+            Component={TouchableHighlight}
+            onPress={() => navigation.navigate(item.path)}
+            bottomDivider
+          >
+            {/* @ts-ignore */}
+            <AntDesign name={item.icon} size={24} color="black" />
+            <ListItem.Content>
+              <ListItem.Title>{item.title}</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+        ))}
       <ListItem
         Component={TouchableHighlight}
         onPress={async () => {
