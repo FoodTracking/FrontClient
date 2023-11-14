@@ -1,8 +1,8 @@
-import {createStackNavigator} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import {CartScreen} from "../screens/CartScreen";
-import {Product, Restaurant} from "../types";
+import { CartScreen } from "../screens/CartScreen";
 import OrderScreen from "../screens/OrderScreen";
+import { Product, Restaurant } from "../types";
 
 export type OrdersParamList = {
   Logs: undefined;
