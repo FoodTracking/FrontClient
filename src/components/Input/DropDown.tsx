@@ -28,7 +28,6 @@ export default function DropdownComponent({
 
   useEffect(() => {
     setV(value);
-    alert(value);
   }, [value]);
 
   const [isFocus, setIsFocus] = useState(false);
