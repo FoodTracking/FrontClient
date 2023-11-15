@@ -26,6 +26,7 @@
     "dayjs": "^1.11.10",
     "expo": "~49.0.13",
     "expo-image-picker": "~14.3.2",
+    "expo-location": "~16.1.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "qs": "^6.11.2",
