@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import * as Location from "expo-location";
 import qs from "qs";
 
 import { eventManager } from "../../EventEmitter";
@@ -93,9 +94,19 @@ export const fetchRestaurants = async (
   name?: string,
   category?: string,
 ): Promise<RestaurantPreview[]> => {
+  const location = await Location.getCurrentPositionAsync();
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
     "/restaurants",
-    { params: { page, size: 5, name, category } },
+    {
+      params: {
+        page,
+        size: 5,
+        name,
+        category,
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
+      },
+    },
   );
   return data;
 };
@@ -146,11 +157,6 @@ export const fetchProducts = async (
       },
     },
   );
-  return data;
-};
-
-export const fetchProduct = async (id: string) => {
-  const { data } = await axiosInstance.get<Product>(`/products/${id}`);
   return data;
 };
 

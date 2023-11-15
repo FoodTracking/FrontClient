@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
+import * as Location from "expo-location";
+import React, { useEffect } from "react";
 import {
+  Alert,
   NativeScrollEvent,
   NativeSyntheticEvent,
   RefreshControl,
@@ -11,11 +13,14 @@ import {
 
 import RestaurantCard from "../components/Card/RestaurantCard";
 import SearchBar from "../components/Search/SearchBarMenu";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
   let name: string = "";
   let category: string = "";
+
+  const { setIsAuthenticated } = useAuthContext();
 
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
@@ -31,6 +36,18 @@ export default function HomeScreen() {
       },
     },
   );
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission non accordée",
+          "Vous devez autoriser l'accès à la localisation pour utiliser l'application.",
+        );
+      }
+    })();
+  }, []);
 
   const handleSearch = async (query: string) => {
     name = query;
