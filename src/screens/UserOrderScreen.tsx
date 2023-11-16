@@ -1,5 +1,4 @@
 import { NavigationProp } from "@react-navigation/native";
-import { Text } from "@rneui/themed";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
@@ -13,10 +12,11 @@ import {
 } from "react-native";
 
 import CommandCard from "../components/Card/CommandCard";
+import HeaderCustom from "../components/HeaderCustom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
-import HeaderCustom from "../components/HeaderCustom";
+import { OrderStatusEnum } from "../types";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -28,7 +28,8 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
     {
       initialPageParam: 1,
       queryKey: ["orders"],
-      queryFn: ({ pageParam = 1 }) => fetchUserOrders(user!.id, pageParam),
+      queryFn: ({ pageParam = 1 }) =>
+        fetchUserOrders(user!.id, [OrderStatusEnum.DELIVERED], pageParam),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
           return undefined;

@@ -22,9 +22,14 @@ export default function TrackerScreen() {
   const { user } = useAuthContext();
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
-  const query = useQuery({
-    queryKey: ["user-orders"],
-    queryFn: () => fetchUserOrders(user!.id, 1),
+  const { data: orders } = useQuery({
+    queryKey: ["user-orders", user?.id],
+    queryFn: () =>
+      fetchUserOrders(user!.id, [
+        OrderStatusEnum.PENDING,
+        OrderStatusEnum.IN_PROGRESS,
+        OrderStatusEnum.FINISHED,
+      ]),
   });
 
   useEffect(() => {
@@ -32,9 +37,11 @@ export default function TrackerScreen() {
       const newSocket = io(`${process.env.EXPO_PUBLIC_API_URL}/orders`, {
         auth: { token: await AsyncStorage.getItem("accessToken") },
       });
+      newSocket.on("newOrder", () => {
+        queryClient.invalidateQueries({ queryKey: ["user-orders"] });
+      });
       newSocket.on("updateOrder", (order: Order) => {
         queryClient.invalidateQueries({ queryKey: ["user-orders"] });
-        query.refetch();
       });
       setSocket(newSocket);
     };
@@ -54,7 +61,7 @@ export default function TrackerScreen() {
     <SafeAreaView>
       <HeaderCustom title="Commandes en cours" />
       <ScrollView>
-        {query.data?.map((order) => (
+        {orders?.map((order) => (
           <OrderListCard
             key={order.id}
             Customer={order.restaurant.name}
