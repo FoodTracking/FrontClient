@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import CreateProductScreen from "../screens/CreateProductScreen";
-import OrdersListScreen from "../screens/OrdersListScreen";
+import ProductsListScreen from "../screens/ProductsListScreen";
 import { Product } from "../types";
 
 export type ProfileOrderParamList = {
@@ -20,7 +20,7 @@ export default function ProfileOrdersStack() {
           headerShown: false,
           title: "Profil",
         }}
-        component={OrdersListScreen}
+        component={ProductsListScreen}
       />
       <ProfileOrder.Screen
         name="Manage"

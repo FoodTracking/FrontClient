@@ -8,7 +8,7 @@ import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
   CreateProduct,
-  Order,
+  Order, OrderStatusEnum,
   Product,
   Restaurant,
   RestaurantOrder,
@@ -162,9 +162,15 @@ export const fetchProducts = async (
 
 export const fetchRestaurantsOrders = async (
   restaurantId: string,
+  status?: OrderStatusEnum[],
+  size?: number,
+  page?: number,
 ): Promise<RestaurantOrder[]> => {
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`,
+    {
+      params: { page, size, status },
+    },
   );
   return data;
 };

@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import io, { Socket } from "socket.io-client";
 
 import OrderListCard from "../components/Card/OrderListCard";
@@ -12,8 +13,8 @@ import { Order, OrderStatusEnum } from "../types";
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
   [OrderStatusEnum.PENDING]: "En attente",
-  [OrderStatusEnum.FINISHED]: "Prête",
   [OrderStatusEnum.IN_PROGRESS]: "En cours",
+  [OrderStatusEnum.FINISHED]: "Prête",
 };
 
 export default function RestaurantTrackerScreen() {
@@ -22,7 +23,16 @@ export default function RestaurantTrackerScreen() {
 
   const { data: orders, refetch } = useQuery({
     queryKey: ["restaurants-orders", user?.id],
-    queryFn: () => fetchRestaurantsOrders(user!.id),
+    queryFn: () =>
+      fetchRestaurantsOrders(
+        user!.id,
+        [
+          OrderStatusEnum.PENDING,
+          OrderStatusEnum.IN_PROGRESS,
+          OrderStatusEnum.FINISHED,
+        ],
+        -1,
+      ),
   });
 
   useEffect(() => {
@@ -63,17 +73,21 @@ export default function RestaurantTrackerScreen() {
   }, []);
 
   return (
-    <View>
-      {orders?.map((order) => (
-        <OrderListCard
-          key={order.id}
-          Customer={order.user}
-          orderId={order.id}
-          orderDetails={order.products}
-          price={order.price}
-          orderStatus={statusTranslation[order.status]}
-        ></OrderListCard>
-      ))}
-    </View>
+    <SafeAreaView>
+      <Text h2>Commandes en cours</Text>
+      <ScrollView>
+        {orders?.map((order) => (
+          <OrderListCard
+            key={order.id}
+            Customer={order.user}
+            orderId={order.id}
+            orderDetails={order.products}
+            price={order.price}
+            orderStatus={statusTranslation[order.status]}
+            canUpdate
+          />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }

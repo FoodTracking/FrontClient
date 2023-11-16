@@ -1,4 +1,5 @@
 import { NavigationProp } from "@react-navigation/native";
+import { Text } from "@rneui/themed";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
@@ -6,26 +7,36 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   RefreshControl,
+  SafeAreaView,
   ScrollView,
   View,
 } from "react-native";
 
 import CommandCard from "../components/Card/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { fetchUserOrders } from "../lib/api/api";
+import { fetchRestaurantsOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
+import { OrderStatusEnum } from "../types";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
 }
 
-export default function OrderScreen({ navigation }: OrderScreenProps) {
+export default function RestaurantOrderScreen({
+  navigation,
+}: OrderScreenProps) {
   const { user } = useAuthContext();
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
       initialPageParam: 1,
       queryKey: ["orders"],
-      queryFn: ({ pageParam = 1 }) => fetchUserOrders(user!.id, pageParam),
+      queryFn: ({ pageParam = 1 }) =>
+        fetchRestaurantsOrders(
+          user!.id,
+          [OrderStatusEnum.DELIVERED],
+          5,
+          pageParam,
+        ),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
           return undefined;
@@ -58,12 +69,13 @@ export default function OrderScreen({ navigation }: OrderScreenProps) {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         marginTop: 30,
       }}
     >
+      <Text h2>Historique</Text>
       <View style={{ margin: 10 }}>
         <ScrollView
           style={{
@@ -89,20 +101,20 @@ export default function OrderScreen({ navigation }: OrderScreenProps) {
                 <CommandCard
                   key={item.id}
                   id={item.id}
-                  restaurantId={item.restaurant.id}
-                  title={item.restaurant.name}
-                  picture={item.restaurant.image}
+                  restaurantId={user!.id}
+                  title={item.user}
+                  picture={user!.avatar}
                   quantity={item.quantity}
                   price={item.price}
                   date={dayjs(item.createdAt).format("D MMM.")}
                   style={{ marginVertical: 5, backgroundColor: "white" }}
-                  // onPress={() => {}}
+                  repayable={false}
                 />
               );
             });
           })}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

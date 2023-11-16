@@ -1,7 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
+import { useAuthContext } from "../hooks/useAuthContext";
 import { CartScreen } from "../screens/CartScreen";
-import OrderScreen from "../screens/OrderScreen";
+import RestaurantOrderScreen from "../screens/RestaurantOrderScreen";
+import UserOrderScreen from "../screens/UserOrderScreen";
 import { Product, Restaurant } from "../types";
 
 export type OrdersParamList = {
@@ -9,12 +11,14 @@ export type OrdersParamList = {
   Cart: {
     restaurant: Restaurant;
     products: { product: Product; quantity: number }[];
+    repayable?: boolean;
   };
 };
 
 const Orders = createStackNavigator<OrdersParamList>();
 
 export default function OrdersStack() {
+  const { user } = useAuthContext();
   return (
     <Orders.Navigator initialRouteName={"Logs"}>
       <Orders.Screen
@@ -23,7 +27,9 @@ export default function OrdersStack() {
           headerShown: false,
           title: "Commandes",
         }}
-        component={OrderScreen}
+        component={
+          user?.role === "restaurant" ? RestaurantOrderScreen : UserOrderScreen
+        }
       />
       <Orders.Screen
         name={"Cart"}

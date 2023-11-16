@@ -33,18 +33,19 @@ export default function MainStack() {
         tabBarActiveTintColor: "black",
       }}
     >
-      <Tab.Screen
-        name="Restaurants"
-        component={ExploreNavigator}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Explorer",
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="home" color={color} size={size} />
-          ),
-        }}
-      />
-
+      {user?.role !== "restaurant" && (
+        <Tab.Screen
+          name="Restaurants"
+          component={ExploreNavigator}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Explorer",
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="home" color={color} size={size} />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen
         name="Tracker"
         component={

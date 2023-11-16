@@ -1,23 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import io, { Socket } from "socket.io-client";
 
+import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders, queryClient } from "../lib/api/api";
-
-export enum OrderStatusEnum {
-  PENDING = "PENDING",
-  IN_PROGRESS = "IN_PROGRESS",
-  FINISHED = "FINISHED",
-  DELIVERED = "DELIVERED",
-}
-
-interface Order {
-  id: string;
-  status: OrderStatusEnum;
-}
+import { Order, OrderStatusEnum } from "../types";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -60,12 +51,19 @@ export default function TrackerScreen() {
 
   return (
     <SafeAreaView>
-      {query.data?.map((order) => (
-        <View key={order.id}>
-          <Text>{order.id}</Text>
-          <Text>{statusTranslation[order.status]}</Text>
-        </View>
-      ))}
+      <Text h2>Commandes en cours</Text>
+      <ScrollView>
+        {query.data?.map((order) => (
+          <OrderListCard
+            key={order.id}
+            Customer={order.restaurant.name}
+            orderId={order.id}
+            price={order.price}
+            orderStatus={statusTranslation[order.status]}
+            canUpdate={false}
+          />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
