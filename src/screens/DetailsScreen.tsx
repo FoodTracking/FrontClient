@@ -139,11 +139,14 @@ export default function DetailsScreen({
           containerStyle={{ width: "100%", height: 270 }}
           resizeMode={"cover"}
         />
+        <View style={{ paddingHorizontal: "3%", paddingVertical: "3%" }}>
+          <Text h3>Description</Text>
+          <Text style={{ fontSize: 18, paddingVertical: "1%" }}>
+            {restaurant?.description}
+          </Text>
 
-        <Text h3>Description</Text>
-        <Text>{restaurant?.description}</Text>
-
-        <Text h3>Produits</Text>
+          <Text h3>Produits</Text>
+        </View>
         <View>
           {products?.pages?.map((page) => {
             return page.map((product) => {

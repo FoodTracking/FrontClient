@@ -71,21 +71,10 @@ export default function UserProfileEdit({
           marginTop: 10,
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: "absolute",
-            left: 0,
-          }}
-        >
-          <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-
         <Text style={{ fontSize: 18, paddingBottom: 20 }}>
           Edition du profil
         </Text>
       </View>
-
       <ScrollView>
         <View
           style={{
@@ -112,34 +101,32 @@ export default function UserProfileEdit({
             name="email"
           />
         </View>
-        <View>
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
+        <View
+          style={{
+            flexDirection: "column",
+            marginBottom: 6,
+          }}
+        >
+          <Controller
+            control={control}
+            rules={{
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
+                message:
+                  "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
+              },
             }}
-          >
-            <Controller
-              control={control}
-              rules={{
-                pattern: {
-                  value:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
-                  message:
-                    "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <BaseInput
-                  placeholder={"Mot de passe"}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value ?? ""}
-                />
-              )}
-              name="password"
-            />
-          </View>
+            render={({ field: { onChange, onBlur, value } }) => (
+              <BaseInput
+                placeholder={"Mot de passe"}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value ?? ""}
+              />
+            )}
+            name="password"
+          />
         </View>
 
         <Button

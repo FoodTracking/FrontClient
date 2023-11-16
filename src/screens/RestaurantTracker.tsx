@@ -22,7 +22,7 @@ export default function RestaurantTrackerScreen() {
   const { user } = useAuthContext();
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
-  const { data: orders, refetch } = useQuery({
+  const { data: orders } = useQuery({
     queryKey: ["restaurants-orders", user?.id],
     queryFn: () =>
       fetchRestaurantsOrders(
@@ -47,7 +47,7 @@ export default function RestaurantTrackerScreen() {
           });
           newSocket.on("newOrder", () => {
             queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
-          });
+          })
           newSocket.on("updateOrder", (order: Order) => {
             queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
           });

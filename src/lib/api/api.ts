@@ -8,7 +8,8 @@ import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
   CreateProduct,
-  Order, OrderStatusEnum,
+  Order,
+  OrderStatusEnum,
   Product,
   Restaurant,
   RestaurantOrder,
@@ -37,7 +38,7 @@ axiosInstance.interceptors.request.use(
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
@@ -55,7 +56,7 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(config);
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 const refreshTokenFn = async () => {
@@ -92,7 +93,7 @@ export const fetchCategories = async (): Promise<
 export const fetchRestaurants = async (
   page: number,
   name?: string,
-  category?: string,
+  category?: string
 ): Promise<RestaurantPreview[]> => {
   const location = await Location.getCurrentPositionAsync();
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
@@ -106,17 +107,21 @@ export const fetchRestaurants = async (
         lat: location.coords.latitude,
         long: location.coords.longitude,
       },
-    },
+    }
   );
   return data;
 };
 
-export const fetchUserOrders = async (uid: string, page: number) => {
+export const fetchUserOrders = async (
+  uid: string,
+  status?: OrderStatusEnum[],
+  page?: number
+): Promise<UserOrder[]> => {
   const { data } = await axiosInstance.get<UserOrder[]>(
     `/users/${uid}/orders`,
     {
-      params: { page, size: 5 },
-    },
+      params: { page, size: 5, status },
+    }
   );
   return data;
 };
@@ -145,7 +150,7 @@ export const fetchProducts = async (
   id: string,
   page?: number,
   productIds?: string[],
-  size: number = 5,
+  size: number = 5
 ) => {
   const { data } = await axiosInstance.get<Product[]>(
     `/restaurants/${id}/products`,
@@ -155,7 +160,7 @@ export const fetchProducts = async (
         page,
         ids: productIds,
       },
-    },
+    }
   );
   return data;
 };
@@ -164,13 +169,13 @@ export const fetchRestaurantsOrders = async (
   restaurantId: string,
   status?: OrderStatusEnum[],
   size?: number,
-  page?: number,
+  page?: number
 ): Promise<RestaurantOrder[]> => {
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`,
     {
       params: { page, size, status },
-    },
+    }
   );
   return data;
 };
@@ -192,7 +197,7 @@ export const updateIdentity = async (identity: UpdateIdentityDto) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    },
+    }
   );
   return data;
 };
@@ -216,16 +221,16 @@ export const createProduct = async (data: CreateProduct) => {
   // https://github.com/expo/expo/issues/11422
   form.append("image", data.image);
   form.append("restaurantId", data.restaurantId);
-try {
-  const { data: product } = await axiosInstance.post(`/products`, form, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  return product;
-} catch (e) {
-  console.log(JSON.stringify(e))
-}
+  try {
+    const { data: product } = await axiosInstance.post(`/products`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return product;
+  } catch (e) {
+    console.log(JSON.stringify(e));
+  }
 };
 
 export const updateProduct = async (id: string, data: CreateProduct) => {

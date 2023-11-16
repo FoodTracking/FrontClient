@@ -1,15 +1,27 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { NavigationProp } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView } from "react-native";
+import { Button, SafeAreaView, View, Text } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 import BaseInput from "../components/Input/BaseInput";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { updateUser } from "../lib/api/api";
-import { UpdateUserDto } from "../types";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
-export default function EditUserScreen() {
+import { UpdateUserDto } from "../types";
+import Navigation from "../navigation/RootStackNavigator";
+import { MainStackParamList } from "../navigation/MainStack";
+
+interface UserProfileEditProps {
+  navigation: NavigationProp<MainStackParamList>;
+}
+
+export default function EditUserScreen({
+  navigation,
+}: UserProfileEditProps): React.JSX.Element {
   const { user } = useAuthContext();
   const { handleSubmit, control } = useForm<UpdateUserDto>({
     defaultValues: {
@@ -40,37 +52,66 @@ export default function EditUserScreen() {
   };
 
   return (
-    <SafeAreaView>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <BaseInput
-            placeholder={"Prénom"}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value ?? ""}
-          />
-        )}
-        name="firstName"
-      />
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <BaseInput
-            placeholder={"Nom de famille"}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value ?? ""}
-          />
-        )}
-        name="lastName"
-      />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    >
+      <View
+        style={{
+          marginHorizontal: 12,
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 10,
+        }}
+      >
+        <Text style={{ fontSize: 18, paddingBottom: 20 }}>
+          Edition du profil
+        </Text>
+      </View>
 
-      <Button
-        color="black"
-        title="Save Changes"
-        onPress={handleSubmit(onSubmit)}
-      />
+      <ScrollView>
+        <View
+          style={{
+            flexDirection: "column",
+            marginBottom: 6,
+          }}
+        >
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <BaseInput
+                placeholder={"Prénom"}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value ?? ""}
+              />
+            )}
+            name="firstName"
+          />
+        </View>
+        <View>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <BaseInput
+                placeholder={"Nom de famille"}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value ?? ""}
+              />
+            )}
+            name="lastName"
+          />
+        </View>
+
+        <Button
+          color="black"
+          title="Save Changes"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }
