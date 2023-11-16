@@ -63,7 +63,7 @@ export default function RegisterScreen() {
         console.error("An error occurred during USER registration:", error);
         console.log(
           "An error occurred during USER registration:",
-          (error as AxiosError)?.response?.data,
+          (error as AxiosError)?.response?.data
         );
         const requestData = {
           user: {
@@ -91,7 +91,7 @@ export default function RegisterScreen() {
         };
         const response = await axiosInstance.post<CreateIdentityDto>(
           "/auth/register",
-          dataIdResto,
+          dataIdResto
         );
 
         setIsAuthenticated(true);
@@ -101,7 +101,7 @@ export default function RegisterScreen() {
         console.error("An error occurred during USER registration:", error);
         console.log(
           "An error occurred during USER registration:",
-          (error as AxiosError)?.response?.data,
+          (error as AxiosError)?.response?.data
         );
         const data = JSON.parse((error as AxiosError)?.config?.data);
         console.error("request data", data);
@@ -172,7 +172,7 @@ export default function RegisterScreen() {
             )}
             name="firstName"
           />
-          {errors.firstName && <Text>This is required.</Text>}
+          {errors.firstName && <Text>Prénom requis</Text>}
           <Controller
             control={control}
             rules={{
@@ -187,10 +187,15 @@ export default function RegisterScreen() {
             )}
             name="lastName"
           />
+          {errors.lastName && <Text>Nom de famille requis</Text>}
           <Controller
             control={control}
             rules={{
-              required: true,
+              required: "Un email est requis",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "L'email doit être valide",
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <BaseInput
@@ -201,29 +206,40 @@ export default function RegisterScreen() {
             )}
             name="email"
           />
-          {errors.email && <Text>This is required.</Text>}
+          {errors.email && <Text>{errors.email.message}</Text>}
           <Controller
             control={control}
             rules={{
-              required: true,
+              required: "Mot de passe requis",
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
+                message:
+                  "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <BaseInput
                 placeholder="Password"
                 onChange={onChange}
                 value={value}
+                secureTextEntry={true}
               />
             )}
             name="password"
           />
-          {errors.password && <Text>This is required.</Text>}
+          {errors.password && <Text>{errors.password.message}</Text>}
         </View>
       ) : (
         <View>
           <Controller
             control={control}
             rules={{
-              required: true,
+              required: "Un email est requis",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "L'email doit être valide",
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <BaseInput
@@ -234,22 +250,29 @@ export default function RegisterScreen() {
             )}
             name="email"
           />
-          {errors.email && <Text>This is required.</Text>}
+          {errors.email && <Text>{errors.email.message}</Text>}
           <Controller
             control={control}
             rules={{
-              required: true,
+              required: "Mot de passe requis",
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
+                message:
+                  "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <BaseInput
                 placeholder="Password"
                 onChange={onChange}
                 value={value}
+                secureTextEntry={true}
               />
             )}
             name="password"
           />
-          {errors.password && <Text>This is required.</Text>}
+          {errors.password && <Text>{errors.password.message}</Text>}
           <Controller
             control={control}
             rules={{
@@ -260,7 +283,7 @@ export default function RegisterScreen() {
             )}
             name="namePro"
           />
-          {errors.namePro && <Text>This is required.</Text>}
+          {errors.namePro && <Text>Nom requis</Text>}
           <Controller
             control={control}
             rules={{
@@ -275,7 +298,7 @@ export default function RegisterScreen() {
             )}
             name="description"
           />
-          {errors.description && <Text>This is required.</Text>}
+          {errors.description && <Text>Description requise</Text>}
           <Controller
             control={control}
             rules={{
@@ -290,7 +313,7 @@ export default function RegisterScreen() {
             )}
             name="addresse"
           />
-          {errors.addresse && <Text>This is required.</Text>}
+          {errors.addresse && <Text>Adresse requise</Text>}
           <Controller
             control={control}
             rules={{
@@ -301,166 +324,15 @@ export default function RegisterScreen() {
             )}
             name="category"
           />
-          {errors.category && <Text>This is required.</Text>}
-
-          {/* <BaseInput
-            {...register("email")}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => register("email", { value: text })}
-          />
-          <BaseInput
-            {...register("password")}
-            value={password}
-            placeholder="Password"
-            onChangeText={(text) => register("password", { value: text })}
-          />
-          <BaseInput
-            {...register("namePro")}
-            value={namePro}
-            placeholder="Name"
-            onChangeText={(text) => register("namePro", { value: text })}
-          />
-          <BaseInput
-            {...register("description")}
-            value={description}
-            placeholder="Description"
-            onChangeText={(text) => register("description", { value: text })}
-          />
-          <BaseInput
-            {...register("addresse")}
-            placeholder="Address"
-            value={addresse}
-            onChangeText={(text) => register("addresse", { value: text })}
-          /> */}
-          {/* <DropdownComponent onSelect={handleCategorySelection} /> */}
+          {errors.category && <Text>Catégorie requise</Text>}
         </View>
       )}
-
-      {/* {!isSelected ? (
-        <View style={{ marginHorizontal: 50 }}>
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginHorizontal: 15,
-            }}
-            placeholder="Adresse Mail"
-            value={email}
-            onChange={handleMail}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Mot de passe"
-            value={password}
-            onChange={handlePassword}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Prénom"
-            value={firstName}
-            onChange={handleFirstName}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Nom"
-            value={lastName}
-            onChange={handleLastName}
-          />
-        </View>
-      ) : (
-        <View style={{ marginHorizontal: 50 }}>
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginHorizontal: 15,
-            }}
-            placeholder="Adresse Mail"
-            value={email}
-            onChange={handleMail}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Mot de passe"
-            value={password}
-            onChange={handlePassword}
-          />
-          <DropdownComponent onSelect={handleCategorySelection} />
-
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Nom"
-            value={namePro}
-            onChange={handleNamePro}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Description"
-            value={description}
-            onChange={handleDescription}
-          />
-          <BaseInput
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              borderRadius: 10,
-              marginTop: 15,
-              marginHorizontal: 15,
-            }}
-            placeholder="Adresse"
-            value={addresse}
-            onChange={handleAddresse}
-          />
-          <View></View>
-        </View>
-      )} */}
 
       <BaseButton
         style={{ alignSelf: "center", marginTop: 20 }}
         title="S'inscrire"
         onPress={() => {
           handleSubmit(onSubmit)();
-
-          // updateAccess(true);
         }}
       />
       <Pressable

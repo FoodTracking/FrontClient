@@ -62,13 +62,6 @@ export default function LoginScreen() {
       if (response.status !== 201) return;
 
       setIsAuthenticated(true);
-      //
-      // // console.log("LOG FROM LOGIN ", JSON.stringify(response.data));
-      // console.log("LOG FROM LOGIN ", JSON.stringify(response.data.accessToken));
-      // console.log(
-      //   "LOG FROM LOGIN: RefreshToken ",
-      //   JSON.stringify(response.data.refreshToken)
-      // );
       const accessToken = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
 
@@ -109,7 +102,11 @@ export default function LoginScreen() {
         <Controller
           control={control}
           rules={{
-            required: true,
+            required: "Un email est requis",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "L'email doit être valide",
+            },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <BaseInput
@@ -128,12 +125,18 @@ export default function LoginScreen() {
           )}
           name="email"
         />
-        {errors.email && <Text>This is required.</Text>}
+        {errors.email && <Text>{errors.email.message}</Text>}
 
         <Controller
           control={control}
           rules={{
-            required: true,
+            required: "Mot de passe requis",
+            pattern: {
+              value:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
+              message:
+                "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
+            },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <BaseInput
@@ -148,11 +151,12 @@ export default function LoginScreen() {
               onBlur={onBlur}
               onChange={onChange}
               value={value}
+              secureTextEntry={true}
             />
           )}
           name="password"
         />
-        {errors.password && <Text>This is required.</Text>}
+        {errors.password && <Text>{errors.password.message}</Text>}
 
         <BaseButton
           style={{ alignSelf: "center", marginTop: 20 }}
