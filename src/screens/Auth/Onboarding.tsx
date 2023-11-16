@@ -48,7 +48,7 @@ export default function Onboarding({ navigation }: Props) {
 
   return (
     <ImageBackground
-      source={require("../../../assets/onboarding.png") as any}
+      source={require("../../../assets/onboarding.png")}
       style={{
         flex: 1,
         justifyContent: "center",

@@ -52,6 +52,7 @@ export default function DetailsScreen({
           .find((p) => p.id === product.productId),
         quantity: product.quantity,
       })),
+      repayable: true,
     });
   };
 
