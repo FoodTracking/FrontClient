@@ -1,6 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { debounceTime, of } from "rxjs";
 
 import CategoriesBottomSheet from "../CategoriesBottomSheet";
 
@@ -11,12 +12,18 @@ interface SearchBarProps {
 const SearchBar = ({ onSearch, onChangeCategory }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
 
+  const handleChange = (text: string) => {
+    of(text)
+      .pipe(debounceTime(200))
+      .subscribe(() => onSearch(text));
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Search for food, groceries, etc."
-        onChangeText={(text) => onSearch(text)}
+        onChangeText={handleChange}
       />
       <TouchableOpacity onPress={() => setOpen(!open)} style={styles.icon}>
         <AntDesign name="filter" size={24} color="black" />
