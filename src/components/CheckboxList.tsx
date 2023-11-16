@@ -1,30 +1,30 @@
-import { CheckBox } from "@rneui/base";
-import React, { useState } from "react";
+import { ListItem, Text } from "@rneui/themed";
+import React from "react";
 import { View } from "react-native";
 
 interface SingleChoiceProps {
   options: { id: string; name: string }[];
-  onChange: (option: string) => void;
+  value: string[];
+  onSelect: (value: string) => void;
 }
 
-const SingleChoice: React.FC<SingleChoiceProps> = ({ options, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  const handlePress = (option: string) => {
-    setSelectedOption(option);
-    onChange(option);
-  };
-
+const SingleChoice: React.FC<SingleChoiceProps> = ({
+  options,
+  value,
+  onSelect,
+}) => {
   return (
     <View>
-      {options.map((option) => (
-        <CheckBox
-          key={option.id}
-          checked={selectedOption === option.id}
-          title={option.name}
-          onPress={() => handlePress(option.id)}
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
+      {options.map((category, index) => (
+        <ListItem.CheckBox
+          key={index}
+          title={<Text style={{ fontSize: 18 }}>{category.name}</Text>}
+          iconType="material-community"
+          checkedIcon="checkbox-outline"
+          uncheckedIcon={"checkbox-blank-outline"}
+          size={28}
+          checked={value?.includes(category.id)}
+          onPress={() => onSelect(category.id)}
         />
       ))}
     </View>

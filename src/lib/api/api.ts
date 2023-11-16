@@ -92,8 +92,7 @@ export const fetchCategories = async (): Promise<
 
 export const fetchRestaurants = async (
   page: number,
-  name?: string,
-  category?: string
+  filters: { name?: string; categories?: string[] },
 ): Promise<RestaurantPreview[]> => {
   const location = await Location.getCurrentPositionAsync();
   const { data } = await axiosInstance.get<RestaurantPreview[]>(
@@ -102,8 +101,8 @@ export const fetchRestaurants = async (
       params: {
         page,
         size: 5,
-        name,
-        category,
+        name: filters.name,
+        categories: filters.categories,
         lat: location.coords.latitude,
         long: location.coords.longitude,
       },

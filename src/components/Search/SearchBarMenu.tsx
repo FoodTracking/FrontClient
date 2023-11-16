@@ -7,7 +7,7 @@ import CategoriesBottomSheet from "../CategoriesBottomSheet";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
-  onChangeCategory: (query: string) => void;
+  onChangeCategory: (categories: string[]) => void;
 }
 const SearchBar = ({ onSearch, onChangeCategory }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
@@ -28,7 +28,11 @@ const SearchBar = ({ onSearch, onChangeCategory }: SearchBarProps) => {
       <TouchableOpacity onPress={() => setOpen(!open)} style={styles.icon}>
         <AntDesign name="filter" size={24} color="black" />
       </TouchableOpacity>
-      <CategoriesBottomSheet isOpen={open} onChange={onChangeCategory} />
+      <CategoriesBottomSheet
+        isOpen={open}
+        setIsOpen={setOpen}
+        onChange={onChangeCategory}
+      />
     </View>
   );
 };

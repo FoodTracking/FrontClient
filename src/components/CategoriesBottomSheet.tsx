@@ -5,21 +5,31 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Text } from "react-native";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Text, View } from "react-native";
 
 import SingleChoice from "./CheckboxList";
 import { fetchCategories } from "../lib/api/api";
 
 interface CategoriesBottomSheetProps {
   isOpen: boolean;
-  onChange: (query: string) => void;
+  setIsOpen: (isOpen: boolean) => void;
+  onChange: (categories: string[]) => void;
 }
 
 const CategoriesBottomSheet = ({
   isOpen,
+  setIsOpen,
   onChange,
 }: CategoriesBottomSheetProps) => {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["50%", "75%"], []);
   const renderBackdrop = useCallback(
@@ -28,6 +38,13 @@ const CategoriesBottomSheet = ({
     ) => <BottomSheetBackdrop {...props} />,
     [],
   );
+
+  const handleSheetChanges = useCallback((index: number) => {
+    if (index === -1) {
+      // Additional logic for handling closure
+      setIsOpen(false);
+    }
+  }, []);
 
   const { data } = useQuery({
     queryKey: ["categories"],
@@ -42,6 +59,15 @@ const CategoriesBottomSheet = ({
     }
   }, [isOpen]);
 
+  const handleSelect = (category: string) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories((prev) => prev.filter((c) => c !== category));
+      onChange(selectedCategories.filter((c) => c !== category));
+    } else {
+      setSelectedCategories((prev) => [...prev, category]);
+      onChange([...selectedCategories, category]);
+    }
+  };
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -49,20 +75,26 @@ const CategoriesBottomSheet = ({
       snapPoints={snapPoints}
       backdropComponent={renderBackdrop}
       enableDynamicSizing={true}
+      onChange={handleSheetChanges}
     >
-      <Text
-        style={{
-          fontWeight: "bold",
-          fontSize: 22,
-          marginLeft: 20,
-          marginBottom: 5,
-        }}
-      >
-        Filtrer par catégorie
-      </Text>
-      <BottomSheetScrollView>
-        <SingleChoice options={data!} onChange={onChange} />
-      </BottomSheetScrollView>
+      <View style={{ marginHorizontal: 20, flex: 1 }}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 22,
+            marginBottom: 10,
+          }}
+        >
+          Filtrer par catégories
+        </Text>
+        <BottomSheetScrollView>
+          <SingleChoice
+            options={data!}
+            value={selectedCategories}
+            onSelect={handleSelect}
+          />
+        </BottomSheetScrollView>
+      </View>
     </BottomSheetModal>
   );
 };
