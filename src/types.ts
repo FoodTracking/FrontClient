@@ -105,10 +105,12 @@ export interface UserOrder {
 
 export interface RestaurantOrder {
   id: string;
+  quantity: number;
   price: number;
   status: OrderStatusEnum;
   products: OrderItem[];
   user: string;
+  createdAt: string;
 }
 
 export interface CreateProduct {

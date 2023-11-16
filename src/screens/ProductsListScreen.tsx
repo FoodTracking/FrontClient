@@ -22,7 +22,7 @@ export interface OrdersListScreenProps {
   navigation: NavigationProp<ProfileOrderParamList>;
 }
 
-export default function OrdersListScreen({
+export default function ProductsListScreen({
   navigation,
 }: OrdersListScreenProps) {
   const { user } = useAuthContext();

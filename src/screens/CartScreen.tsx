@@ -13,15 +13,18 @@ import { showMessage } from "react-native-flash-message";
 import { insertOrder } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
 import { MainStackParamList } from "../navigation/MainStack";
+import { OrdersParamList } from "../navigation/OrdersStack";
 import { CreateOrderDto } from "../types";
 
 interface CartScreenProps {
-  route: RouteProp<ExploreParamList, "Cart">;
+  route:
+    | RouteProp<ExploreParamList, "Cart">
+    | RouteProp<OrdersParamList, "Cart">;
   navigation: NavigationProp<MainStackParamList>;
 }
 
 export function CartScreen({ navigation, route }: CartScreenProps) {
-  const { restaurant, products } = route.params;
+  const { restaurant, products, repayable } = route.params;
 
   const mutation = useMutation({
     mutationFn: (data: CreateOrderDto) => insertOrder(data),
@@ -78,22 +81,24 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
         ))}
       </ScrollView>
 
-      <View
-        style={{
-          zIndex: 2,
-          position: "absolute",
-          bottom: 20,
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity>
-          <Button size={"md"} radius={"md"} onPress={handleConfirm}>
-            <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
-          </Button>
-        </TouchableOpacity>
-      </View>
+      {repayable && (
+        <View
+          style={{
+            zIndex: 2,
+            position: "absolute",
+            bottom: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <TouchableOpacity>
+            <Button size={"md"} radius={"md"} onPress={handleConfirm}>
+              <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
+            </Button>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

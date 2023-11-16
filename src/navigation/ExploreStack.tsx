@@ -11,6 +11,7 @@ export type ExploreParamList = {
   Cart: {
     restaurant: Restaurant;
     products: { product: Product; quantity: number }[];
+    repayable: boolean;
   };
 };
 

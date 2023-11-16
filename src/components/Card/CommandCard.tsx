@@ -1,9 +1,10 @@
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { Skeleton } from "@rneui/base";
-import { Image } from "@rneui/themed";
+import { Icon, Skeleton } from "@rneui/base";
+import { Button, Image } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Button, Pressable, Text, View, ViewStyle } from "react-native";
+import { Pressable, Text, View, ViewStyle } from "react-native";
 
 import { fetchOrder, fetchProducts, fetchRestaurant } from "../../lib/api/api";
 import { OrdersParamList } from "../../navigation/OrdersStack";
@@ -16,6 +17,7 @@ interface CommandCardProps {
   price: number;
   picture: string;
   date: string;
+  repayable: boolean;
   style?: ViewStyle;
 }
 
@@ -28,6 +30,7 @@ export default function CommandCard({
   style,
   picture,
   date,
+  repayable,
 }: CommandCardProps) {
   const navigation = useNavigation<NavigationProp<OrdersParamList>>();
 
@@ -52,6 +55,7 @@ export default function CommandCard({
         product,
         quantity,
       })),
+      repayable,
     });
   };
 
@@ -64,6 +68,7 @@ export default function CommandCard({
         alignItems: "center",
         ...style,
       }}
+      onPress={handlePress}
     >
       <View
         style={{
@@ -105,15 +110,25 @@ export default function CommandCard({
             >
               <Text>{date}</Text>
               <Text style={{ marginHorizontal: 5 }}>•</Text>
-              <Text>{quantity} produits</Text>
+              <Text>
+                {quantity} produit{quantity >= 2 && "s"}
+              </Text>
               <Text style={{ marginHorizontal: 5 }}>•</Text>
               <Text style={{ fontWeight: "bold" }}>{price} €</Text>
             </View>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <Button title={"Commander"} onPress={handlePress} />
-        </View>
+        <Button
+          color={"white"}
+          title={"Commander"}
+          onPress={() => handlePress()}
+        >
+          <AntDesign
+            name={repayable ? "reload1" : "right"}
+            size={20}
+            color="black"
+          />
+        </Button>
       </View>
     </Pressable>
   );
