@@ -95,6 +95,12 @@ export default function UserProfileEdit({
         >
           <Controller
             control={control}
+            rules={{
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "L'email doit être valide",
+              },
+            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <BaseInput
                 placeholder={"Email"}
@@ -115,6 +121,14 @@ export default function UserProfileEdit({
           >
             <Controller
               control={control}
+              rules={{
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{12,}$/,
+                  message:
+                    "Le mot de passe doit contenir au moins : \n 1 Majuscule \n 1 Minuscule \n 1 Chiffre \n 1 Caractère spécial \n 12 Caractères minimum",
+                },
+              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <BaseInput
                   placeholder={"Mot de passe"}

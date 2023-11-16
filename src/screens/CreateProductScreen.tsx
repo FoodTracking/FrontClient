@@ -85,7 +85,7 @@ export default function CreateProductScreen({
         <Controller
           control={control}
           rules={{
-            required: true,
+            required: "Nom du produit requis",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <BaseInput
@@ -107,7 +107,7 @@ export default function CreateProductScreen({
         <Controller
           control={control}
           rules={{
-            required: true,
+            required: "Prix du produit requis",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <BaseInput
@@ -129,7 +129,7 @@ export default function CreateProductScreen({
         <Controller
           control={control}
           rules={{
-            required: true,
+            required: "Description du produit requise",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <BaseInput
@@ -150,6 +150,9 @@ export default function CreateProductScreen({
         />
         <Controller
           control={control}
+          rules={{
+            required: "Une image est requise",
+          }}
           render={(value) => (
             <>
               <BaseButton
