@@ -6,6 +6,7 @@ import { SafeAreaView, TouchableHighlight } from "react-native";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import { ProfileParamList } from "../navigation/ProfileStack";
+import HeaderCustom from "../components/HeaderCustom";
 
 const items: {
   title: string;
@@ -40,7 +41,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
   return (
     <SafeAreaView>
-      <Text h2>Profil</Text>
+      <HeaderCustom title="Profil" />
       {items
         .filter((it) => !it.requiredRole || it.requiredRole === user?.role)
         .map((item, i) => (

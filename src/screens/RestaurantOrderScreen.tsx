@@ -17,6 +17,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { OrderStatusEnum } from "../types";
+import HeaderCustom from "../components/HeaderCustom";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -35,7 +36,7 @@ export default function RestaurantOrderScreen({
           user!.id,
           [OrderStatusEnum.DELIVERED],
           5,
-          pageParam,
+          pageParam
         ),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
@@ -43,7 +44,7 @@ export default function RestaurantOrderScreen({
         }
         return allPages.length + 1;
       },
-    },
+    }
   );
 
   // This is the event handler for scroll events
@@ -69,13 +70,9 @@ export default function RestaurantOrderScreen({
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        marginTop: 30,
-      }}
-    >
-      <Text h2>Historique</Text>
+    <SafeAreaView>
+      <HeaderCustom title="Historique" />
+
       <View style={{ margin: 10 }}>
         <ScrollView
           style={{

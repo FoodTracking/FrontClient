@@ -16,6 +16,7 @@ import CommandCard from "../components/Card/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
+import HeaderCustom from "../components/HeaderCustom";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -34,7 +35,7 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
         }
         return allPages.length + 1;
       },
-    },
+    }
   );
 
   // This is the event handler for scroll events
@@ -63,10 +64,9 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
     <SafeAreaView
       style={{
         flex: 1,
-        marginTop: 30,
       }}
     >
-      <Text h2>Commandes passées</Text>
+      <HeaderCustom title="Commandes passées" />
       <View style={{ margin: 10 }}>
         <ScrollView
           style={{

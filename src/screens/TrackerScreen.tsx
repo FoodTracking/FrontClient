@@ -9,6 +9,7 @@ import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
+import HeaderCustom from "../components/HeaderCustom";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -51,7 +52,7 @@ export default function TrackerScreen() {
 
   return (
     <SafeAreaView>
-      <Text h2>Commandes en cours</Text>
+      <HeaderCustom title="Commandes en cours" />
       <ScrollView>
         {query.data?.map((order) => (
           <OrderListCard

@@ -216,13 +216,16 @@ export const createProduct = async (data: CreateProduct) => {
   // https://github.com/expo/expo/issues/11422
   form.append("image", data.image);
   form.append("restaurantId", data.restaurantId);
-
+try {
   const { data: product } = await axiosInstance.post(`/products`, form, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
   return product;
+} catch (e) {
+  console.log(JSON.stringify(e))
+}
 };
 
 export const updateProduct = async (id: string, data: CreateProduct) => {

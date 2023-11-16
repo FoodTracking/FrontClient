@@ -9,6 +9,7 @@ import OrderListCard from "../components/Card/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
+import HeaderCustom from "../components/HeaderCustom";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -31,7 +32,7 @@ export default function RestaurantTrackerScreen() {
           OrderStatusEnum.IN_PROGRESS,
           OrderStatusEnum.FINISHED,
         ],
-        -1,
+        -1
       ),
   });
 
@@ -56,7 +57,7 @@ export default function RestaurantTrackerScreen() {
       } catch (error) {
         console.error(
           "Error retrieving access token from AsyncStorage:",
-          error,
+          error
         );
       }
     };
@@ -74,7 +75,7 @@ export default function RestaurantTrackerScreen() {
 
   return (
     <SafeAreaView>
-      <Text h2>Commandes en cours</Text>
+      <HeaderCustom title="Commandes en cours" />
       <ScrollView>
         {orders?.map((order) => (
           <OrderListCard
