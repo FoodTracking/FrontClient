@@ -1,12 +1,19 @@
+import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp } from "@react-navigation/native";
 import { ListItem, Text } from "@rneui/themed";
-import { SafeAreaView, TouchableHighlight } from "react-native";
+import HeaderCustom from "../components/HeaderCustom";
+
+import {
+  Image,
+  Pressable,
+  SafeAreaView,
+  TouchableHighlight,
+} from "react-native";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import { ProfileParamList } from "../navigation/ProfileStack";
-import HeaderCustom from "../components/HeaderCustom";
 
 const items: {
   title: string;
@@ -42,6 +49,17 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   return (
     <SafeAreaView>
       <HeaderCustom title="Profil" />
+      <Pressable onPress={() => {}}>
+        <Image
+          source={require("../../assets/logo.png")}
+          style={{
+            width: 200,
+            height: 200,
+            alignSelf: "center",
+            marginTop: 20,
+          }}
+        />
+      </Pressable>
       {items
         .filter((it) => !it.requiredRole || it.requiredRole === user?.role)
         .map((item, i) => (

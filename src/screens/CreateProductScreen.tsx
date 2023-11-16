@@ -12,6 +12,8 @@ import { createProduct, updateProduct } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { ProfileOrderParamList } from "../navigation/ProfileOrdersStack";
 import { CreateProduct } from "../types";
+import HeaderCustom from "../components/HeaderCustom";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface CreateProductScreenProps {
   route: RouteProp<ProfileOrderParamList, "Manage">;
@@ -32,6 +34,12 @@ export default function CreateProductScreen({
         delete data.image;
       }
       return !product ? createProduct(data) : updateProduct(product.id, data);
+    },
+    onSuccess(data, variables, context) {
+      navigation.goBack();
+    },
+    onError(error, variables, context) {
+      console.log(error);
     },
   });
 
@@ -71,17 +79,9 @@ export default function CreateProductScreen({
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text
-        style={{
-          alignSelf: "center",
-          fontSize: 30,
-          marginBottom: 50,
-        }}
-      >
-        Créer un produit
-      </Text>
-      <View style={{ marginHorizontal: 50 }}>
+    <SafeAreaView>
+      <HeaderCustom title={"Créer un produit"} />
+      <View style={{ flex: 1, marginHorizontal: 50 }}>
         <Controller
           control={control}
           rules={{
@@ -156,14 +156,20 @@ export default function CreateProductScreen({
           render={(value) => (
             <>
               <BaseButton
-                style={{ alignSelf: "center", marginTop: 20 }}
+                style={{ alignSelf: "center", margin: 20 }}
                 title="Choisir une image"
                 onPress={pickImage}
               />
               {value.field.value?.uri && (
                 <Image
                   source={{ uri: value.field.value.uri }}
-                  style={{ width: 200, height: 200, marginBottom: 10 }}
+                  style={{
+                    width: 150,
+                    height: 150,
+                    marginBottom: 20,
+                    borderRadius: 20,
+                    alignSelf: "center",
+                  }}
                 />
               )}
             </>
@@ -171,11 +177,11 @@ export default function CreateProductScreen({
           name="image"
         />
         <BaseButton
-          style={{ alignSelf: "center", marginTop: 20 }}
+          style={{ alignSelf: "center" }}
           title="Créer un produit"
           onPress={handleSubmit((data) => mutation.mutate(data))}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

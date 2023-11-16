@@ -45,9 +45,11 @@ export default function RestaurantTrackerScreen() {
           const newSocket = io(`${process.env.EXPO_PUBLIC_API_URL}/orders`, {
             auth: { token: accessToken },
           });
+          newSocket.on("newOrder", () => {
+            queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
+          });
           newSocket.on("updateOrder", (order: Order) => {
             queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
-            refetch();
           });
           setSocket(newSocket);
           console.log("Socket ON");

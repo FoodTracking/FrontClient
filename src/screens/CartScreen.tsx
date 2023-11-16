@@ -65,15 +65,28 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
         containerStyle={{ width: "100%", height: 150 }}
         resizeMode={"cover"}
       />
-      <Text h4>{restaurant.name}</Text>
-      <Text h4>Récapitulatif de la commande</Text>
+      <Text style={{ fontSize: 28, textAlign: "center", marginTop: "5%" }}>
+        {restaurant.name}
+      </Text>
+      <Text style={{ fontSize: 20, fontStyle: "italic", padding: 20 }}>
+        Récapitulatif de la commande :
+      </Text>
       <ScrollView>
         {products.map(({ product, quantity }) => (
           <View key={product.id}>
-            <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                height: "100%",
+                marginHorizontal: 20,
+                alignItems: "center",
+              }}
+            >
               <Text>{product.name}</Text>
-              <Text>{quantity}</Text>
-
+              <View style={{ flex: 1 }} />
+              <Text>{quantity}x </Text>
+              <View />
               <Text>{product.price * quantity}€</Text>
             </View>
             <Divider />

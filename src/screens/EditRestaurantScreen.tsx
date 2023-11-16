@@ -9,6 +9,8 @@ import DropdownComponent from "../components/Input/DropDown";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurant, updateRestaurant } from "../lib/api/api";
 import { UpdateRestaurantDto } from "../types";
+import { Image } from "@rneui/themed/dist/Image";
+import ImagePickerCustom from "../components/Picker/ImagePickerCustom";
 
 export default function EditRestaurantScreen() {
   const { user } = useAuthContext();
@@ -99,6 +101,7 @@ export default function EditRestaurantScreen() {
         )}
         name="categoryId"
       />
+      <ImagePickerCustom table="restaurant" user={user?.id} />
 
       <Button
         color="black"
