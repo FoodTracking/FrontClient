@@ -10,7 +10,7 @@ interface BaseInputProps {
   onBlur?: () => void;
 }
 
-export default function BaseInput({
+export default function AppInput({
   placeholder,
   style,
   value,
@@ -22,13 +22,11 @@ export default function BaseInput({
     <TextInput
       placeholder={placeholder}
       style={{
-        backgroundColor: "white",
-        margin: 10,
-        paddingLeft: 10,
-        height: 25,
+        padding: 13,
         borderWidth: 0.5,
         borderColor: "black",
-        borderRadius: 100,
+        borderRadius: 6,
+        width: "100%",
         ...style,
       }}
       value={value}

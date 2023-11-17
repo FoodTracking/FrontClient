@@ -1,15 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import io, { Socket } from "socket.io-client";
 
-import OrderListCard from "../components/Card/OrderListCard";
+import ScreenTitle from "../components/molecules/ScreenTitle";
+import OrderListCard from "../components/organisms/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -59,13 +58,14 @@ export default function TrackerScreen() {
 
   return (
     <SafeAreaView>
-      <HeaderCustom title="Commandes en cours" />
+      <ScreenTitle title="Commandes en cours" />
       <ScrollView>
         {orders?.map((order) => (
           <OrderListCard
             key={order.id}
-            Customer={order.restaurant.name}
+            customerName={order.restaurant.name}
             orderId={order.id}
+            orderDetails={order.products}
             price={order.price}
             orderStatus={statusTranslation[order.status]}
             canUpdate={false}

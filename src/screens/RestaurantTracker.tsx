@@ -1,15 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import io, { Socket } from "socket.io-client";
 
-import OrderListCard from "../components/Card/OrderListCard";
+import ScreenTitle from "../components/molecules/ScreenTitle";
+import OrderListCard from "../components/organisms/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -32,7 +31,7 @@ export default function RestaurantTrackerScreen() {
           OrderStatusEnum.IN_PROGRESS,
           OrderStatusEnum.FINISHED,
         ],
-        -1
+        -1,
       ),
   });
 
@@ -47,7 +46,7 @@ export default function RestaurantTrackerScreen() {
           });
           newSocket.on("newOrder", () => {
             queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
-          })
+          });
           newSocket.on("updateOrder", (order: Order) => {
             queryClient.invalidateQueries({ queryKey: ["restaurants-orders"] });
           });
@@ -59,7 +58,7 @@ export default function RestaurantTrackerScreen() {
       } catch (error) {
         console.error(
           "Error retrieving access token from AsyncStorage:",
-          error
+          error,
         );
       }
     };
@@ -77,12 +76,12 @@ export default function RestaurantTrackerScreen() {
 
   return (
     <SafeAreaView>
-      <HeaderCustom title="Commandes en cours" />
+      <ScreenTitle title="Commandes en cours" />
       <ScrollView>
         {orders?.map((order) => (
           <OrderListCard
             key={order.id}
-            Customer={order.user}
+            customerName={order.user.name}
             orderId={order.id}
             orderDetails={order.products}
             price={order.price}

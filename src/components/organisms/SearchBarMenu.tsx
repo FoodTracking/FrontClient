@@ -1,34 +1,37 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { debounceTime, of } from "rxjs";
 
-import CategoriesBottomSheet from "../CategoriesBottomSheet";
+import CategoriesBottomSheet from "./CategoriesBottomSheet";
+import useDebounce from "../../hooks/useDebounceTime";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
-  onChangeCategory: (query: string) => void;
+  onChangeCategory: (categories: string[]) => void;
 }
 const SearchBar = ({ onSearch, onChangeCategory }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useDebounce(300, "");
 
-  const handleChange = (text: string) => {
-    of(text)
-      .pipe(debounceTime(200))
-      .subscribe(() => onSearch(text));
-  };
+  useEffect(() => {
+    onSearch(value);
+  }, [value]);
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Search for food, groceries, etc."
-        onChangeText={handleChange}
+        placeholder="Recherche..."
+        onChangeText={setValue}
       />
       <TouchableOpacity onPress={() => setOpen(!open)} style={styles.icon}>
         <AntDesign name="filter" size={24} color="black" />
       </TouchableOpacity>
-      <CategoriesBottomSheet isOpen={open} onChange={onChangeCategory} />
+      <CategoriesBottomSheet
+        isOpen={open}
+        setIsOpen={setOpen}
+        onChange={onChangeCategory}
+      />
     </View>
   );
 };

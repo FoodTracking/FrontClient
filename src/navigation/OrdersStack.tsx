@@ -1,4 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { Text, View } from "react-native";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import { CartScreen } from "../screens/CartScreen";
@@ -41,3 +43,11 @@ export default function OrdersStack() {
     </Orders.Navigator>
   );
 }
+
+const CustomHeader = (props: any) => {
+  return (
+    <View>
+      <Text>Custom Header</Text>
+    </View>
+  );
+};

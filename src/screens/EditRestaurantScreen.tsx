@@ -1,18 +1,26 @@
+import { NavigationProp } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
-import BaseInput from "../components/Input/BaseInput";
-import DropdownComponent from "../components/Input/DropDown";
+import AppButton from "../components/atoms/AppButton";
+import DropdownComponent from "../components/atoms/AppDropDown";
+import AppInput from "../components/atoms/AppInput";
+import AppHeader from "../components/organisms/AppHeader";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurant, updateRestaurant } from "../lib/api/api";
+import { MainStackParamList } from "../navigation/MainStack";
 import { UpdateRestaurantDto } from "../types";
-import { Image } from "@rneui/themed/dist/Image";
-import ImagePickerCustom from "../components/Picker/ImagePickerCustom";
 
-export default function EditRestaurantScreen() {
+interface EditRestaurantScreenProps {
+  navigation: NavigationProp<MainStackParamList>;
+}
+
+export default function EditRestaurantScreen({
+  navigation,
+}: EditRestaurantScreenProps) {
   const { user } = useAuthContext();
   const { data: restaurant } = useQuery({
     queryKey: ["restaurant", user?.id],
@@ -58,56 +66,62 @@ export default function EditRestaurantScreen() {
 
   return (
     <SafeAreaView>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <BaseInput
-            placeholder={"Nom"}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value ?? ""}
-          />
-        )}
-        name="name"
-      />
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <BaseInput
-            placeholder={"Adresse"}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value ?? ""}
-          />
-        )}
-        name="address"
-      />
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <BaseInput
-            placeholder={"Description"}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value ?? ""}
-          />
-        )}
-        name="description"
-      />
-      <Controller
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <DropdownComponent onSelect={onChange} value={value} />
-        )}
-        name="categoryId"
-      />
-      <ImagePickerCustom table="restaurant" user={user?.id} />
+      <AppHeader title="Informations de connexion" navigation={navigation} />
 
-      <Button
-        color="black"
-        title="Save Changes"
-        onPress={handleSubmit(onSubmit)}
-      />
+      <View
+        style={{
+          marginTop: 30,
+          margin: 20,
+          height: "100%",
+          gap: 20,
+        }}
+      >
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <AppInput
+              placeholder={"Nom"}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value ?? ""}
+            />
+          )}
+          name="name"
+        />
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <AppInput
+              placeholder={"Adresse"}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value ?? ""}
+            />
+          )}
+          name="address"
+        />
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <AppInput
+              placeholder={"Description"}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value ?? ""}
+            />
+          )}
+          name="description"
+        />
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <DropdownComponent onSelect={onChange} value={value} />
+          )}
+          name="categoryId"
+        />
+
+        <AppButton title="Sauvegarder" onPress={handleSubmit(onSubmit)} />
+      </View>
     </SafeAreaView>
   );
 }

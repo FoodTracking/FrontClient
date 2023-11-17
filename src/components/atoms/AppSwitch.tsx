@@ -21,7 +21,7 @@ function usePrevious<T>(value: T): T | undefined {
   return ref.current;
 }
 
-export default function Switch({
+export default function AppSwitch({
   selected,
   setSelected = () => {},
   containerStyle = {},

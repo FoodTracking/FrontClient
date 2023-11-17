@@ -1,23 +1,24 @@
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
-import * as ImagePicker from "expo-image-picker";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Image, Text, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import BaseButton from "../components/Button/BaseButton";
-import BaseInput from "../components/Input/BaseInput";
+import AppButton from "../components/atoms/AppButton";
+import AppInput from "../components/atoms/AppInput";
+import AppImagePicker from "../components/molecules/AppImagePicker";
+import AppHeader from "../components/organisms/AppHeader";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { createProduct, updateProduct } from "../lib/api/api";
-import { MainStackParamList } from "../navigation/MainStack";
+import { createProduct, deleteProduct, updateProduct } from "../lib/api/api";
 import { ProfileOrderParamList } from "../navigation/ProfileOrdersStack";
 import { CreateProduct } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface CreateProductScreenProps {
   route: RouteProp<ProfileOrderParamList, "Manage">;
-  navigation: NavigationProp<MainStackParamList>;
+  navigation: NavigationProp<ProfileOrderParamList>;
 }
 
 export default function CreateProductScreen({
@@ -36,10 +37,34 @@ export default function CreateProductScreen({
       return !product ? createProduct(data) : updateProduct(product.id, data);
     },
     onSuccess(data, variables, context) {
+      showMessage({
+        message: "Produit mis à jour",
+        type: "success",
+      });
       navigation.goBack();
     },
-    onError(error, variables, context) {
-      console.log(error);
+    onError() {
+      showMessage({
+        message: "Une erreur est survenue",
+        type: "danger",
+      });
+    },
+  });
+
+  const delMutation = useMutation({
+    mutationFn: () => deleteProduct(product!.id),
+    onSuccess() {
+      showMessage({
+        message: "Produit supprimé",
+        type: "success",
+      });
+      navigation.goBack();
+    },
+    onError() {
+      showMessage({
+        message: "Une erreur est survenue",
+        type: "danger",
+      });
     },
   });
 
@@ -53,49 +78,65 @@ export default function CreateProductScreen({
     },
   });
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true,
-    });
-
-    if (!result.canceled) {
-      const file = result.assets[0];
-      const localUri = file.uri;
-      const filename = localUri.split("/").pop();
-
-      // Infer the type of the image
-      const match = /\.(\w+)$/.exec(filename!);
-      const type = match ? `image/${match[1]}` : `image`;
-      setValue("image", {
-        uri: localUri,
-        name: filename!,
-        type,
-      });
-    }
-  };
-
   return (
     <SafeAreaView>
-      <HeaderCustom title={"Créer un produit"} />
-      <View style={{ flex: 1, marginHorizontal: 50 }}>
+      <AppHeader title="Gestion du produit" navigation={navigation}>
+        {product && (
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              right: 20,
+            }}
+            onPress={() => delMutation.mutate()}
+          >
+            <AntDesign name="delete" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+      </AppHeader>
+      <View
+        style={{
+          marginTop: 30,
+          margin: 20,
+          height: "100%",
+          gap: 20,
+        }}
+      >
+        <Controller
+          control={control}
+          rules={{
+            required: "Une image est requise",
+          }}
+          render={(value) => (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <AppImagePicker
+                imageProps={{
+                  source: { uri: value.field.value.uri },
+                  containerStyle: {
+                    width: 120,
+                    height: 120,
+                    borderRadius: 10,
+                  },
+                }}
+                onImageSelected={(image) => setValue("image", image)}
+              />
+            </View>
+          )}
+          name="image"
+        />
         <Controller
           control={control}
           rules={{
             required: "Nom du produit requis",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <BaseInput
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 10,
-                marginTop: 30,
-                marginHorizontal: 30,
-              }}
+            <AppInput
               placeholder="Nom du produit"
               onBlur={onBlur}
               onChange={onChange}
@@ -110,14 +151,7 @@ export default function CreateProductScreen({
             required: "Prix du produit requis",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <BaseInput
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 10,
-                marginTop: 30,
-                marginHorizontal: 30,
-              }}
+            <AppInput
               placeholder="Prix du produit"
               onBlur={onBlur}
               onChange={onChange}
@@ -132,14 +166,7 @@ export default function CreateProductScreen({
             required: "Description du produit requise",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <BaseInput
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 10,
-                marginTop: 30,
-                marginHorizontal: 30,
-              }}
+            <AppInput
               placeholder="Description du produit"
               onBlur={onBlur}
               onChange={onChange}
@@ -148,37 +175,9 @@ export default function CreateProductScreen({
           )}
           name="description"
         />
-        <Controller
-          control={control}
-          rules={{
-            required: "Une image est requise",
-          }}
-          render={(value) => (
-            <>
-              <BaseButton
-                style={{ alignSelf: "center", margin: 20 }}
-                title="Choisir une image"
-                onPress={pickImage}
-              />
-              {value.field.value?.uri && (
-                <Image
-                  source={{ uri: value.field.value.uri }}
-                  style={{
-                    width: 150,
-                    height: 150,
-                    marginBottom: 20,
-                    borderRadius: 20,
-                    alignSelf: "center",
-                  }}
-                />
-              )}
-            </>
-          )}
-          name="image"
-        />
-        <BaseButton
-          style={{ alignSelf: "center" }}
-          title="Créer un produit"
+
+        <AppButton
+          title={"Sauvegarder"}
           onPress={handleSubmit((data) => mutation.mutate(data))}
         />
       </View>

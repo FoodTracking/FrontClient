@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import * as Location from "expo-location";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   NativeScrollEvent,
@@ -8,26 +8,25 @@ import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
-  Text,
 } from "react-native";
 
-import RestaurantCard from "../components/Card/RestaurantCard";
-import SearchBar from "../components/Search/SearchBarMenu";
-import { useAuthContext } from "../hooks/useAuthContext";
+import RestaurantCard from "../components/organisms/RestaurantCard";
+import SearchBar from "../components/organisms/SearchBarMenu";
 import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {
-  let name: string = "";
-  let category: string = "";
-
-  const { setIsAuthenticated } = useAuthContext();
+  const [name, setName] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
 
   const { fetchNextPage, isLoading, isError, data, refetch } = useInfiniteQuery(
     {
       initialPageParam: 1,
-      queryKey: ["restaurants"],
-      queryFn: ({ pageParam = 1 }) =>
-        fetchRestaurants(pageParam, name, category),
+      queryKey: ["restaurants", { name, categories }],
+      queryFn: ({ queryKey, pageParam = 1 }) =>
+        fetchRestaurants(
+          pageParam,
+          queryKey[1] as { name?: string; categories?: string[] },
+        ),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
           return undefined;
@@ -50,13 +49,11 @@ export default function HomeScreen() {
   }, []);
 
   const handleSearch = async (query: string) => {
-    name = query;
-    await refetch();
+    setName(query);
   };
 
-  const handleCategory = async (query: string) => {
-    category = query;
-    await refetch();
+  const handleCategory = async (values: string[]) => {
+    setCategories(values);
   };
 
   // This is the event handler for scroll events
@@ -80,9 +77,6 @@ export default function HomeScreen() {
       contentSize.height - paddingToBottom
     );
   };
-
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error :(</Text>;
 
   return (
     <SafeAreaView style={{ flex: 1, marginHorizontal: 15 }}>
@@ -109,10 +103,7 @@ export default function HomeScreen() {
             return (
               <RestaurantCard
                 key={restaurant.id}
-                id={restaurant.id}
-                name={restaurant.name}
-                category={restaurant.category}
-                picture={restaurant.image}
+                restaurant={restaurant}
                 style={{
                   marginTop: 5,
                   backgroundColor: "white" /* height: 225*/,

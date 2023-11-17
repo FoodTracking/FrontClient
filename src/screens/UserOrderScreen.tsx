@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 
-import CommandCard from "../components/Card/CommandCard";
-import HeaderCustom from "../components/HeaderCustom";
+import ScreenTitle from "../components/molecules/ScreenTitle";
+import CommandCard from "../components/organisms/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
@@ -36,7 +36,7 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
         }
         return allPages.length + 1;
       },
-    }
+    },
   );
 
   // This is the event handler for scroll events
@@ -67,7 +67,7 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
         flex: 1,
       }}
     >
-      <HeaderCustom title="Commandes passées" />
+      <ScreenTitle title="Commandes passées" />
       <View style={{ margin: 10 }}>
         <ScrollView
           style={{

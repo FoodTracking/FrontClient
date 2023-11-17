@@ -1,5 +1,4 @@
 import { NavigationProp } from "@react-navigation/native";
-import { Text } from "@rneui/themed";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
@@ -12,12 +11,12 @@ import {
   View,
 } from "react-native";
 
-import CommandCard from "../components/Card/CommandCard";
+import ScreenTitle from "../components/molecules/ScreenTitle";
+import CommandCard from "../components/organisms/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { OrderStatusEnum } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -36,7 +35,7 @@ export default function RestaurantOrderScreen({
           user!.id,
           [OrderStatusEnum.DELIVERED],
           5,
-          pageParam
+          pageParam,
         ),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
@@ -44,7 +43,7 @@ export default function RestaurantOrderScreen({
         }
         return allPages.length + 1;
       },
-    }
+    },
   );
 
   // This is the event handler for scroll events
@@ -71,9 +70,9 @@ export default function RestaurantOrderScreen({
 
   return (
     <SafeAreaView>
-      <HeaderCustom title="Historique" />
+      <ScreenTitle title="Historique" />
 
-      <View style={{ margin: 10 }}>
+      <View style={{ marginVertical: 10, marginHorizontal: 20 }}>
         <ScrollView
           style={{
             alignSelf: "center",
@@ -99,8 +98,8 @@ export default function RestaurantOrderScreen({
                   key={item.id}
                   id={item.id}
                   restaurantId={user!.id}
-                  title={item.user}
-                  picture={user!.avatar}
+                  title={item.user.name}
+                  picture={item.user.avatar}
                   quantity={item.quantity}
                   price={item.price}
                   date={dayjs(item.createdAt).format("D MMM.")}
