@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   DarkTheme,
   DefaultTheme,
@@ -10,8 +11,9 @@ import { ColorSchemeName } from "react-native";
 
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
-import { eventManager } from "../EventEmitter";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { eventManager } from "../utils/event-emitter";
+import { FollowFoodTheme } from "../utils/theme";
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -48,15 +50,9 @@ export function RootStackNavigator() {
   );
 }
 
-export default function Navigation({
-  colorScheme,
-}: {
-  colorScheme: ColorSchemeName;
-}) {
+export default function Navigation() {
   return (
-    <NavigationContainer
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer theme={FollowFoodTheme}>
       <RootStackNavigator />
     </NavigationContainer>
   );

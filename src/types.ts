@@ -17,7 +17,7 @@ export interface UpdateIdentityDto {
   id: string;
   email?: string;
   password?: string;
-  avatar?: UserSession["avatar"];
+  avatar?: PickedImage;
 }
 
 export interface UpdateUserDto {
@@ -96,10 +96,11 @@ export interface Order {
 
 export interface UserOrder {
   id: string;
-  restaurant: Omit<RestaurantPreview, "category">;
   quantity: number;
   price: number;
   status: OrderStatusEnum;
+  products: OrderItem[];
+  restaurant: UserSession;
   createdAt: string;
 }
 
@@ -109,7 +110,7 @@ export interface RestaurantOrder {
   price: number;
   status: OrderStatusEnum;
   products: OrderItem[];
-  user: string;
+  user: UserSession;
   createdAt: string;
 }
 
@@ -117,6 +118,22 @@ export interface CreateProduct {
   name: string;
   price: string;
   description: string;
-  image: { uri: string; name: string; type: string };
+  image: PickedImage;
   restaurantId: string;
+}
+
+export interface PickedImage {
+  uri: string;
+  name: string;
+  type: string;
+}
+
+export interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface Login {
+  email: string;
+  password: string;
 }

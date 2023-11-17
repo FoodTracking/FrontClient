@@ -5,11 +5,11 @@ import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import io, { Socket } from "socket.io-client";
 
-import OrderListCard from "../components/Card/OrderListCard";
+import OrderListCard from "../components/organisms/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
+import ScreenTitle from "../components/molecules/ScreenTitle";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",
@@ -77,12 +77,12 @@ export default function RestaurantTrackerScreen() {
 
   return (
     <SafeAreaView>
-      <HeaderCustom title="Commandes en cours" />
+      <ScreenTitle title="Commandes en cours" />
       <ScrollView>
         {orders?.map((order) => (
           <OrderListCard
             key={order.id}
-            Customer={order.user}
+            customerName={order.user.name}
             orderId={order.id}
             orderDetails={order.products}
             price={order.price}

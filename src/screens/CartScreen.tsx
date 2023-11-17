@@ -10,6 +10,7 @@ import React from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
+import AppButton from "../components/atoms/AppButton";
 import { insertOrder } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
 import { MainStackParamList } from "../navigation/MainStack";
@@ -105,10 +106,13 @@ export function CartScreen({ navigation, route }: CartScreenProps) {
             width: "100%",
           }}
         >
-          <TouchableOpacity>
-            <Button size={"md"} radius={"md"} onPress={handleConfirm}>
-              <Text style={{ fontSize: 22 }}>Valider ({computeTotal()} €)</Text>
-            </Button>
+          <TouchableOpacity style={{ width: "90%" }}>
+            <AppButton
+              title={`Valider (${computeTotal()} €)`}
+              size={"md"}
+              radius={"md"}
+              onPress={handleConfirm}
+            />
           </TouchableOpacity>
         </View>
       )}

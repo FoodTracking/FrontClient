@@ -5,6 +5,7 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { ExploreParamList } from "../../navigation/ExploreStack";
+import AppImage from "../atoms/AppImage";
 
 export default function RestaurantCard({
   id,
@@ -29,13 +30,9 @@ export default function RestaurantCard({
       }}
       onPress={() => navigation.navigate("Details", { id })}
     >
-      <Image
+      <AppImage
         source={{ uri: picture }}
-        PlaceholderContent={
-          <Skeleton style={{ height: "100%", width: "100%" }} />
-        }
         containerStyle={{ width: "100%", height: 175, borderRadius: 8 }}
-        resizeMode={"cover"}
       />
       <View
         style={{
@@ -61,7 +58,7 @@ export default function RestaurantCard({
             color: "grey",
           }}
         >
-          Frais de service : 2€ - Pret dans 15min
+          Frais de service : 2€ - Prêt dans 15min
         </Text>
       </View>
     </Pressable>

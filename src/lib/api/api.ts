@@ -4,22 +4,24 @@ import axios from "axios";
 import * as Location from "expo-location";
 import qs from "qs";
 
-import { eventManager } from "../../EventEmitter";
 import {
   CreateOrderDto,
   CreateProduct,
+  Login,
   Order,
   OrderStatusEnum,
   Product,
   Restaurant,
   RestaurantOrder,
   RestaurantPreview,
+  Tokens,
   UpdateIdentityDto,
   UpdateRestaurantDto,
   UpdateUserDto,
   UserOrder,
   UserSession,
 } from "../../types";
+import { eventManager } from "../../utils/event-emitter";
 
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -38,7 +40,7 @@ axiosInstance.interceptors.request.use(
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
@@ -56,7 +58,7 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(config);
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 const refreshTokenFn = async () => {
@@ -106,7 +108,7 @@ export const fetchRestaurants = async (
         lat: location.coords.latitude,
         long: location.coords.longitude,
       },
-    }
+    },
   );
   return data;
 };
@@ -114,13 +116,13 @@ export const fetchRestaurants = async (
 export const fetchUserOrders = async (
   uid: string,
   status?: OrderStatusEnum[],
-  page?: number
+  page?: number,
 ): Promise<UserOrder[]> => {
   const { data } = await axiosInstance.get<UserOrder[]>(
     `/users/${uid}/orders`,
     {
       params: { page, size: 5, status },
-    }
+    },
   );
   return data;
 };
@@ -149,7 +151,7 @@ export const fetchProducts = async (
   id: string,
   page?: number,
   productIds?: string[],
-  size: number = 5
+  size: number = 5,
 ) => {
   const { data } = await axiosInstance.get<Product[]>(
     `/restaurants/${id}/products`,
@@ -159,7 +161,7 @@ export const fetchProducts = async (
         page,
         ids: productIds,
       },
-    }
+    },
   );
   return data;
 };
@@ -168,13 +170,13 @@ export const fetchRestaurantsOrders = async (
   restaurantId: string,
   status?: OrderStatusEnum[],
   size?: number,
-  page?: number
+  page?: number,
 ): Promise<RestaurantOrder[]> => {
   const { data } = await axiosInstance.get<RestaurantOrder[]>(
     `restaurants/${restaurantId}/orders/`,
     {
       params: { page, size, status },
-    }
+    },
   );
   return data;
 };
@@ -184,19 +186,25 @@ export const updateStatus = async (id: string) => {
   return data;
 };
 
-export const updateIdentity = async (identity: UpdateIdentityDto) => {
+export const updateIdentity = async (
+  identity: UpdateIdentityDto,
+): Promise<UserSession> => {
   const formData = new FormData();
-  identity.avatar && formData.append("avatar", identity.avatar);
   identity.password && formData.append("password", identity.password);
   identity.email && formData.append("email", identity.email);
-  const { data } = await axiosInstance.patch(
+
+  // @ts-ignore
+  // https://github.com/expo/expo/issues/11422
+  identity.avatar && formData.append("avatar", identity.avatar);
+
+  const { data } = await axiosInstance.patch<UserSession>(
     `/identity/${identity.id}`,
     formData,
     {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
   return data;
 };
@@ -247,4 +255,17 @@ export const updateProduct = async (id: string, data: CreateProduct) => {
     },
   });
   return product;
+};
+
+export const login = async (data: Login) => {
+  const { data: tokens } = await axiosInstance.post<Tokens>("/auth/login", {
+    data,
+  });
+
+  return tokens;
+};
+
+export const deleteProduct = async (id: string) => {
+  const { data } = await axiosInstance.delete(`/products/${id}`);
+  return data;
 };

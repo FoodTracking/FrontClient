@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 
-import CommandCard from "../components/Card/CommandCard";
-import HeaderCustom from "../components/HeaderCustom";
+import CommandCard from "../components/organisms/CommandCard";
+import ScreenTitle from "../components/molecules/ScreenTitle";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
@@ -67,7 +67,7 @@ export default function UserOrderScreen({ navigation }: OrderScreenProps) {
         flex: 1,
       }}
     >
-      <HeaderCustom title="Commandes passées" />
+      <ScreenTitle title="Commandes passées" />
       <View style={{ margin: 10 }}>
         <ScrollView
           style={{

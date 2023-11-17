@@ -5,15 +5,17 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, SafeAreaView, View, Text } from "react-native";
 import { showMessage } from "react-native-flash-message";
-
-import BaseInput from "../components/Input/BaseInput";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { updateUser } from "../lib/api/api";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
-import { UpdateUserDto } from "../types";
-import Navigation from "../navigation/RootStackNavigator";
+import AppInput from "../components/atoms/AppInput";
+import AppImagePicker from "../components/molecules/AppImagePicker";
+import AppHeader from "../components/organisms/AppHeader";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { updateUser } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
+import Navigation from "../navigation/RootStackNavigator";
+import { PickedImage, UpdateUserDto } from "../types";
+import AppButton from "../components/atoms/AppButton";
 
 interface UserProfileEditProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -58,20 +60,16 @@ export default function EditUserScreen({
         backgroundColor: "white",
       }}
     >
+      <AppHeader title="Mon profil" navigation={navigation} />
+
       <View
         style={{
-          marginHorizontal: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
+          marginTop: 30,
+          margin: 20,
+          height: "100%",
+          gap: 20,
         }}
       >
-        <Text style={{ fontSize: 18, paddingBottom: 20 }}>
-          Edition du profil
-        </Text>
-      </View>
-
-      <ScrollView>
         <View
           style={{
             flexDirection: "column",
@@ -81,7 +79,7 @@ export default function EditUserScreen({
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
-              <BaseInput
+              <AppInput
                 placeholder={"Prénom"}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -95,7 +93,7 @@ export default function EditUserScreen({
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
-              <BaseInput
+              <AppInput
                 placeholder={"Nom de famille"}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -106,12 +104,11 @@ export default function EditUserScreen({
           />
         </View>
 
-        <Button
-          color="black"
-          title="Save Changes"
+        <AppButton
+          title="Sauvegarder"
           onPress={handleSubmit(onSubmit)}
         />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

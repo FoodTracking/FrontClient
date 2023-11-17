@@ -4,8 +4,9 @@ import { Button, Image, Text } from "@rneui/themed";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { SafeAreaView, View } from "react-native";
 
-import CountInput from "./Input/CountInput";
-import { Product } from "../types";
+import AppCounterInput from "../atoms/AppCounterInput";
+import AppButton from "../atoms/AppButton";
+import { Product } from "../../types";
 
 interface BottomSheetProductProps {
   isOpen: boolean;
@@ -76,9 +77,9 @@ export const BottomSheetProduct = ({
           <Text h3>{product.price} €</Text>
           <Text>{product.description}</Text>
 
-          <CountInput value={quantity} onChange={handleQuantityChange} />
+          <AppCounterInput value={quantity} onChange={handleQuantityChange} />
         </View>
-        <Button onPress={() => setOpen(false)}>Valider</Button>
+        <AppButton title={"Valider"} onPress={() => setOpen(false)} />
       </SafeAreaView>
     </BottomSheetModal>
   );

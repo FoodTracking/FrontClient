@@ -13,7 +13,7 @@ import {
   View,
 } from "react-native";
 
-import ProductCard from "../components/Card/ProductCard";
+import ProductCard from "../components/organisms/ProductCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchProducts } from "../lib/api/api";
 import { ProfileOrderParamList } from "../navigation/ProfileOrdersStack";

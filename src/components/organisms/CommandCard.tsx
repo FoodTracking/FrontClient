@@ -1,13 +1,14 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Icon, Skeleton } from "@rneui/base";
-import { Button, Image } from "@rneui/themed";
+import { Button, Image, Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Pressable, Text, View, ViewStyle } from "react-native";
+import { Pressable, View, ViewStyle } from "react-native";
 
 import { fetchOrder, fetchProducts, fetchRestaurant } from "../../lib/api/api";
 import { OrdersParamList } from "../../navigation/OrdersStack";
+import AppImage from "../atoms/AppImage";
 
 interface CommandCardProps {
   id: string;
@@ -85,18 +86,15 @@ export default function CommandCard({
             alignItems: "center",
           }}
         >
-          <Image
+          <AppImage
             source={{ uri: picture }}
-            PlaceholderContent={
-              <Skeleton style={{ height: "100%", width: "100%" }} />
-            }
-            containerStyle={{ width: 60, height: 60, borderRadius: 50 }}
-            resizeMode={"cover"}
+            containerStyle={{ width: 55, height: 55, borderRadius: 50 }}
           />
+
           <View style={{ flex: 1 }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 marginLeft: 10,
                 fontWeight: "bold",
                 color: "black",

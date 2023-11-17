@@ -2,12 +2,14 @@ import { Button, Input } from "@rneui/themed";
 import { useState } from "react";
 import { View } from "react-native";
 
+import AppButton from "./AppButton";
+
 interface CountInputProps {
   value?: number;
   onChange: (value: number) => void;
 }
 
-export default function CountInput({ value, onChange }: CountInputProps) {
+export default function AppCounterInput({ value, onChange }: CountInputProps) {
   const [count, setCount] = useState(value ?? 0);
 
   const handleCountChange = (value: number) => {
@@ -25,15 +27,15 @@ export default function CountInput({ value, onChange }: CountInputProps) {
         width: 50,
       }}
     >
-      <Button onPress={() => handleCountChange(-1)}>-</Button>
+      <AppButton size={"sm"} onPress={() => handleCountChange(-1)}>-</AppButton>
       <Input
         editable={false}
         disabled={false}
         value={count.toString()}
         textAlign={"center"}
-        inputContainerStyle={{ alignSelf: "flex-start" }}
+        inputContainerStyle={{ alignSelf: "flex-start", borderBottomWidth: 0 }}
       />
-      <Button onPress={() => handleCountChange(1)}>+</Button>
+      <AppButton size={"sm"} onPress={() => handleCountChange(1)}>+</AppButton>
     </View>
   );
 }

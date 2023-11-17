@@ -15,7 +15,7 @@ import {
   View,
 } from "react-native";
 
-import ProductCardWithBottomSheet from "../components/Card/ProductCardWithBottomSheet";
+import ProductCardWithBottomSheet from "../components/organisms/ProductCardWithBottomSheet";
 import { fetchProducts, fetchRestaurant } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
 

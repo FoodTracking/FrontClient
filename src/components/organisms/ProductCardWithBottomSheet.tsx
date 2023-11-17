@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import ProductCard from "./ProductCard";
 import { Product } from "../../types";
-import BottomSheetProduct from "../BottomSheetProduct";
+import BottomSheetProduct from "./BottomSheetProduct";
 
 interface ProductCardWithBottomSheetProps {
   product: Product;

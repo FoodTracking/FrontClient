@@ -10,8 +10,8 @@ import {
   ScrollView,
 } from "react-native";
 
-import RestaurantCard from "../components/Card/RestaurantCard";
-import SearchBar from "../components/Search/SearchBarMenu";
+import RestaurantCard from "../components/organisms/RestaurantCard";
+import SearchBar from "../components/organisms/SearchBarMenu";
 import { fetchRestaurants } from "../lib/api/api";
 
 export default function HomeScreen() {

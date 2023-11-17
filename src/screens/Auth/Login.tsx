@@ -1,16 +1,20 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Text } from "@rneui/themed";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, SafeAreaView, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
 
 import { Palette } from "../../../styles/colors";
-import BaseButton from "../../components/Button/BaseButton";
-import BaseInput from "../../components/Input/BaseInput";
+import AppButton from "../../components/atoms/AppButton";
+import AppInput from "../../components/atoms/AppInput";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { axiosInstance } from "../../lib/api/api";
+import { axiosInstance, login } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
+import { Login, Tokens } from "../../types";
 
 type OnboardingScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -26,51 +30,26 @@ export default function LoginScreen() {
     getValues,
     control,
     formState: { errors },
-  } = useForm<{ email: string; password: string }>({});
+  } = useForm<Login>();
 
-  const storeData = async (accessToken: string, refreshToken: string) => {
-    try {
-      await AsyncStorage.setItem("accessToken", accessToken);
-      await AsyncStorage.setItem("refreshToken", refreshToken);
-      console.log("LOG FROM LOGIN: TOKEN STORED");
-
-      AsyncStorage.getItem("accessToken").then((value) => {
-        console.log("LOG FROM LOGIN: ACCESSTOKEN STORED", value);
+  const mutation = useMutation({
+    mutationFn: async (data: Login) => login(data),
+    onSuccess: async (tokens: Tokens) => {
+      showMessage({
+        message: "Vous êtes connecté",
+        type: "success",
       });
-
-      AsyncStorage.getItem("refreshToken").then((value) => {
-        console.log("LOG FROM LOGIN: REFRESHTOKEN STORED", value);
-      });
-    } catch (error) {
-      console.error("Error storing data:", error);
-    }
-  };
-
-  const handleLogin = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    try {
-      const response = await axiosInstance.post("/auth/login", {
-        email,
-        password,
-      });
-
-      if (response.status !== 201) return;
-
+      await AsyncStorage.setItem("accessToken", tokens.accessToken);
+      await AsyncStorage.setItem("refreshToken", tokens.refreshToken);
       setIsAuthenticated(true);
-      const accessToken = response.data.accessToken;
-      const refreshToken = response.data.refreshToken;
-
-      storeData(accessToken, refreshToken);
-    } catch (error) {
-      console.error("An error occurred during login:", error);
-      console.log("LOG FROM LOGIN ", JSON.stringify(error));
-    }
-  };
+    },
+    onError: () => {
+      showMessage({
+        message: "Les identifiants sont incorrects",
+        type: "danger",
+      });
+    },
+  });
 
   const onPressLogin = async () => {
     const { email, password } = getValues();
@@ -78,27 +57,27 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Palette.white }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Image
         source={require("../../../assets/logo.png")}
         style={{
           alignSelf: "center",
-          marginTop: 50,
-          width: 200,
-          height: 200,
+          marginTop: 40,
+          width: 220,
+          height: 220,
         }}
       />
 
       <Text
+        h3
         style={{
           alignSelf: "center",
-          fontSize: 30,
-          marginBottom: 50,
         }}
       >
         Connexion
       </Text>
-      <View style={{ marginHorizontal: 50 }}>
+
+      <View style={{ margin: 50, gap: 25 }}>
         <Controller
           control={control}
           rules={{
@@ -109,14 +88,7 @@ export default function LoginScreen() {
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <BaseInput
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 10,
-                marginTop: 30,
-                marginHorizontal: 30,
-              }}
+            <AppInput
               placeholder="Adresse Mail"
               onBlur={onBlur}
               onChange={onChange}
@@ -139,14 +111,7 @@ export default function LoginScreen() {
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <BaseInput
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                borderRadius: 10,
-                marginTop: 30,
-                marginHorizontal: 30,
-              }}
+            <AppInput
               placeholder="Mot de passe"
               onBlur={onBlur}
               onChange={onChange}
@@ -158,10 +123,9 @@ export default function LoginScreen() {
         />
         {errors.password && <Text>{errors.password.message}</Text>}
 
-        <BaseButton
-          style={{ alignSelf: "center", marginTop: 20 }}
+        <AppButton
           title="Se connecter"
-          onPress={handleSubmit((data) => handleLogin(data))}
+          onPress={handleSubmit((data) => mutation.mutate(data))}
         />
         <Pressable
           style={{
@@ -169,9 +133,7 @@ export default function LoginScreen() {
             marginTop: 20,
             marginBottom: 30,
           }}
-          onPress={() => {
-            onPressLogin();
-          }}
+          onPress={onPressLogin}
         >
           <Text>Pas encore inscrit ?</Text>
           <Text style={{ color: "blue", textAlign: "center" }}>
@@ -179,6 +141,6 @@ export default function LoginScreen() {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

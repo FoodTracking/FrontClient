@@ -2,13 +2,18 @@ import { ListItem, Text } from "@rneui/themed";
 import React from "react";
 import { View } from "react-native";
 
-interface SingleChoiceProps {
-  options: { id: string; name: string }[];
+interface AppCheckboxListProps {
+  options: AppCheckboxListOption[];
   value: string[];
   onSelect: (value: string) => void;
 }
 
-const SingleChoice: React.FC<SingleChoiceProps> = ({
+interface AppCheckboxListOption {
+  id: string;
+  name: string;
+}
+
+const AppCheckboxList: React.FC<AppCheckboxListProps> = ({
   options,
   value,
   onSelect,
@@ -31,4 +36,4 @@ const SingleChoice: React.FC<SingleChoiceProps> = ({
   );
 };
 
-export default SingleChoice;
+export default AppCheckboxList;

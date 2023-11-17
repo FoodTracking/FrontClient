@@ -12,12 +12,12 @@ import {
   View,
 } from "react-native";
 
-import CommandCard from "../components/Card/CommandCard";
+import CommandCard from "../components/organisms/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { OrderStatusEnum } from "../types";
-import HeaderCustom from "../components/HeaderCustom";
+import ScreenTitle from "../components/molecules/ScreenTitle";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -71,9 +71,9 @@ export default function RestaurantOrderScreen({
 
   return (
     <SafeAreaView>
-      <HeaderCustom title="Historique" />
+      <ScreenTitle title="Historique" />
 
-      <View style={{ margin: 10 }}>
+      <View style={{ marginVertical: 10, marginHorizontal: 20 }}>
         <ScrollView
           style={{
             alignSelf: "center",
@@ -99,8 +99,8 @@ export default function RestaurantOrderScreen({
                   key={item.id}
                   id={item.id}
                   restaurantId={user!.id}
-                  title={item.user}
-                  picture={user!.avatar}
+                  title={item.user.name}
+                  picture={item.user.avatar}
                   quantity={item.quantity}
                   price={item.price}
                   date={dayjs(item.createdAt).format("D MMM.")}

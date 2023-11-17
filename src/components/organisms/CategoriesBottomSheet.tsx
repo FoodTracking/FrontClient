@@ -14,8 +14,8 @@ import React, {
 } from "react";
 import { Text, View } from "react-native";
 
-import SingleChoice from "./CheckboxList";
-import { fetchCategories } from "../lib/api/api";
+import AppCheckboxList from "../atoms/AppCheckboxList";
+import { fetchCategories } from "../../lib/api/api";
 
 interface CategoriesBottomSheetProps {
   isOpen: boolean;
@@ -88,7 +88,7 @@ const CategoriesBottomSheet = ({
           Filtrer par catégories
         </Text>
         <BottomSheetScrollView>
-          <SingleChoice
+          <AppCheckboxList
             options={data!}
             value={selectedCategories}
             onSelect={handleSelect}

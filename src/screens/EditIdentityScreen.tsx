@@ -13,7 +13,9 @@ import {
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
-import BaseInput from "../components/Input/BaseInput";
+import AppButton from "../components/atoms/AppButton";
+import AppInput from "../components/atoms/AppInput";
+import AppHeader from "../components/organisms/AppHeader";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchIdentity, updateIdentity } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
@@ -60,22 +62,18 @@ export default function UserProfileEdit({
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "white",
       }}
     >
+      <AppHeader title="Informations de connexion" navigation={navigation} />
+
       <View
         style={{
-          marginHorizontal: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
+          marginTop: 30,
+          margin: 20,
+          height: "100%",
+          gap: 20,
         }}
       >
-        <Text style={{ fontSize: 18, paddingBottom: 20 }}>
-          Edition du profil
-        </Text>
-      </View>
-      <ScrollView>
         <View
           style={{
             flexDirection: "column",
@@ -91,7 +89,7 @@ export default function UserProfileEdit({
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <BaseInput
+              <AppInput
                 placeholder={"Email"}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -118,7 +116,7 @@ export default function UserProfileEdit({
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <BaseInput
+              <AppInput
                 placeholder={"Mot de passe"}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -129,12 +127,15 @@ export default function UserProfileEdit({
           />
         </View>
 
-        <Button
+        <AppButton
           color="black"
-          title="Save Changes"
+          title="Sauvegarder"
+          style={{
+            marginTop: 30,
+          }}
           onPress={handleSubmit(onSubmit)}
         />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
