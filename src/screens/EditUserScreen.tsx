@@ -1,21 +1,17 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
+import AppButton from "../components/atoms/AppButton";
 import AppInput from "../components/atoms/AppInput";
-import AppImagePicker from "../components/molecules/AppImagePicker";
 import AppHeader from "../components/organisms/AppHeader";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { updateUser } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
-import Navigation from "../navigation/RootStackNavigator";
-import { PickedImage, UpdateUserDto } from "../types";
-import AppButton from "../components/atoms/AppButton";
+import { UpdateUserDto } from "../types";
 
 interface UserProfileEditProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -104,10 +100,7 @@ export default function EditUserScreen({
           />
         </View>
 
-        <AppButton
-          title="Sauvegarder"
-          onPress={handleSubmit(onSubmit)}
-        />
+        <AppButton title="Sauvegarder" onPress={handleSubmit(onSubmit)} />
       </View>
     </SafeAreaView>
   );

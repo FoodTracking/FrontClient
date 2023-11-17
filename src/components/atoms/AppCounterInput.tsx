@@ -1,4 +1,4 @@
-import { Button, Input } from "@rneui/themed";
+import { Input } from "@rneui/themed";
 import { useState } from "react";
 import { View } from "react-native";
 
@@ -27,7 +27,9 @@ export default function AppCounterInput({ value, onChange }: CountInputProps) {
         width: 50,
       }}
     >
-      <AppButton size={"sm"} onPress={() => handleCountChange(-1)}>-</AppButton>
+      <AppButton size={"sm"} onPress={() => handleCountChange(-1)}>
+        -
+      </AppButton>
       <Input
         editable={false}
         disabled={false}
@@ -35,7 +37,9 @@ export default function AppCounterInput({ value, onChange }: CountInputProps) {
         textAlign={"center"}
         inputContainerStyle={{ alignSelf: "flex-start", borderBottomWidth: 0 }}
       />
-      <AppButton size={"sm"} onPress={() => handleCountChange(1)}>+</AppButton>
+      <AppButton size={"sm"} onPress={() => handleCountChange(1)}>
+        +
+      </AppButton>
     </View>
   );
 }

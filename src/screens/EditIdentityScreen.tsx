@@ -1,16 +1,8 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 import AppButton from "../components/atoms/AppButton";

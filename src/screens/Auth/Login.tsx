@@ -8,11 +8,10 @@ import { Controller, useForm } from "react-hook-form";
 import { Image, Pressable, SafeAreaView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
-import { Palette } from "../../../styles/colors";
 import AppButton from "../../components/atoms/AppButton";
 import AppInput from "../../components/atoms/AppInput";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { axiosInstance, login } from "../../lib/api/api";
+import { login } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { Login, Tokens } from "../../types";
 

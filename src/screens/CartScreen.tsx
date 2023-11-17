@@ -4,7 +4,7 @@ import {
   StackActions,
 } from "@react-navigation/native";
 import { Skeleton } from "@rneui/base";
-import { Button, Divider, Image, Text } from "@rneui/themed";
+import { Divider, Image, Text } from "@rneui/themed";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";

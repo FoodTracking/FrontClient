@@ -1,5 +1,4 @@
 import { NavigationProp } from "@react-navigation/native";
-import { Text } from "@rneui/themed";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
@@ -12,12 +11,12 @@ import {
   View,
 } from "react-native";
 
+import ScreenTitle from "../components/molecules/ScreenTitle";
 import CommandCard from "../components/organisms/CommandCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurantsOrders } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { OrderStatusEnum } from "../types";
-import ScreenTitle from "../components/molecules/ScreenTitle";
 
 interface OrderScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -36,7 +35,7 @@ export default function RestaurantOrderScreen({
           user!.id,
           [OrderStatusEnum.DELIVERED],
           5,
-          pageParam
+          pageParam,
         ),
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 5) {
@@ -44,7 +43,7 @@ export default function RestaurantOrderScreen({
         }
         return allPages.length + 1;
       },
-    }
+    },
   );
 
   // This is the event handler for scroll events

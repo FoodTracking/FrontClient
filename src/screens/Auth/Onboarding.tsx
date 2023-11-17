@@ -1,17 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Text } from "@rneui/themed";
 import React from "react";
-import {
-  ImageBackground,
-  SafeAreaView,
-  StyleProp,
-  TextStyle,
-  View,
-} from "react-native";
+import { ImageBackground, SafeAreaView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Palette } from "../../../styles/colors";
-import Fonts from "../../../styles/fonts";
 import { gutters } from "../../../styles/main";
 import AppButton from "../../components/atoms/AppButton";
 import { AuthStackParamList } from "../../navigation/AuthStack";

@@ -2,9 +2,10 @@ import { NavigationProp } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, SafeAreaView, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
+import AppButton from "../components/atoms/AppButton";
 import DropdownComponent from "../components/atoms/AppDropDown";
 import AppInput from "../components/atoms/AppInput";
 import AppHeader from "../components/organisms/AppHeader";
@@ -12,7 +13,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchRestaurant, updateRestaurant } from "../lib/api/api";
 import { MainStackParamList } from "../navigation/MainStack";
 import { UpdateRestaurantDto } from "../types";
-import AppButton from "../components/atoms/AppButton";
 
 interface EditRestaurantScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -120,10 +120,7 @@ export default function EditRestaurantScreen({
           name="categoryId"
         />
 
-        <AppButton
-          title="Sauvegarder"
-          onPress={handleSubmit(onSubmit)}
-        />
+        <AppButton title="Sauvegarder" onPress={handleSubmit(onSubmit)} />
       </View>
     </SafeAreaView>
   );

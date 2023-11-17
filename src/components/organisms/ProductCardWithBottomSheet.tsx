@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
+import BottomSheetProduct from "./BottomSheetProduct";
 import ProductCard from "./ProductCard";
 import { Product } from "../../types";
-import BottomSheetProduct from "./BottomSheetProduct";
 
 interface ProductCardWithBottomSheetProps {
   product: Product;

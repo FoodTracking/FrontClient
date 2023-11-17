@@ -1,6 +1,4 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { Skeleton } from "@rneui/base";
-import { Image } from "@rneui/themed";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 

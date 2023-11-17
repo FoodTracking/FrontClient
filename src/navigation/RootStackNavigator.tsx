@@ -1,13 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-  useNavigation,
-} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React, { useEffect } from "react";
-import { ColorSchemeName } from "react-native";
 
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";

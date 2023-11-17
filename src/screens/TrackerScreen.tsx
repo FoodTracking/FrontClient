@@ -1,15 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import io, { Socket } from "socket.io-client";
 
+import ScreenTitle from "../components/molecules/ScreenTitle";
 import OrderListCard from "../components/organisms/OrderListCard";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { fetchUserOrders, queryClient } from "../lib/api/api";
 import { Order, OrderStatusEnum } from "../types";
-import ScreenTitle from "../components/molecules/ScreenTitle";
 
 const statusTranslation: Record<OrderStatusEnum, string> = {
   [OrderStatusEnum.DELIVERED]: "Délivrée",

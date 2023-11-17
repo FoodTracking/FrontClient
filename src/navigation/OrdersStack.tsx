@@ -1,12 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import { Text, View } from "react-native";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import { CartScreen } from "../screens/CartScreen";
 import RestaurantOrderScreen from "../screens/RestaurantOrderScreen";
 import UserOrderScreen from "../screens/UserOrderScreen";
 import { Product, Restaurant } from "../types";
-import React from "react";
-import {View, Text} from "react-native";
 
 export type OrdersParamList = {
   Logs: undefined;
@@ -44,7 +44,7 @@ export default function OrdersStack() {
   );
 }
 
-const CustomHeader = ( props : any) => {
+const CustomHeader = (props: any) => {
   return (
     <View>
       <Text>Custom Header</Text>

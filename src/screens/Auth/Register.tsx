@@ -1,5 +1,4 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Text } from "@rneui/themed";
 import { AxiosError } from "axios";
 import React, { useState } from "react";

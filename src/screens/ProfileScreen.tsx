@@ -1,22 +1,16 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp } from "@react-navigation/native";
-import { ListItem, Text } from "@rneui/themed";
+import { ListItem } from "@rneui/themed";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import {
-  Image,
-  Pressable,
-  SafeAreaView,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { SafeAreaView, TouchableHighlight, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
-import ScreenTitle from "../components/molecules/ScreenTitle";
 import AppImagePicker from "../components/molecules/AppImagePicker";
+import ScreenTitle from "../components/molecules/ScreenTitle";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { updateIdentity, updateUser } from "../lib/api/api";
+import { updateIdentity } from "../lib/api/api";
 import { ProfileParamList } from "../navigation/ProfileStack";
 import { PickedImage, UserSession } from "../types";
 

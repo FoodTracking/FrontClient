@@ -1,11 +1,9 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
 
-import useDebounce from "../../hooks/useDebounceTime";
 import CategoriesBottomSheet from "./CategoriesBottomSheet";
+import useDebounce from "../../hooks/useDebounceTime";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;

@@ -1,12 +1,12 @@
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Skeleton } from "@rneui/base";
-import { Button, Image, Text } from "@rneui/themed";
+import { Image, Text } from "@rneui/themed";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { SafeAreaView, View } from "react-native";
 
-import AppCounterInput from "../atoms/AppCounterInput";
-import AppButton from "../atoms/AppButton";
 import { Product } from "../../types";
+import AppButton from "../atoms/AppButton";
+import AppCounterInput from "../atoms/AppCounterInput";
 
 interface BottomSheetProductProps {
   isOpen: boolean;

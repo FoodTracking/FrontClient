@@ -14,8 +14,8 @@ import React, {
 } from "react";
 import { Text, View } from "react-native";
 
-import AppCheckboxList from "../atoms/AppCheckboxList";
 import { fetchCategories } from "../../lib/api/api";
+import AppCheckboxList from "../atoms/AppCheckboxList";
 
 interface CategoriesBottomSheetProps {
   isOpen: boolean;

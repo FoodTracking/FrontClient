@@ -1,7 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { Icon, Skeleton } from "@rneui/base";
-import { Button, Image, Text } from "@rneui/themed";
+import { Button, Text } from "@rneui/themed";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Pressable, View, ViewStyle } from "react-native";

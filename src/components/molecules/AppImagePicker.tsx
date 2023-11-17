@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import React, { useEffect } from "react";
+import React from "react";
 import { Pressable, View } from "react-native";
 
 import { PickedImage } from "../../types";
