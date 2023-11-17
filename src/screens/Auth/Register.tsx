@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Text } from "@rneui/themed";
 import { AxiosError } from "axios";
@@ -12,7 +13,7 @@ import AppSwitch from "../../components/atoms/AppSwitch";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { axiosInstance } from "../../lib/api/api";
 import { AuthStackParamList } from "../../navigation/AuthStack";
-import { CreateIdentityDto } from "../../types";
+import { CreateIdentityDto, Tokens } from "../../types";
 
 type FormValues = {
   email: string;
@@ -49,6 +50,8 @@ export default function RegisterScreen() {
         role: "user",
       });
       console.log("LOG FROM REGISTER ", JSON.stringify(response));
+      await AsyncStorage.setItem("accessToken", response.data.accessToken);
+      await AsyncStorage.setItem("refreshToken", response.data.accessToken);
       setIsAuthenticated(true);
       console.log("LOG FROM REGISTER ", JSON.stringify(response.data));
     } else {
@@ -64,12 +67,15 @@ export default function RegisterScreen() {
             categoryId: data?.category,
           },
         };
-        const response = await axiosInstance.post<CreateIdentityDto>(
+        const response = await axiosInstance.post<Tokens>(
           "/auth/register",
           dataIdResto,
         );
 
+        await AsyncStorage.setItem("accessToken", response.data.accessToken);
+        await AsyncStorage.setItem("refreshToken", response.data.accessToken);
         setIsAuthenticated(true);
+
         // Update the access after successful registration
         console.log("LOG FROM REGISTER ", JSON.stringify(response.data)); // Log the response data for debugging
       } catch (error) {
@@ -294,7 +300,7 @@ export default function RegisterScreen() {
         )}
 
         <AppButton
-          style={{ alignSelf: "center", marginTop: 20 }}
+          style={{ marginTop: 20 }}
           title="S'inscrire"
           onPress={() => {
             handleSubmit(onSubmit)();
