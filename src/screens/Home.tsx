@@ -103,10 +103,7 @@ export default function HomeScreen() {
             return (
               <RestaurantCard
                 key={restaurant.id}
-                id={restaurant.id}
-                name={restaurant.name}
-                category={restaurant.category}
-                picture={restaurant.image}
+                restaurant={restaurant}
                 style={{
                   marginTop: 5,
                   backgroundColor: "white" /* height: 225*/,

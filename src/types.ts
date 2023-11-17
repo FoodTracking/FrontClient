@@ -59,6 +59,7 @@ export interface RestaurantPreview {
   name: string;
   address: string;
   category: string;
+  distance: number;
   image: UserSession["avatar"];
 }
 

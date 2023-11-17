@@ -3,20 +3,18 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { ExploreParamList } from "../../navigation/ExploreStack";
+import { Restaurant, RestaurantPreview } from "../../types";
 import AppImage from "../atoms/AppImage";
 
-export default function RestaurantCard({
-  id,
-  name,
-  style,
-  picture,
-}: {
-  id: string;
-  name: string;
-  category: string;
+interface RestaurantCardProps {
+  restaurant: RestaurantPreview;
   style?: object;
-  picture?: string;
-}) {
+}
+
+export default function RestaurantCard({
+  restaurant,
+  style,
+}: RestaurantCardProps) {
   const navigation = useNavigation<NavigationProp<ExploreParamList>>();
   return (
     <Pressable
@@ -26,10 +24,10 @@ export default function RestaurantCard({
         borderRadius: 10,
         ...style,
       }}
-      onPress={() => navigation.navigate("Details", { id })}
+      onPress={() => navigation.navigate("Details", { id: restaurant.id })}
     >
       <AppImage
-        source={{ uri: picture }}
+        source={{ uri: restaurant.image }}
         containerStyle={{ width: "100%", height: 175, borderRadius: 8 }}
       />
       <View
@@ -48,7 +46,7 @@ export default function RestaurantCard({
             color: "black",
           }}
         >
-          {name}
+          {restaurant.name}
         </Text>
         <Text
           style={{
@@ -56,7 +54,7 @@ export default function RestaurantCard({
             color: "grey",
           }}
         >
-          Frais de service : 2€ - Prêt dans 15min
+          {restaurant.address} • {Math.round(restaurant.distance / 1000)} km
         </Text>
       </View>
     </Pressable>

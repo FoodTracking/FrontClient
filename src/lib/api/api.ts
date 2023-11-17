@@ -259,7 +259,8 @@ export const updateProduct = async (id: string, data: CreateProduct) => {
 
 export const login = async (data: Login) => {
   const { data: tokens } = await axiosInstance.post<Tokens>("/auth/login", {
-    data,
+    email: data.email,
+    password: data.password,
   });
 
   return tokens;
