@@ -18,6 +18,7 @@ import {
 import ProductCardWithBottomSheet from "../components/organisms/ProductCardWithBottomSheet";
 import { fetchProducts, fetchRestaurant } from "../lib/api/api";
 import { ExploreParamList } from "../navigation/ExploreStack";
+import AppButton from "../components/atoms/AppButton";
 
 interface DetailsScreenProps {
   route: RouteProp<ExploreParamList, "Details">;
@@ -140,12 +141,11 @@ export default function DetailsScreen({
           resizeMode={"cover"}
         />
         <View style={{ paddingHorizontal: "3%", paddingVertical: "3%" }}>
-          <Text h3>Description</Text>
+          <Text style={{ fontSize: 28 }}>Description</Text>
+          <View style={{ borderWidth: 0.5, borderColor: "grey" }} />
           <Text style={{ fontSize: 18, paddingVertical: "1%" }}>
             {restaurant?.description}
           </Text>
-
-          <Text h3>Produits</Text>
         </View>
         <View>
           {products?.pages?.map((page) => {
@@ -180,9 +180,12 @@ export default function DetailsScreen({
           }}
         >
           <TouchableOpacity>
-            <Button size={"md"} radius={"md"} onPress={handleSubmit(onSubmit)}>
-              <Text style={{ fontSize: 22 }}>Valider ({fields.length})</Text>
-            </Button>
+            <AppButton
+              title={`Valider (${fields.length})`}
+              size={"md"}
+              radius={"md"}
+              onPress={handleSubmit(onSubmit)}
+            />
           </TouchableOpacity>
         </View>
       )}

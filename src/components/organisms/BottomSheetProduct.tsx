@@ -68,18 +68,37 @@ export const BottomSheetProduct = ({
             containerStyle={{
               width: "100%",
               height: 165,
-              borderTopEndRadius: 14,
-              borderTopStartRadius: 14,
+              borderRadius: 14,
             }}
             resizeMode={"cover"}
           />
-          <Text h2>{product.name}</Text>
-          <Text h3>{product.price} €</Text>
-          <Text>{product.description}</Text>
+          <Text style={{ textAlign: "center", fontSize: 24 }}>
+            {product.name}
+            <Text h3> {product.price} €</Text>
+          </Text>
+          <View
+            style={{
+              borderWidth: 0.5,
+              borderColor: "grey",
+              marginVertical: 10,
+            }}
+          />
+          <Text style={{ paddingHorizontal: 10 }}>{product.description}</Text>
 
-          <AppCounterInput value={quantity} onChange={handleQuantityChange} />
+          <View
+            style={{
+              borderWidth: 0.5,
+              borderColor: "grey",
+              marginVertical: 10,
+            }}
+          />
+          <View style={{ marginTop: 20, paddingHorizontal: "33%" }}>
+            <AppCounterInput value={quantity} onChange={handleQuantityChange} />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <AppButton title={"Valider"} onPress={() => setOpen(false)} />
+          </View>
         </View>
-        <AppButton title={"Valider"} onPress={() => setOpen(false)} />
       </SafeAreaView>
     </BottomSheetModal>
   );
